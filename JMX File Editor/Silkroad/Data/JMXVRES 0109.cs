@@ -203,7 +203,6 @@ namespace JMXFileEditor.Silkroad.Data
                 m_NonDecodedBytes = br.ReadBytes((int)(br.BaseStream.Length - br.BaseStream.Position));
             }
         }
-
         public void Save(string Path)
         {
             
@@ -214,30 +213,30 @@ namespace JMXFileEditor.Silkroad.Data
         public class Material
         {
             public uint Index { get; set; }
-            public string Path { get; set; }
+            public string Path { get; set; } = string.Empty;
         }
         public class Mesh
         {
-            public string Path { get; set; }
+            public string Path { get; set; } = string.Empty;
             public uint UnkUInt01 { get; set; }
         }
         public class Animation
         {
-            public string Path { get; set; }
+            public string Path { get; set; } = string.Empty;
         }
         public class Skeleton
         {
-            public string Path { get; set; }
+            public string Path { get; set; } = string.Empty;
             public byte[] ExtraData { get; set; }
         }
         public class MeshGroup
         {
-            public string Name { get; set; }
+            public string Name { get; set; } = string.Empty;
             public uint[] FileIndexes { get; set; }
         }
         public class AnimationGroup
         {
-            public string Name { get; set; }
+            public string Name { get; set; } = string.Empty;
             public Entry[] Entries { get; set; }
             public class Entry
             {

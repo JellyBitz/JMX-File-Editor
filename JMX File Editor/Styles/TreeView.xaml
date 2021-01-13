@@ -39,24 +39,23 @@
                                        Text="{Binding Title}" />
                         <!-- Show nodes quantity on root nodes only -->
                         <StackPanel Orientation="Horizontal"
-                                        Visibility="{Binding HasValue, ConverterParameter=True, Converter={local:ValueToVisibilityConverter}}">
+                                    Visibility="{Binding IsValue, Converter={local:ValueToVisibilityConverter},ConverterParameter=True}">
                             <TextBlock Text=" ("
-                                           VerticalAlignment="Center" />
+                                       VerticalAlignment="Center" />
                             <TextBlock Text="{Binding Nodes.Count}"
-                                           VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center"/>
                             <TextBlock Text=")"
-                                           VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
                         <!-- Show node value -->
                         <TextBlock Text=" : "
-                                       VerticalAlignment="Center" />
-                        <TextBox Name="tbxNodeValue"
-                                     MinWidth="100"
-                                     TextAlignment="Center"
-                                     IsEnabled="{Binding IsEditable}"
-                                     Visibility="{Binding HasValue, Converter={local:ValueToVisibilityConverter}}"
-                                     Text="{Binding Path=Value, ValidatesOnExceptions=True}"
-                                     Style="{StaticResource TooltipErrorTextBoxStyle}">
+                                   VerticalAlignment="Center" />
+                        <TextBox Style="{StaticResource TooltipErrorTextBoxStyle}"
+                                 Visibility="{Binding IsValue, Converter={local:ValueToVisibilityConverter}}"
+                                 Text="{Binding Path=Value, ValidatesOnExceptions=True}"
+                                 MinWidth="100"
+                                 TextAlignment="Center"
+                                 IsEnabled="{Binding IsEditable}">
                         </TextBox>
                     </StackPanel>
                 </HierarchicalDataTemplate>

@@ -21,9 +21,11 @@ namespace JMXFileEditor.ViewModels
         /// <summary>
         /// Value handled by this node
         /// </summary>
-        public object Value {
+        public object Value
+        {
             get { return m_Value; }
-            set {
+            set
+            {
                 // Ignore sets if cannot be edited
                 if (IsEditable)
                 {
@@ -44,7 +46,7 @@ namespace JMXFileEditor.ViewModels
         /// <summary>
         /// Check if the value has been set
         /// </summary>
-        public bool HasValue { get { return Value != null; } }
+        public bool IsValue { get; }
         /// <summary>
         /// Check if the value can be edited
         /// </summary>
@@ -78,13 +80,70 @@ namespace JMXFileEditor.ViewModels
         /// <summary>
         /// Creates a root node which contains childs only
         /// </summary>
-        public JMXFileNode(string Title,bool CanResizeChilds = false)
+        public JMXFileNode(string Title)
         {
             this.Title = Title;
-            this.CanResizeChilds = CanResizeChilds;
-            // Command setup
-            CommandAddChild = new RelayCommand(() => {
+        }
+        /// <summary>
+        /// Creates a root node which contains childs resizables only
+        /// </summary>
+        public JMXFileNode(string Title, System.Type ChildType)
+        {
+            // Make sure child is specified
+            if (ChildType == null)
+                throw new System.ArgumentNullException("ChildType", "The type needs to be specified");
+            // Set values
+            this.Title = Title;
+            this.CanResizeChilds = true;
 
+            #region Commands setup
+            CommandAddChild = new RelayCommand(() =>
+            {
+                /// Create and add a default instance to nodes queue
+                // default value types
+                if (ChildType == typeof(byte))
+                {
+                    Nodes.Add(new JMXFileNode("[" + Nodes.Count + "]", default(byte)));
+                }
+                else if (ChildType == typeof(uint))
+                {
+                    Nodes.Add(new JMXFileNode("[" + Nodes.Count + "]", default(uint)));
+                }
+                else
+                {
+                    // default classes types
+                    var nodeClass = new JMXFileNode("[" + Nodes.Count + "]");
+                    if (ChildType == typeof(JMXVRES_0109.Material))
+                    {
+                        var material = new JMXVRES_0109.Material();
+                        nodeClass.Nodes.Add(new JMXFileNode("Index", material.Index));
+                        nodeClass.Nodes.Add(new JMXFileNode("Path", material.Path));
+                    }
+                    else if (ChildType == typeof(JMXVRES_0109.Mesh))
+                    {
+                        var mesh = new JMXVRES_0109.Mesh();
+                        nodeClass.Nodes.Add(new JMXFileNode("Path", mesh.Path));
+                        nodeClass.Nodes.Add(new JMXFileNode("UnkUInt01", mesh.UnkUInt01));
+                    }
+                    else if (ChildType == typeof(JMXVRES_0109.Animation))
+                    {
+                        var animation = new JMXVRES_0109.Animation();
+                        nodeClass.Nodes.Add(new JMXFileNode("Path", animation.Path));
+                    }
+                    else if (ChildType == typeof(JMXVRES_0109.Skeleton))
+                    {
+                        var skeleton = new JMXVRES_0109.Skeleton();
+                        nodeClass.Nodes.Add(new JMXFileNode("Path", skeleton.Path));
+                        nodeClass.Nodes.Add(new JMXFileNode("ExtraData", typeof(byte)));
+                    }
+                    else if (ChildType == typeof(JMXVRES_0109.MeshGroup))
+                    {
+                        var meshGroup = new JMXVRES_0109.MeshGroup();
+                        nodeClass.Nodes.Add(new JMXFileNode("Path", meshGroup.Name));
+                        nodeClass.Nodes.Add(new JMXFileNode("FileIndexes", typeof(uint)));
+                    }
+                    Nodes.Add(nodeClass);
+                }
             });
             CommandInsertChild = new RelayCommand(() => {
 
@@ -92,12 +151,16 @@ namespace JMXFileEditor.ViewModels
             CommandRemoveChild = new RelayCommand(() => {
 
             });
+            #endregion
         }
         /// <summary>
         /// Creates a child node which contains the value
         /// </summary>
         public JMXFileNode(string Title, object Value, bool IsEditable = true)
         {
+            // Make sure this is a child node
+            this.IsValue = true;
+
             this.Title = Title;
             this.m_Value = Value;
             this.IsEditable = IsEditable;
@@ -147,12 +210,12 @@ namespace JMXFileEditor.ViewModels
                 for (int i = 0; i < jmxvres_0109.m_BoundingBox02.Length; i++)
                     nodeLevel1.Nodes.Add(new JMXFileNode("[" + i + "]", jmxvres_0109.m_BoundingBox02[i]));
                 root.Nodes.Add(nodeLevel1);
-                nodeLevel1 = new JMXFileNode("ExtraBoundingData");
+                nodeLevel1 = new JMXFileNode("ExtraBoundingData", typeof(byte));
                 for (int i = 0; i < jmxvres_0109.m_ExtraBoundingData.Length; i++)
                     nodeLevel1.Nodes.Add(new JMXFileNode("[" + i + "]", jmxvres_0109.m_ExtraBoundingData[i]));
                 root.Nodes.Add(nodeLevel1);
                 // Pointer.Material
-                nodeLevel1 = new JMXFileNode("Materials");
+                nodeLevel1 = new JMXFileNode("Materials", typeof(JMXVRES_0109.Material));
                 for (int i = 0; i < jmxvres_0109.m_Materials.Length; i++)
                 {
                     var nodeClassLevel1 = new JMXFileNode("[" + i + "]");
@@ -162,7 +225,7 @@ namespace JMXFileEditor.ViewModels
                 }
                 root.Nodes.Add(nodeLevel1);
                 // Pointer.Mesh
-                nodeLevel1 = new JMXFileNode("Meshes");
+                nodeLevel1 = new JMXFileNode("Meshes", typeof(JMXVRES_0109.Mesh));
                 for (int i = 0; i < jmxvres_0109.m_Meshes.Length; i++)
                 {
                     var nodeClassLevel1 = new JMXFileNode("[" + i + "]");
@@ -174,7 +237,7 @@ namespace JMXFileEditor.ViewModels
                 // Pointer.Animation
                 root.Nodes.Add(new JMXFileNode("UnkUInt01", jmxvres_0109.m_UnkUInt01));
                 root.Nodes.Add(new JMXFileNode("UnkUInt02", jmxvres_0109.m_UnkUInt02));
-                nodeLevel1 = new JMXFileNode("Animations", true);
+                nodeLevel1 = new JMXFileNode("Animations", typeof(JMXVRES_0109.Animation));
                 for (int i = 0; i < jmxvres_0109.m_Animations.Count; i++)
                 {
                     var nodeClassLevel1 = new JMXFileNode("[" + i + "]");
@@ -183,12 +246,12 @@ namespace JMXFileEditor.ViewModels
                 }
                 root.Nodes.Add(nodeLevel1);
                 // Pointer.Skeleton
-                nodeLevel1 = new JMXFileNode("Skeletons");
+                nodeLevel1 = new JMXFileNode("Skeletons", typeof(JMXVRES_0109.Skeleton));
                 for (int i = 0; i < jmxvres_0109.m_Skeletons.Length; i++)
                 {
                     var nodeClassLevel1 = new JMXFileNode("[" + i + "]");
                     nodeClassLevel1.Nodes.Add(new JMXFileNode("Path", jmxvres_0109.m_Skeletons[i].Path));
-                    var nodeLevel2 = new JMXFileNode("ExtraData");
+                    var nodeLevel2 = new JMXFileNode("ExtraData", typeof(byte));
                     nodeClassLevel1.Nodes.Add(nodeLevel2);
                     for (int j = 0; j < jmxvres_0109.m_Skeletons[i].ExtraData.Length; j++)
                     {
@@ -198,12 +261,12 @@ namespace JMXFileEditor.ViewModels
                 }
                 root.Nodes.Add(nodeLevel1);
                 // Pointer.MeshGroup
-                nodeLevel1 = new JMXFileNode("MeshGroups");
+                nodeLevel1 = new JMXFileNode("MeshGroups", typeof(JMXVRES_0109.MeshGroup));
                 for (int i = 0; i < jmxvres_0109.m_MeshGroups.Length; i++)
                 {
                     var nodeClassLevel1 = new JMXFileNode("[" + i + "]");
                     nodeClassLevel1.Nodes.Add(new JMXFileNode("Name", jmxvres_0109.m_MeshGroups[i].Name));
-                    var nodeLevel2 = new JMXFileNode("FileIndexes");
+                    var nodeLevel2 = new JMXFileNode("FileIndexes", typeof(uint));
                     nodeClassLevel1.Nodes.Add(nodeLevel2);
                     for (int j = 0; j < jmxvres_0109.m_MeshGroups[i].FileIndexes.Length; j++)
                     {
