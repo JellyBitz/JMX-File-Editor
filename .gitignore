@@ -1,0 +1,6 @@
+# Visual Studio cache
+.vs/
+
+# Auto generated files
+JMX File Editor/bin/*
+JMX File Editor/obj/*

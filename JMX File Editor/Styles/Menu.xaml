@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:JMXFileEditor.Styles">
+    
+    <!-- Main navigation bar -->
+    <Style x:Key="MenuNewStyle" TargetType="{x:Type Menu}">
+        <Setter Property="BorderBrush" Value="#00000000"/>
+        <Setter Property="Background" Value="{StaticResource BackgroundDarkBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}"/>
+    </Style>
+
+
+    <Style x:Key="MenuItemLevel1NewStyle" TargetType="{x:Type MenuItem}">
+        <Setter Property="HeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" VerticalAlignment="Center"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="MenuItemLevel2NewStyle" TargetType="{x:Type MenuItem}">
+        <Setter Property="Background" Value="{StaticResource BackgroundDarkBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource ForegroundMainBrush}"/>
+    </Style>
+
+    
+</ResourceDictionary>

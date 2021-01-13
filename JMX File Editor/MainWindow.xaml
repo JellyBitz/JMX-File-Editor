@@ -1,0 +1,138 @@
+﻿<Window x:Class="JMXFileEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:JMXFileEditor"
+        xmlns:vms="clr-namespace:JMXFileEditor.ViewModels"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip"
+        Width="480" Height="600"
+        Title="{Binding Title}">
+    <!-- Main Layout -->
+    <Grid Background="{StaticResource BackgroundMainBrush}">
+        <!-- Menu & File viewer -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <!-- Menu -->
+        <Border Grid.Row="0"
+                BorderBrush="{StaticResource BackgroundAccentMainBrush}"
+                BorderThickness="0 0 0 2">
+            <Menu Style="{StaticResource MenuNewStyle}">
+                <!-- Level 1 / File -->
+                <MenuItem Style="{StaticResource MenuItemLevel1NewStyle}"
+                          Header="File"
+                          Height="30">
+                    <!-- Level 2 -->
+                    <MenuItem Style="{StaticResource MenuItemLevel2NewStyle}"
+                              Header="Open..."
+                              Command="{Binding CommandOpenFile}" />
+                    <MenuItem Style="{StaticResource MenuItemLevel2NewStyle}"
+                              Header="Save" IsEnabled="{Binding IsFileOpen}"
+                              Command="{Binding CommandSaveFile}" />
+                    <MenuItem Style="{StaticResource MenuItemLevel2NewStyle}"
+                              Header="Save As..."
+                              IsEnabled="{Binding IsFileOpen}"
+                              Command="{Binding CommandSaveAsFile}" />
+                </MenuItem>
+                <!-- Level 1 / Help -->
+                <MenuItem Style="{StaticResource MenuItemLevel1NewStyle}"
+                          Header="Help">
+                    <!-- Level 2 -->
+                    <MenuItem Style="{StaticResource MenuItemLevel2NewStyle}"
+                              Header="About" />
+                </MenuItem>
+            </Menu>
+        </Border>
+        
+        <!-- File Viewer -->
+        <Grid Row="1"
+              Visibility="{Binding IsFileOpen, Converter={local:ValueToVisibilityConverter}}">
+            <!-- Header -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid Row="0" Margin="8 4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <!-- Info -->
+                <TextBlock Grid.Column="0"
+                           Text="JMX Format : "
+                           VerticalAlignment="Center"
+                           FontWeight="DemiBold" />
+                <TextBlock Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Text="{Binding FileOpened.Title}" />
+                <TextBlock Grid.Column="2"
+                           Text=" - Path : "
+                           VerticalAlignment="Center"
+                           FontWeight="DemiBold" />
+                <TextBlock Grid.Column="3"
+                           VerticalAlignment="Center"
+                           Text="{Binding FilePath}" />
+            </Grid>
+            <!-- Structure -->
+            <TreeView Name="tvwFileViewer"
+                      Grid.Row="1"
+                      Margin="8 0 8 8"
+                      ItemsSource="{Binding FileOpened.Nodes}">
+                        <!-- Template using ViewModel -->
+                <ItemsControl.ItemTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type vms:JMXFileNode}" 
+                                              ItemsSource="{Binding Nodes}">
+                        <!-- Each Child Node -->
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Show options on root nodes only -->
+                            <StackPanel.ContextMenu>
+                                <ContextMenu StaysOpen="True" Visibility="{Binding HasValue, ConverterParameter=True, Converter={local:ValueToVisibilityConverter}}">
+                                    <MenuItem Header="Add" />
+                                    <MenuItem Header="Insert" />
+                                    <MenuItem Header="Remove" />
+                                </ContextMenu>
+                            </StackPanel.ContextMenu>
+                            <!-- Node info -->
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding Title}" />
+                            <!-- Show nodes quantity on root nodes only -->
+                            <StackPanel Orientation="Horizontal"
+                                        Visibility="{Binding HasValue, ConverterParameter=True, Converter={local:ValueToVisibilityConverter}}">
+                                <TextBlock Text=" ("
+                                           VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding Nodes.Count}"
+                                           VerticalAlignment="Center"/>
+                                <TextBlock Text=")"
+                                           VerticalAlignment="Center" />
+                            </StackPanel>
+                            <!-- Show node value -->
+                            <TextBlock Text=" : "
+                                       VerticalAlignment="Center" />
+                            <TextBox Name="tbxNodeValue"
+                                     MinWidth="100"
+                                     TextAlignment="Center"
+                                     IsEnabled="{Binding IsEditable}"
+                                     Visibility="{Binding HasValue, Converter={local:ValueToVisibilityConverter}}"
+                                     Text="{Binding Path=Value, ValidatesOnExceptions=True}"/>
+                            <!-- Show error if there is one -->
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="5 0"
+                                        Visibility="{Binding (Validation.Errors).Count, ElementName=tbxNodeValue, Converter={local:ValueToVisibilityConverter}}">
+                                <TextBlock Text="Error : "
+                                           VerticalAlignment="Center" />
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="{Binding (Validation.Errors)[0].ErrorContent, ElementName=tbxNodeValue}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </ItemsControl.ItemTemplate>
+            </TreeView>
+        </Grid>
+    </Grid>
+</Window>
