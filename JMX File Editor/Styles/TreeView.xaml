@@ -1,18 +1,65 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:JMXFileEditor.Styles">
+                    xmlns:styles="clr-namespace:JMXFileEditor.Styles"
+                    xmlns:local="clr-namespace:JMXFileEditor"
+                    xmlns:vms="clr-namespace:JMXFileEditor.ViewModels">
     
-    <!-- Treeview styles -->
-    <Style x:Key="CustomErrorControlOnErrorStyle" TargetType="TextBox" BasedOn="{StaticResource DefaultTextBoxStyle}">
-        <Setter Property="Validation.ErrorTemplate">
+    <!-- All styles created for the treeview -->
+
+    <!-- Error template for tooltip -->
+    <Style x:Key="TooltipErrorTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Style made for the ViewModel only -->
+    <Style x:Key="JMXFileNodeTreeviewStyle" TargetType="{x:Type TreeView}">
+        <Setter Property="ItemTemplate">
             <Setter.Value>
-                <ControlTemplate>
-                    <StackPanel>
-                        <AdornedElementPlaceholder x:Name="placeholder" />
-                        <TextBlock FontSize="11" FontStyle="Italic" Foreground="Red" 
-                                       Text="{Binding ElementName=placeholder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}" />
+                <!-- Template applied for JMXFileNode items type -->
+                <HierarchicalDataTemplate DataType="{x:Type vms:JMXFileNode}" 
+                                          ItemsSource="{Binding Nodes}">
+                    <!-- For Each Child Node -->
+                    <StackPanel Orientation="Horizontal">
+                        <!-- Show options on root nodes only -->
+                        <StackPanel.ContextMenu>
+                            <ContextMenu StaysOpen="True"
+                                         Visibility="{Binding CanResizeChilds,Converter={local:ValueToVisibilityConverter}}">
+                                <MenuItem Header="Add" Command="{Binding CommandAddChild}"/>
+                                <MenuItem Header="Insert" Command="{Binding CommandInsertChild}"/>
+                                <MenuItem Header="Remove" Command="{Binding CommandRemoveChild}"/>
+                            </ContextMenu>
+                        </StackPanel.ContextMenu>
+                        <!-- Node info -->
+                        <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding Title}" />
+                        <!-- Show nodes quantity on root nodes only -->
+                        <StackPanel Orientation="Horizontal"
+                                        Visibility="{Binding HasValue, ConverterParameter=True, Converter={local:ValueToVisibilityConverter}}">
+                            <TextBlock Text=" ("
+                                           VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Nodes.Count}"
+                                           VerticalAlignment="Center"/>
+                            <TextBlock Text=")"
+                                           VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <!-- Show node value -->
+                        <TextBlock Text=" : "
+                                       VerticalAlignment="Center" />
+                        <TextBox Name="tbxNodeValue"
+                                     MinWidth="100"
+                                     TextAlignment="Center"
+                                     IsEnabled="{Binding IsEditable}"
+                                     Visibility="{Binding HasValue, Converter={local:ValueToVisibilityConverter}}"
+                                     Text="{Binding Path=Value, ValidatesOnExceptions=True}"
+                                     Style="{StaticResource TooltipErrorTextBoxStyle}">
+                        </TextBox>
                     </StackPanel>
-                </ControlTemplate>
+                </HierarchicalDataTemplate>
             </Setter.Value>
         </Setter>
     </Style>

@@ -1,5 +1,6 @@
 ﻿using JMXFileEditor.Utility;
 using System;
+using System.Collections.Generic;
 using System.IO;
 namespace JMXFileEditor.Silkroad.Data
 {
@@ -28,13 +29,11 @@ namespace JMXFileEditor.Silkroad.Data
         public float[] m_BoundingBox02;
         public byte[] m_ExtraBoundingData;
         public Material[] m_Materials;
-        public string[] m_MeshPath;
-        public uint[] m_MeshUnkUInt01;
+        public Mesh[] m_Meshes;
         public uint m_UnkUInt01;
         public uint m_UnkUInt02;
-        public string[] m_AnimationPath;
-        public string[] m_SkeletonPath;
-        public byte[][] m_SkeletonExtraBytes;
+        public List<Animation> m_Animations;
+        public Skeleton[] m_Skeletons;
         public MeshGroup[] m_MeshGroups;
         public AnimationGroup[] m_AnimationGroups;
         public byte[] m_NonDecodedBytes;
@@ -102,13 +101,17 @@ namespace JMXFileEditor.Silkroad.Data
 
                 // Pointer.Mesh
                 var meshCount = br.ReadUInt32();
-                m_MeshPath = new string[meshCount];
+                m_Meshes = new Mesh[meshCount];
                 for (int i = 0; i < meshCount; i++)
                 {
-                    m_MeshPath[i] = new string(br.ReadChars(br.ReadInt32()));
+                    // create
+                    var mesh = new Mesh();
+                    m_Meshes[i] = mesh;
+                    // read
+                    mesh.Path = new string(br.ReadChars(br.ReadInt32()));
                     if(m_FlagUInt01 == 1)
                     {
-                        m_MeshUnkUInt01[i] = br.ReadUInt32();
+                        mesh.UnkUInt01 = br.ReadUInt32();
                     }
                 }
 
@@ -116,20 +119,27 @@ namespace JMXFileEditor.Silkroad.Data
                 m_UnkUInt01 = br.ReadUInt32();
                 m_UnkUInt02 = br.ReadUInt32();
                 var animationCount = br.ReadUInt32();
-                m_AnimationPath = new string[animationCount];
+                m_Animations = new List<Animation>();
                 for (int i = 0; i < animationCount; i++)
                 {
-                    m_AnimationPath[i] = new string(br.ReadChars(br.ReadInt32()));
+                    // create
+                    var animation = new Animation();
+                    m_Animations.Add(animation);
+                    // read
+                    animation.Path = new string(br.ReadChars(br.ReadInt32()));
                 }
                 
                 // Pointer.Skeleton
                 var skeletonCount = br.ReadUInt32();
-                m_SkeletonPath = new string[skeletonCount];
-                m_SkeletonExtraBytes = new byte[skeletonCount][];
+                m_Skeletons = new Skeleton[skeletonCount];
                 for (int i = 0; i < skeletonCount; i++)
                 {
-                    m_SkeletonPath[i] = new string(br.ReadChars(br.ReadInt32()));
-                    m_SkeletonExtraBytes[i] = br.ReadBytes(br.ReadInt32());
+                    // create
+                    var skeleton = new Skeleton();
+                    m_Skeletons[i] = skeleton;
+                    // read
+                    skeleton.Path = new string(br.ReadChars(br.ReadInt32()));
+                    skeleton.ExtraData = br.ReadBytes(br.ReadInt32());
                 }
 
                 // Pointer.MeshGroup
@@ -141,7 +151,6 @@ namespace JMXFileEditor.Silkroad.Data
                     var meshGroup = new MeshGroup();
                     m_MeshGroups[i] = meshGroup;
                     // read
-
                     meshGroup.Name = new string(br.ReadChars(br.ReadInt32()));
                     meshGroup.FileIndexes = br.ReadUInt32Array(br.ReadInt32());
                 }
@@ -207,8 +216,20 @@ namespace JMXFileEditor.Silkroad.Data
             public uint Index { get; set; }
             public string Path { get; set; }
         }
-
-
+        public class Mesh
+        {
+            public string Path { get; set; }
+            public uint UnkUInt01 { get; set; }
+        }
+        public class Animation
+        {
+            public string Path { get; set; }
+        }
+        public class Skeleton
+        {
+            public string Path { get; set; }
+            public byte[] ExtraData { get; set; }
+        }
         public class MeshGroup
         {
             public string Name { get; set; }
