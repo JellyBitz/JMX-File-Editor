@@ -114,10 +114,28 @@ namespace JMXFileEditor.ViewModels
                 }
             });
             CommandSaveFile = new RelayCommand(() => {
-
+                // Just in case
+                if (IsFileOpen)
+                {
+                    // Try to save the file
+                    try
+                    {
+                        // Converts to JMX File
+                        var jmxFile = FileProperties.ToJMXFile();
+                        // Save it
+                        jmxFile.Save(FilePath);
+                        // Update values changed in the process
+                        FileProperties = JMXStructure.Create(jmxFile);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Show details to user
+                        Window.ShowMessage("File Error", ex.Message);
+                    }
+                }
             });
             CommandSaveAsFile = new RelayCommand(() => {
-
+                
             });
             #endregion
         }

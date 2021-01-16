@@ -6,44 +6,52 @@ namespace JMXFileEditor.Silkroad.Data
 {
     public class JMXVRES_0109 : IJMXFile
     {
-        #region Private Members
-        public string m_Header;
-        public uint m_PointerMaterial;
-        public uint m_PointerMesh;
-        public uint m_PointerSkeleton;
-        public uint m_PointerAnimation;
-        public uint m_PointerMeshGroup;
-        public uint m_PointerAnimationGroup;
-        public uint m_PointerSoundEffect;
-        public uint m_PointerBoundingBox;
-        public uint m_FlagUInt01;
-        public uint m_FlagUInt02;
-        public uint m_FlagUInt03;
-        public uint m_FlagUInt04;
-        public uint m_FlagUInt05;
-        public ResourceType m_ResourceType;
-        public string m_Name;
-        public byte[] m_UnkByteArray01;
-        public string m_RootMesh;
-        public float[] m_BoundingBox01;
-        public float[] m_BoundingBox02;
-        public byte[] m_ExtraBoundingData;
-        public Material[] m_Materials;
-        public Mesh[] m_Meshes;
-        public uint m_UnkUInt01;
-        public uint m_UnkUInt02;
-        public List<Animation> m_Animations;
-        public Skeleton[] m_Skeletons;
-        public MeshGroup[] m_MeshGroups;
-        public AnimationGroup[] m_AnimationGroups;
-        public byte[] m_NonDecodedBytes;
-        #endregion
-
-        #region Public Methods
+        #region Public Properties
         /// <summary>
         /// Original header used by Joymax
         /// </summary>
         public static string FileHeader { get; } = "JMXVRES 0109";
+        public string Header { get; set; }
+        public uint PointerMaterial { get; private set; }
+        public uint PointerMesh { get; private set; }
+        public uint PointerSkeleton { get; private set; }
+        public uint PointerAnimation { get; private set; }
+        public uint PointerMeshGroup { get; private set; }
+        public uint PointerAnimationGroup { get; private set; }
+        public uint PointerSoundEffect { get; private set; }
+        public uint PointerBoundingBox { get; private set; }
+        public uint FlagUInt01 { get; set; }
+        public uint FlagUInt02 { get; set; }
+        public uint FlagUInt03 { get; set; }
+        public uint FlagUInt04 { get; set; }
+        public uint FlagUInt05 { get; set; }
+        public ResourceType ResourceType { get; set; }
+        public string Name { get; set; }
+        public byte[] UnkByteArray01 { get; set; }
+        public string RootMesh { get; set; }
+        public float[] BoundingBox01 { get; set; }
+        public float[] BoundingBox02 { get; set; }
+        public byte[] ExtraBoundingData { get; set; }
+        public List<Material> Materials { get; set; }
+        public List<Mesh> Meshes { get; set; }
+        public uint UnkUInt01 { get; set; }
+        public uint UnkUInt02 { get; set; }
+        public List<Animation> Animations { get; set; }
+        public List<Skeleton> Skeletons { get; set; }
+        public List<MeshGroup> MeshGroups { get; set; }
+        public List<AnimationGroup> AnimationGroups { get; set; }
+        public byte[] SoundEffectUndecodedBytes { get; set; }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Calculate and update the values from file pointers
+        /// </summary>
+        public void UpdatePointers()
+        {
+            //PointerBoundingBox = (uint)(file.m_Header.Length + (8 * 4) + (5 * 4) + (4) + (file.m_Name.Length + 4) + file.m_UnkByteArray01.Length);
+            //PointerMaterial = file.PointerBoundingBox + (uint)((file.m_RootMesh.Length + 4) + (file.m_BoundingBox01.Length * 4) + (file.m_BoundingBox02.Length * 4) + (file.m_ExtraBoundingData.Length + 4));
+        }
         #endregion
 
         #region Interface Implementation
@@ -55,114 +63,108 @@ namespace JMXFileEditor.Silkroad.Data
             // Read file structure
             using (var br = new BinaryReader(FileStream))
             {
-                m_Header = new string(br.ReadChars(12));
+                Header = new string(br.ReadChars(12));
                 // Pointers
-                m_PointerMaterial = br.ReadUInt32();
-                m_PointerMesh = br.ReadUInt32();
-                m_PointerSkeleton = br.ReadUInt32();
-                m_PointerAnimation = br.ReadUInt32();
-                m_PointerMeshGroup = br.ReadUInt32();
-                m_PointerAnimationGroup = br.ReadUInt32();
-                m_PointerSoundEffect = br.ReadUInt32();
-                m_PointerBoundingBox = br.ReadUInt32();
+                PointerMaterial = br.ReadUInt32();
+                PointerMesh = br.ReadUInt32();
+                PointerSkeleton = br.ReadUInt32();
+                PointerAnimation = br.ReadUInt32();
+                PointerMeshGroup = br.ReadUInt32();
+                PointerAnimationGroup = br.ReadUInt32();
+                PointerSoundEffect = br.ReadUInt32();
+                PointerBoundingBox = br.ReadUInt32();
                 // Flags
-                m_FlagUInt01 = br.ReadUInt32();
-                m_FlagUInt02 = br.ReadUInt32();
-                m_FlagUInt03 = br.ReadUInt32();
-                m_FlagUInt04 = br.ReadUInt32();
-                m_FlagUInt05 = br.ReadUInt32();
+                FlagUInt01 = br.ReadUInt32();
+                FlagUInt02 = br.ReadUInt32();
+                FlagUInt03 = br.ReadUInt32();
+                FlagUInt04 = br.ReadUInt32();
+                FlagUInt05 = br.ReadUInt32();
                 // Details
-                m_ResourceType = (ResourceType)br.ReadUInt32();
-                m_Name = new string(br.ReadChars(br.ReadInt32()));
-                m_UnkByteArray01 = br.ReadBytes(48);
+                ResourceType = (ResourceType)br.ReadUInt32();
+                Name = new string(br.ReadChars(br.ReadInt32()));
+                UnkByteArray01 = br.ReadBytes(48);
 
                 // Pointer.BoundingBox
-                m_RootMesh = new string(br.ReadChars(br.ReadInt32()));
-                m_BoundingBox01 = br.ReadSingleArray(6);
-                m_BoundingBox02 = br.ReadSingleArray(6);
+                RootMesh = new string(br.ReadChars(br.ReadInt32()));
+                BoundingBox01 = br.ReadSingleArray(6);
+                BoundingBox02 = br.ReadSingleArray(6);
                 var hasExtraBoundingData = br.ReadUInt32() != 0;
                 if (hasExtraBoundingData)
-                    m_ExtraBoundingData = br.ReadBytes(64);
+                    ExtraBoundingData = br.ReadBytes(64);
                 else
-                    m_ExtraBoundingData = new byte[0];
+                    ExtraBoundingData = new byte[0];
 
                 // Pointer.Material
-                var materialSetCount = br.ReadUInt32();
-                m_Materials = new Material[materialSetCount];
-                for (int i = 0; i < materialSetCount; i++)
+                Materials = new List<Material>(br.ReadInt32());
+                for (int i = 0; i < Materials.Capacity; i++)
                 {
                     // create
                     var material = new Material();
-                    m_Materials[i] = material;
+                    Materials.Add(material);
                     // read
                     material.Index = br.ReadUInt32();
                     material.Path = new string(br.ReadChars(br.ReadInt32()));
                 }
 
                 // Pointer.Mesh
-                var meshCount = br.ReadUInt32();
-                m_Meshes = new Mesh[meshCount];
-                for (int i = 0; i < meshCount; i++)
+                Meshes = new List<Mesh>(br.ReadInt32());
+                for (int i = 0; i < Meshes.Capacity; i++)
                 {
                     // create
                     var mesh = new Mesh();
-                    m_Meshes[i] = mesh;
+                    Meshes.Add(mesh);
                     // read
                     mesh.Path = new string(br.ReadChars(br.ReadInt32()));
-                    if(m_FlagUInt01 == 1)
+                    if(FlagUInt01 == 1)
                     {
                         mesh.UnkUInt01 = br.ReadUInt32();
                     }
                 }
 
                 // Pointer.Animation
-                m_UnkUInt01 = br.ReadUInt32();
-                m_UnkUInt02 = br.ReadUInt32();
-                var animationCount = br.ReadUInt32();
-                m_Animations = new List<Animation>();
-                for (int i = 0; i < animationCount; i++)
+                UnkUInt01 = br.ReadUInt32();
+                UnkUInt02 = br.ReadUInt32();
+                Animations = new List<Animation>(br.ReadInt32());
+                for (int i = 0; i < Animations.Capacity; i++)
                 {
                     // create
                     var animation = new Animation();
-                    m_Animations.Add(animation);
+                    Animations.Add(animation);
                     // read
                     animation.Path = new string(br.ReadChars(br.ReadInt32()));
                 }
                 
                 // Pointer.Skeleton
-                var skeletonCount = br.ReadUInt32();
-                m_Skeletons = new Skeleton[skeletonCount];
-                for (int i = 0; i < skeletonCount; i++)
+                Skeletons = new List<Skeleton>(br.ReadInt32());
+                for (int i = 0; i < Skeletons.Capacity; i++)
                 {
                     // create
                     var skeleton = new Skeleton();
-                    m_Skeletons[i] = skeleton;
+                    Skeletons.Add(skeleton);
                     // read
                     skeleton.Path = new string(br.ReadChars(br.ReadInt32()));
                     skeleton.ExtraData = br.ReadBytes(br.ReadInt32());
                 }
 
                 // Pointer.MeshGroup
-                var meshGroupCount = br.ReadUInt32();
-                m_MeshGroups = new MeshGroup[meshGroupCount];
-                for (int i = 0; i < meshGroupCount; i++)
+                MeshGroups = new List<MeshGroup>(br.ReadInt32());
+                for (int i = 0; i < MeshGroups.Capacity; i++)
                 {
                     // create
                     var meshGroup = new MeshGroup();
-                    m_MeshGroups[i] = meshGroup;
+                    MeshGroups.Add(meshGroup);
                     // read
                     meshGroup.Name = new string(br.ReadChars(br.ReadInt32()));
                     meshGroup.FileIndexes = br.ReadUInt32Array(br.ReadInt32());
                 }
                 
                 // Pointer.AnimationGroup
-                var animationGroupCount = br.ReadUInt32();
-                m_AnimationGroups = new AnimationGroup[animationGroupCount];
-                for (int i = 0; i < animationGroupCount; i++)
+                AnimationGroups = new List<AnimationGroup>(br.ReadInt32());
+                for (int i = 0; i < AnimationGroups.Capacity; i++)
                 {
                     // create
                     var animationGroup = new AnimationGroup();
-                    m_AnimationGroups[i] = animationGroup;
+                    AnimationGroups.Add(animationGroup);
                     // read
                     animationGroup.Name = new string(br.ReadChars(br.ReadInt32()));
                     var animationEntryCount = br.ReadUInt32();
@@ -199,13 +201,14 @@ namespace JMXFileEditor.Silkroad.Data
                 }
 
                 // Pointer.SoundEffect
-                //br.BaseStream.Seek(m_PointerSoundEffect, SeekOrigin.Begin);
-                m_NonDecodedBytes = br.ReadBytes((int)(br.BaseStream.Length - br.BaseStream.Position));
+                SoundEffectUndecodedBytes = br.ReadBytes((int)(br.BaseStream.Length - br.BaseStream.Position));
             }
         }
         public void Save(string Path)
         {
-            
+
+            // Pointers are calculated on saving always for safety
+            UpdatePointers();
         }
         #endregion
 
