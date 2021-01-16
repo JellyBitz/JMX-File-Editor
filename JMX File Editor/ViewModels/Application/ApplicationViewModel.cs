@@ -13,7 +13,7 @@ namespace JMXFileEditor.ViewModels
     public class ApplicationViewModel : BaseViewModel
     {
         #region Private Members 
-        private JMXFileNode m_JMXFileNodeOpened;
+        private JMXStructure m_JMXFileNodeOpened;
         private string m_FilePath;
         #endregion
 
@@ -25,7 +25,7 @@ namespace JMXFileEditor.ViewModels
         /// <summary>
         /// Gets or sets the current file opened
         /// </summary>
-        public JMXFileNode FileOpened
+        public JMXStructure FileOpened
         {
             get { return m_JMXFileNodeOpened; }
             set
@@ -89,7 +89,7 @@ namespace JMXFileEditor.ViewModels
                     // Load file format
                     var jmxFile = LoadJMXFile(path);
                     // Create and set nodes
-                    FileOpened = JMXFileNode.Create(jmxFile);
+                    FileOpened = JMXStructure.Create(jmxFile);
                     // Set current path being used
                     FilePath = path;
                 }

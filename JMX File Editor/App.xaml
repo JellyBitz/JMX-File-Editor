@@ -8,7 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Colors.xaml"/>
                 <!-- Like CSS, order is important here -->
-                <ResourceDictionary Source="Styles/TreeView.xaml"/>
+                <ResourceDictionary Source="Styles/TextBox.xaml"/>
                 <ResourceDictionary Source="Styles/Menu.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary> 

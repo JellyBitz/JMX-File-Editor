@@ -73,7 +73,9 @@
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="ViewModels\Base\RelayParameterizedCommand.cs" />
-    <Compile Include="ViewModels\Silkroad\Data\JMXFileNode.cs" />
+    <Compile Include="ViewModels\Silkroad\Data\JMXAttribute.cs" />
+    <Compile Include="ViewModels\Silkroad\Data\JMXProperty.cs" />
+    <Compile Include="ViewModels\Silkroad\Data\JMXStructure.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -98,7 +100,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\TreeView.xaml">
+    <Page Include="Styles\TextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

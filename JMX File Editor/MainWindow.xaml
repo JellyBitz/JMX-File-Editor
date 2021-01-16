@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JMXFileEditor"
+        xmlns:VM="clr-namespace:JMXFileEditor.ViewModels"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         Width="480" Height="600"
@@ -81,8 +82,49 @@
             <!-- Structure -->
             <TreeView Grid.Row="1"
                       Margin="8 0 8 8"
-                      ItemsSource="{Binding FileOpened.Nodes}"
-                      Style="{StaticResource JMXFileNodeTreeviewStyle}">
+                      ItemsSource="{Binding FileOpened.Childs}">
+                <TreeView.Resources>
+                    <!-- Binding JMXStructure type -->
+                    <HierarchicalDataTemplate DataType="{x:Type VM:JMXStructure}"
+                                              ItemsSource="{Binding Childs}">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Show Menu if element size can be edited -->
+                            <StackPanel.ContextMenu>
+                                <ContextMenu StaysOpen="True"
+                                             Visibility="{Binding IsEditable,Converter={local:ValueToVisibilityConverter}}">
+                                    <MenuItem Header="Add" Command="{Binding CommandAddChild}"/>
+                                    <MenuItem Header="Remove" Command="{Binding CommandRemoveChild}"/>
+                                </ContextMenu>
+                            </StackPanel.ContextMenu>
+                            <!-- Name -->
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding Name}" />
+                            <!-- Count -->
+                            <TextBlock Text=" ("
+                                       VerticalAlignment="Center" />
+                            <TextBlock Text="{Binding Childs.Count}"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text=") : "
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                    <!-- Binding JMXAttribute type -->
+                    <DataTemplate DataType="{x:Type VM:JMXAttribute}">
+                        <StackPanel Orientation="Horizontal">
+                            <!-- Name -->
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding Name}" />
+                            <TextBlock Text=" : "
+                                       VerticalAlignment="Center" />
+                            <TextBox Style="{StaticResource TooltipErrorTextBoxStyle}"
+                                     Text="{Binding Path=Value, ValidatesOnExceptions=True}"
+                                     MinWidth="100"
+                                     TextAlignment="Center"
+                                     IsEnabled="{Binding IsEditable}">
+                            </TextBox>
+                        </StackPanel>
+                    </DataTemplate>
+                </TreeView.Resources>
             </TreeView>
         </Grid>
     </Grid>
