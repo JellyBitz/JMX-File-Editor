@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <!-- Menu -->
         <Border Grid.Row="0"
                 BorderBrush="{StaticResource BackgroundAccentMainBrush}"
@@ -47,7 +47,7 @@
                 </MenuItem>
             </Menu>
         </Border>
-        
+
         <!-- File Viewer -->
         <Grid Row="1"
               Visibility="{Binding IsFileOpen, Converter={local:ValueToVisibilityConverter}}">
@@ -70,7 +70,7 @@
                            FontWeight="DemiBold" />
                 <TextBlock Grid.Column="1"
                            VerticalAlignment="Center"
-                           Text="{Binding FileOpened.Title}" />
+                           Text="{Binding FileProperties.Name}" />
                 <TextBlock Grid.Column="2"
                            Text=" - Path : "
                            VerticalAlignment="Center"
@@ -81,19 +81,42 @@
             </Grid>
             <!-- Structure -->
             <TreeView Grid.Row="1"
+                      x:Name="tvwFileStructure"
                       Margin="8 0 8 8"
-                      ItemsSource="{Binding FileOpened.Childs}">
+                      ItemsSource="{Binding FileProperties.Childs}"
+                      local:TreeviewSelectedItemEnabledProperty.Value="True"
+                      local:TreeviewSelectedItemProperty.Value="{Binding FileSelectedProperty,Mode=TwoWay}"
+                      ItemContainerStyle="{StaticResource SelectionBorderStyle}">
                 <TreeView.Resources>
+                    <!-- Overrides default highlight colors (just to avoid redesign the template) -->
+                    <LinearGradientBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFD9F4FF" Offset="0"/>
+                        <GradientStop Color="#FF9DCFFB" Offset="1"/>
+                    </LinearGradientBrush>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}"
+                                     Color="Black" />
+                    <LinearGradientBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" EndPoint="0,1" StartPoint="0,0">
+                        <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                        <GradientStop Color="#FFDDDDDD" Offset="1"/>
+                    </LinearGradientBrush>
+                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
+                                     Color="Black" />
                     <!-- Binding JMXStructure type -->
                     <HierarchicalDataTemplate DataType="{x:Type VM:JMXStructure}"
                                               ItemsSource="{Binding Childs}">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal"
+                                    MinHeight="20">
                             <!-- Show Menu if element size can be edited -->
                             <StackPanel.ContextMenu>
                                 <ContextMenu StaysOpen="True"
+                                             x:Name="aaaaa"
                                              Visibility="{Binding IsEditable,Converter={local:ValueToVisibilityConverter}}">
-                                    <MenuItem Header="Add" Command="{Binding CommandAddChild}"/>
-                                    <MenuItem Header="Remove" Command="{Binding CommandRemoveChild}"/>
+                                    <MenuItem Header="Add"
+                                              Command="{Binding CommandAddChild}"/>
+                                    <MenuItem Header="Remove"
+                                              Command="{Binding CommandRemoveChild}"
+                                              CommandParameter="{Binding Path=(local:TreeviewSelectedItemProperty.Value),Source={x:Reference tvwFileStructure}}">
+                                    </MenuItem>
                                 </ContextMenu>
                             </StackPanel.ContextMenu>
                             <!-- Name -->
@@ -117,7 +140,7 @@
                             <TextBlock Text=" : "
                                        VerticalAlignment="Center" />
                             <TextBox Style="{StaticResource TooltipErrorTextBoxStyle}"
-                                     Text="{Binding Path=Value, ValidatesOnExceptions=True}"
+                                     Text="{Binding Path=Value,ValidatesOnExceptions=True}"
                                      MinWidth="100"
                                      TextAlignment="Center"
                                      IsEnabled="{Binding IsEditable}">

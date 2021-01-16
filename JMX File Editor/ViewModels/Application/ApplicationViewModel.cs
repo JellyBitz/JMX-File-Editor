@@ -13,7 +13,8 @@ namespace JMXFileEditor.ViewModels
     public class ApplicationViewModel : BaseViewModel
     {
         #region Private Members 
-        private JMXStructure m_JMXFileNodeOpened;
+        private JMXStructure m_JMXFileProperties;
+        private JMXProperty m_JMXFileSelectedProperty;
         private string m_FilePath;
         #endregion
 
@@ -25,13 +26,13 @@ namespace JMXFileEditor.ViewModels
         /// <summary>
         /// Gets or sets the current file opened
         /// </summary>
-        public JMXStructure FileOpened
+        public JMXStructure FileProperties
         {
-            get { return m_JMXFileNodeOpened; }
+            get { return m_JMXFileProperties; }
             set
             {
-                m_JMXFileNodeOpened = value;
-                OnPropertyChanged(nameof(FileOpened));
+                m_JMXFileProperties = value;
+                OnPropertyChanged(nameof(FileProperties));
                 OnPropertyChanged(nameof(IsFileOpen));
             }
         }
@@ -40,7 +41,7 @@ namespace JMXFileEditor.ViewModels
         /// </summary>
         public bool IsFileOpen
         {
-            get { return FileOpened != null; }
+            get { return FileProperties != null; }
         }
         /// <summary>
         /// Path of the current file opened
@@ -48,9 +49,22 @@ namespace JMXFileEditor.ViewModels
         public string FilePath
         {
             get { return m_FilePath; }
-            set {
+            set
+            {
                 m_FilePath = value;
                 OnPropertyChanged(nameof(FilePath));
+            }
+        }
+        /// <summary>
+        /// Selected property from file opened
+        /// </summary>
+        public JMXProperty FileSelectedProperty
+        {
+            get { return m_JMXFileSelectedProperty; }
+            set
+            {
+                m_JMXFileSelectedProperty = value;
+                OnPropertyChanged(nameof(FileSelectedProperty));
             }
         }
         #endregion
@@ -89,7 +103,7 @@ namespace JMXFileEditor.ViewModels
                     // Load file format
                     var jmxFile = LoadJMXFile(path);
                     // Create and set nodes
-                    FileOpened = JMXStructure.Create(jmxFile);
+                    FileProperties = JMXStructure.Create(jmxFile);
                     // Set current path being used
                     FilePath = path;
                 }
