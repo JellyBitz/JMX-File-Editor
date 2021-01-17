@@ -49,8 +49,42 @@ namespace JMXFileEditor.Silkroad.Data
         /// </summary>
         public void UpdatePointers()
         {
-            //PointerBoundingBox = (uint)(file.m_Header.Length + (8 * 4) + (5 * 4) + (4) + (file.m_Name.Length + 4) + file.m_UnkByteArray01.Length);
-            //PointerMaterial = file.PointerBoundingBox + (uint)((file.m_RootMesh.Length + 4) + (file.m_BoundingBox01.Length * 4) + (file.m_BoundingBox02.Length * 4) + (file.m_ExtraBoundingData.Length + 4));
+            PointerBoundingBox = (uint)(Header.Length + (8 * 4) + (5 * 4) + (4) + (4 + Name.Length) + UnkByteArray01.Length);
+            PointerMaterial = PointerBoundingBox + (uint)((4 + RootMesh.Length) + (BoundingBox01.Length * 4) + (BoundingBox02.Length * 4) + (4 + ExtraBoundingData.Length));
+            PointerMesh = PointerMaterial + 4;
+            for (int i = 0; i < Materials.Count; i++)
+            {
+                PointerMesh += (uint)(4 + (4 + Materials[i].Path.Length));
+            }
+            PointerAnimation = PointerMesh + 4;
+            for (int i = 0; i < Meshes.Count; i++)
+            {
+                PointerAnimation += (uint)((4 + Meshes[i].Path.Length) + (FlagUInt01 == 1 ? 4 : 0));
+            }
+            PointerSkeleton = PointerAnimation + 8 + 4;
+            for (int i = 0; i < Animations.Count; i++)
+            {
+                PointerSkeleton += (uint)(4 + Animations[i].Path.Length);
+            }
+            PointerMeshGroup = PointerSkeleton + 4;
+            for (int i = 0; i < Skeletons.Count; i++)
+            {
+                PointerMeshGroup += (uint)((4 + Skeletons[i].Path.Length) + (4 + Skeletons[i].ExtraData.Length));
+            }
+            PointerAnimationGroup = PointerMeshGroup + 4;
+            for (int i = 0; i < MeshGroups.Count; i++)
+            {
+                PointerAnimationGroup += (uint)((4 + MeshGroups[i].Name.Length) + (4 + MeshGroups[i].FileIndexes.Length * 4));
+            }
+            PointerSoundEffect = PointerAnimationGroup + 4;
+            for (int i = 0; i < AnimationGroups.Count; i++)
+            {
+                PointerSoundEffect += (uint)((4 + AnimationGroups[i].Name.Length) + 4);
+                for (int j = 0; j < AnimationGroups[i].Entries.Count; j++)
+                {
+                    PointerSoundEffect += (uint)(4 + 4 + (4 + AnimationGroups[i].Entries[j].Events.Count * 16) + 4 + (4 + AnimationGroups[i].Entries[j].WalkPoints.Count * 8));
+                }
+            }
         }
         #endregion
 
@@ -88,79 +122,79 @@ namespace JMXFileEditor.Silkroad.Data
                 RootMesh = new string(br.ReadChars(br.ReadInt32()));
                 BoundingBox01 = br.ReadSingleArray(6);
                 BoundingBox02 = br.ReadSingleArray(6);
-                var hasExtraBoundingData = br.ReadUInt32() != 0;
-                if (hasExtraBoundingData)
+                if (br.ReadUInt32() == 1)
                     ExtraBoundingData = br.ReadBytes(64);
                 else
                     ExtraBoundingData = new byte[0];
 
                 // Pointer.Material
-                Materials = new List<Material>(br.ReadInt32());
-                for (int i = 0; i < Materials.Capacity; i++)
+                var count = br.ReadInt32();
+                Materials = new List<Material>();
+                for (int i = 0; i < count; i++)
                 {
                     // create
-                    var material = new Material();
-                    Materials.Add(material);
-                    // read
-                    material.Index = br.ReadUInt32();
-                    material.Path = new string(br.ReadChars(br.ReadInt32()));
+                    Materials.Add(new Material() {
+                        Index = br.ReadUInt32(),
+                        Path = new string(br.ReadChars(br.ReadInt32()))
+                    });
                 }
 
                 // Pointer.Mesh
-                Meshes = new List<Mesh>(br.ReadInt32());
-                for (int i = 0; i < Meshes.Capacity; i++)
+                count = br.ReadInt32();
+                Meshes = new List<Mesh>();
+                for (int i = 0; i < count; i++)
                 {
                     // create
-                    var mesh = new Mesh();
-                    Meshes.Add(mesh);
-                    // read
-                    mesh.Path = new string(br.ReadChars(br.ReadInt32()));
-                    if(FlagUInt01 == 1)
+                    Meshes.Add(new Mesh()
                     {
-                        mesh.UnkUInt01 = br.ReadUInt32();
-                    }
+                        Path = new string(br.ReadChars(br.ReadInt32())),
+                        UnkUInt01 = FlagUInt01 == 1 ? br.ReadUInt32() : 0
+                    });
                 }
 
                 // Pointer.Animation
                 UnkUInt01 = br.ReadUInt32();
                 UnkUInt02 = br.ReadUInt32();
-                Animations = new List<Animation>(br.ReadInt32());
-                for (int i = 0; i < Animations.Capacity; i++)
+                count = br.ReadInt32();
+                Animations = new List<Animation>();
+                for (int i = 0; i < count; i++)
                 {
                     // create
-                    var animation = new Animation();
-                    Animations.Add(animation);
-                    // read
-                    animation.Path = new string(br.ReadChars(br.ReadInt32()));
+                    Animations.Add(new Animation()
+                    {
+                        Path = new string(br.ReadChars(br.ReadInt32())),
+                    });
                 }
-                
+
                 // Pointer.Skeleton
-                Skeletons = new List<Skeleton>(br.ReadInt32());
-                for (int i = 0; i < Skeletons.Capacity; i++)
+                count = br.ReadInt32();
+                Skeletons = new List<Skeleton>();
+                for (int i = 0; i < count; i++)
                 {
                     // create
-                    var skeleton = new Skeleton();
-                    Skeletons.Add(skeleton);
-                    // read
-                    skeleton.Path = new string(br.ReadChars(br.ReadInt32()));
-                    skeleton.ExtraData = br.ReadBytes(br.ReadInt32());
+                    Skeletons.Add(new Skeleton()
+                    {
+                        Path = new string(br.ReadChars(br.ReadInt32())),
+                        ExtraData = br.ReadBytes(br.ReadInt32())
+                    });
                 }
 
                 // Pointer.MeshGroup
-                MeshGroups = new List<MeshGroup>(br.ReadInt32());
-                for (int i = 0; i < MeshGroups.Capacity; i++)
+                count = br.ReadInt32();
+                MeshGroups = new List<MeshGroup>();
+                for (int i = 0; i < count; i++)
                 {
                     // create
-                    var meshGroup = new MeshGroup();
-                    MeshGroups.Add(meshGroup);
-                    // read
-                    meshGroup.Name = new string(br.ReadChars(br.ReadInt32()));
-                    meshGroup.FileIndexes = br.ReadUInt32Array(br.ReadInt32());
+                    MeshGroups.Add(new MeshGroup() {
+                        Name = new string(br.ReadChars(br.ReadInt32())),
+                        FileIndexes = br.ReadUInt32Array(br.ReadInt32())
+                    });
                 }
-                
+
                 // Pointer.AnimationGroup
-                AnimationGroups = new List<AnimationGroup>(br.ReadInt32());
-                for (int i = 0; i < AnimationGroups.Capacity; i++)
+                count = br.ReadInt32();
+                AnimationGroups = new List<AnimationGroup>();
+                for (int i = 0; i < count; i++)
                 {
                     // create
                     var animationGroup = new AnimationGroup();
@@ -168,34 +202,38 @@ namespace JMXFileEditor.Silkroad.Data
                     // read
                     animationGroup.Name = new string(br.ReadChars(br.ReadInt32()));
                     var animationEntryCount = br.ReadUInt32();
-                    animationGroup.Entries = new AnimationGroup.Entry[animationEntryCount];
+                    animationGroup.Entries = new List<AnimationGroup.Entry>();
                     for (int j = 0; j < animationEntryCount; j++)
                     {
                         // create
                         var entry = new AnimationGroup.Entry();
-                        animationGroup.Entries[j] = entry;
+                        animationGroup.Entries.Add(entry);
                         // read
                         entry.Type = (ResourceAnimationType)br.ReadUInt32();
                         entry.FileIndex = br.ReadUInt32();
                         var eventCount = br.ReadUInt32();
-                        entry.Events = new AnimationGroup.Entry.Event[eventCount];
+                        entry.Events = new List<AnimationGroup.Entry.Event>();
                         for (int k = 0; k < eventCount; k++)
                         {
                             // create
-                            var eevent = new AnimationGroup.Entry.Event();
-                            entry.Events[k] = eevent;
-                            // read
-                            eevent.KeyTime = br.ReadUInt32();
-                            eevent.Type = br.ReadUInt32();
-                            eevent.UnkUInt01 = br.ReadUInt32();
-                            eevent.UnkUInt02 = br.ReadUInt32();
+                            entry.Events.Add(new AnimationGroup.Entry.Event() {
+                                KeyTime = br.ReadUInt32(),
+                                Type = br.ReadUInt32(),
+                                UnkUInt01 = br.ReadUInt32(),
+                                UnkUInt02 = br.ReadUInt32()
+                            });
                         }
                         var WalkGraphPointCount = br.ReadUInt32();
-                        entry.WalkPoints = new System.Windows.Point[WalkGraphPointCount];
+                        entry.WalkPoints = new List<AnimationGroup.Entry.Point>();
                         entry.WalkingLength = br.ReadSingle();
                         for (int k = 0; k < WalkGraphPointCount; k++)
                         {
-                            entry.WalkPoints[k] = new System.Windows.Point(br.ReadSingle(), br.ReadSingle());
+                            // create
+                            entry.WalkPoints.Add(new AnimationGroup.Entry.Point()
+                            {
+                                X = br.ReadSingle(),
+                                Y = br.ReadSingle()
+                            });
                         }
                     }
                 }
@@ -206,9 +244,121 @@ namespace JMXFileEditor.Silkroad.Data
         }
         public void Save(string Path)
         {
+            // Override file structure
+            using (BinaryWriter bw = new BinaryWriter(new FileStream(Path, FileMode.Create, FileAccess.Write)))
+            {
+                bw.Write(Header);
+                // Pointers are calculated always before saving for safety
+                UpdatePointers();
+                bw.Write(PointerMaterial);
+                bw.Write(PointerMesh);
+                bw.Write(PointerSkeleton);
+                bw.Write(PointerAnimation);
+                bw.Write(PointerMeshGroup);
+                bw.Write(PointerAnimationGroup);
+                bw.Write(PointerSoundEffect);
+                bw.Write(PointerBoundingBox);
+                // Flags
+                bw.Write(FlagUInt01);
+                bw.Write(FlagUInt02);
+                bw.Write(FlagUInt03);
+                bw.Write(FlagUInt04);
+                bw.Write(FlagUInt05);
+                // Details
+                bw.Write((uint)ResourceType);
+                bw.Write(Name.Length);
+                bw.Write(Name);
+                bw.Write(UnkByteArray01);
 
-            // Pointers are calculated on saving always for safety
-            UpdatePointers();
+                // Pointer.BoundingBox
+                bw.Write(RootMesh.Length);
+                bw.Write(RootMesh);
+                bw.Write(BoundingBox01);
+                bw.Write(BoundingBox02);
+                bw.Write(ExtraBoundingData.Length > 0);
+                if (ExtraBoundingData.Length > 0)
+                    bw.Write(ExtraBoundingData);
+
+                // Pointer.Material
+                bw.Write(Materials.Count);
+                for (int i = 0; i < Materials.Count; i++)
+                {
+                    bw.Write(Materials[i].Index);
+                    bw.Write(Materials[i].Path.Length);
+                    bw.Write(Materials[i].Path);
+                }
+
+                // Pointer.Mesh
+                bw.Write(Meshes.Count);
+                for (int i = 0; i < Meshes.Count; i++)
+                {
+                    bw.Write(Meshes[i].Path.Length);
+                    bw.Write(Meshes[i].Path);
+                    bw.Write(Meshes[i].UnkUInt01);
+                }
+
+                // Pointer.Animation
+                bw.Write(UnkUInt01);
+                bw.Write(UnkUInt02);
+                bw.Write(Animations.Count);
+                for (int i = 0; i < Animations.Count; i++)
+                {
+                    bw.Write(Animations[i].Path.Length);
+                    bw.Write(Animations[i].Path);
+                }
+
+                // Pointer.Skeleton
+                bw.Write(Skeletons.Count);
+                for (int i = 0; i < Skeletons.Count; i++)
+                {
+                    bw.Write(Skeletons[i].Path.Length);
+                    bw.Write(Skeletons[i].Path);
+                    bw.Write(Skeletons[i].ExtraData.Length);
+                    bw.Write(Skeletons[i].ExtraData);
+                }
+
+                // Pointer.MeshGroup
+                bw.Write(MeshGroups.Count);
+                for (int i = 0; i < MeshGroups.Count; i++)
+                {
+                    bw.Write(MeshGroups[i].Name.Length);
+                    bw.Write(MeshGroups[i].Name);
+                    bw.Write(MeshGroups[i].FileIndexes.Length);
+                    bw.Write(MeshGroups[i].FileIndexes);
+                }
+
+                // Pointer.AnimationGroup
+                bw.Write(AnimationGroups.Count);
+                for (int i = 0; i < AnimationGroups.Count; i++)
+                {
+                    bw.Write(AnimationGroups[i].Name.Length);
+                    bw.Write(AnimationGroups[i].Name);
+                    bw.Write(AnimationGroups[i].Entries.Count);
+                    for (int j = 0; j < AnimationGroups[i].Entries.Count; j++)
+                    {
+                        bw.Write((uint)AnimationGroups[i].Entries[j].Type);
+                        bw.Write(AnimationGroups[i].Entries[j].FileIndex);
+                        bw.Write(AnimationGroups[i].Entries[j].Events.Count);
+                        for (int k = 0; k < AnimationGroups[i].Entries[j].Events.Count; k++)
+                        {
+                            bw.Write(AnimationGroups[i].Entries[j].Events[k].KeyTime);
+                            bw.Write(AnimationGroups[i].Entries[j].Events[k].Type);
+                            bw.Write(AnimationGroups[i].Entries[j].Events[k].UnkUInt01);
+                            bw.Write(AnimationGroups[i].Entries[j].Events[k].UnkUInt02);
+                        }
+                        bw.Write(AnimationGroups[i].Entries[j].WalkPoints.Count);
+                        bw.Write(AnimationGroups[i].Entries[j].WalkingLength);
+                        for (int k = 0; k < AnimationGroups[i].Entries[j].WalkPoints.Count; k++)
+                        {
+                            bw.Write(AnimationGroups[i].Entries[j].WalkPoints[k].X);
+                            bw.Write(AnimationGroups[i].Entries[j].WalkPoints[k].Y);
+                        }
+                    }
+                }
+
+                // Pointer.SoundEffect
+                bw.Write(SoundEffectUndecodedBytes);
+            }
         }
         #endregion
 
@@ -240,13 +390,13 @@ namespace JMXFileEditor.Silkroad.Data
         public class AnimationGroup
         {
             public string Name { get; set; } = string.Empty;
-            public Entry[] Entries { get; set; }
+            public List<Entry> Entries { get; set; }
             public class Entry
             {
                 public ResourceAnimationType Type { get; set; }
                 public uint FileIndex { get; set; }
-                public Event[] Events { get; set; }
-                public System.Windows.Point[] WalkPoints { get; set; }
+                public List<Event> Events { get; set; }
+                public List<Point> WalkPoints { get; set; }
                 public float WalkingLength { get; set; }
 
                 public class Event
@@ -255,6 +405,11 @@ namespace JMXFileEditor.Silkroad.Data
                     public uint Type { get; set; }
                     public uint UnkUInt01 { get; set; }
                     public uint UnkUInt02 { get; set; }
+                }
+                public class Point
+                {
+                    public float X { get; set; }
+                    public float Y { get; set; }
                 }
             }
         }

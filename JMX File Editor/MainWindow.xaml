@@ -8,7 +8,8 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         Width="480" Height="600"
-        Title="{Binding Title}">
+        Title="{Binding Title}"
+        Icon="Resources/Images/Logo.ico">
     <!-- Main Layout -->
     <Grid Background="{StaticResource BackgroundMainBrush}">
         <!-- Menu & File viewer -->

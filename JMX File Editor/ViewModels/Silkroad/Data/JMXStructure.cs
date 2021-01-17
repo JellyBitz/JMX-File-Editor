@@ -100,7 +100,7 @@ namespace JMXFileEditor.ViewModels
                         nodeClass.Childs.Add(new JMXAttribute("FileIndex", animationGroupEntry.FileIndex));
                         nodeClass.Childs.Add(new JMXStructure("Events", typeof(JMXVRES_0109.AnimationGroup.Entry.Event)));
                         nodeClass.Childs.Add(new JMXAttribute("WalkingLength", animationGroupEntry.WalkingLength));
-                        nodeClass.Childs.Add(new JMXStructure("WalkPoints", typeof(System.Windows.Point)));
+                        nodeClass.Childs.Add(new JMXStructure("WalkPoints", typeof(JMXVRES_0109.AnimationGroup.Entry.Point)));
                     }
                     else if (ChildType == typeof(JMXVRES_0109.AnimationGroup.Entry.Event))
                     {
@@ -110,9 +110,9 @@ namespace JMXFileEditor.ViewModels
                         nodeClass.Childs.Add(new JMXAttribute("UnkUInt01", animationGroupEntryEvent.UnkUInt01));
                         nodeClass.Childs.Add(new JMXAttribute("UnkUInt02", animationGroupEntryEvent.UnkUInt02));
                     }
-                    else if (ChildType == typeof(System.Windows.Point))
+                    else if (ChildType == typeof(JMXVRES_0109.AnimationGroup.Entry.Point))
                     {
-                        var animationGroupEntryEventPoint = new System.Windows.Point();
+                        var animationGroupEntryEventPoint = new JMXVRES_0109.AnimationGroup.Entry.Point();
                         nodeClass.Childs.Add(new JMXAttribute("X", animationGroupEntryEventPoint.X));
                         nodeClass.Childs.Add(new JMXAttribute("Y", animationGroupEntryEventPoint.Y));
                     }
@@ -158,7 +158,7 @@ namespace JMXFileEditor.ViewModels
                 file.Name = (string)((JMXAttribute)Childs[15]).Value;
                 var nodeChilds = ((JMXStructure)Childs[16]).Childs;
                 file.UnkByteArray01 = new byte[nodeChilds.Count];
-                for (int i = 0; i < file.UnkByteArray01.Length; i++)
+                for (int i = 0; i < nodeChilds.Count; i++)
                 {
                     file.UnkByteArray01[i] = (byte)((JMXAttribute)nodeChilds[i]).Value;
                 }
@@ -167,19 +167,19 @@ namespace JMXFileEditor.ViewModels
                 file.RootMesh = (string)((JMXAttribute)Childs[17]).Value;
                 nodeChilds = ((JMXStructure)Childs[18]).Childs;
                 file.BoundingBox01 = new float[nodeChilds.Count];
-                for (int i = 0; i < file.BoundingBox01.Length; i++)
+                for (int i = 0; i < nodeChilds.Count; i++)
                 {
                     file.BoundingBox01[i] = (float)((JMXAttribute)nodeChilds[i]).Value;
                 }
                 nodeChilds = ((JMXStructure)Childs[19]).Childs;
                 file.BoundingBox02 = new float[nodeChilds.Count];
-                for (int i = 0; i < file.BoundingBox02.Length; i++)
+                for (int i = 0; i < nodeChilds.Count; i++)
                 {
                     file.BoundingBox02[i] = (float)((JMXAttribute)nodeChilds[i]).Value;
                 }
                 nodeChilds = ((JMXStructure)Childs[20]).Childs;
                 file.ExtraBoundingData = new byte[nodeChilds.Count];
-                for (int i = 0; i < file.ExtraBoundingData.Length; i++)
+                for (int i = 0; i < nodeChilds.Count; i++)
                 {
                     file.ExtraBoundingData[i] = (byte)((JMXAttribute)nodeChilds[i]).Value;
                 }
@@ -227,12 +227,106 @@ namespace JMXFileEditor.ViewModels
                     animation.Path = (string)((JMXAttribute)nodeClass[0]).Value;
                 }
 
-                // TO BE CONTINUED :P
+                // Pointer.Skeleton
+                nodeChilds = ((JMXStructure)Childs[26]).Childs;
+                file.Skeletons = new List<JMXVRES_0109.Skeleton>(nodeChilds.Count);
+                for (int i = 0; i < nodeChilds.Count; i++)
+                {
+                    // Create
+                    var skeleton = new JMXVRES_0109.Skeleton();
+                    file.Skeletons.Add(skeleton);
+                    // Copy
+                    var nodeClass = ((JMXStructure)nodeChilds[i]).Childs;
+                    skeleton.Path = (string)((JMXAttribute)nodeClass[0]).Value;
+                    var _nodeChilds = ((JMXStructure)nodeClass[1]).Childs;
+                    skeleton.ExtraData = new byte[_nodeChilds.Count];
+                    for (int j = 0; j < _nodeChilds.Count; j++)
+                    {
+                        skeleton.ExtraData[j] = (byte)((JMXAttribute)_nodeChilds[i]).Value;
+                    }
+                }
 
+                // Pointer.MeshGroup
+                nodeChilds = ((JMXStructure)Childs[27]).Childs;
+                file.MeshGroups = new List<JMXVRES_0109.MeshGroup>(nodeChilds.Count);
+                for (int i = 0; i < nodeChilds.Count; i++)
+                {
+                    // Create
+                    var meshGroup = new JMXVRES_0109.MeshGroup();
+                    file.MeshGroups.Add(meshGroup);
+                    // Copy
+                    var nodeClass = ((JMXStructure)nodeChilds[i]).Childs;
+                    meshGroup.Name = (string)((JMXAttribute)nodeClass[0]).Value;
+                    var _nodeChilds = ((JMXStructure)nodeClass[1]).Childs;
+                    meshGroup.FileIndexes = new uint[_nodeChilds.Count];
+                    for (int j = 0; j < _nodeChilds.Count; j++)
+                    {
+                        meshGroup.FileIndexes[j] = (uint)((JMXAttribute)_nodeChilds[i]).Value;
+                    }
+                }
+
+                // Pointer.AnimationGroups
+                nodeChilds = ((JMXStructure)Childs[28]).Childs;
+                file.AnimationGroups = new List<JMXVRES_0109.AnimationGroup>(nodeChilds.Count);
+                for (int i = 0; i < nodeChilds.Count; i++)
+                {
+                    // Create
+                    var animationGroup = new JMXVRES_0109.AnimationGroup();
+                    file.AnimationGroups.Add(animationGroup);
+                    // Copy
+                    var nodeClass = ((JMXStructure)nodeChilds[i]).Childs;
+                    animationGroup.Name = (string)((JMXAttribute)nodeClass[0]).Value;
+                    var _nodeChilds = ((JMXStructure)nodeClass[1]).Childs;
+                    animationGroup.Entries = new List<JMXVRES_0109.AnimationGroup.Entry>();;
+                    for (int j = 0; j < _nodeChilds.Count; j++)
+                    {
+                        // Create
+                        var entry = new JMXVRES_0109.AnimationGroup.Entry();
+                        animationGroup.Entries.Add(entry);
+                        // Copy
+                        var _nodeClass = ((JMXStructure)_nodeChilds[j]).Childs;
+                        entry.Type = (ResourceAnimationType)((JMXAttribute)_nodeClass[0]).Value;
+                        entry.FileIndex = (uint)((JMXAttribute)_nodeClass[1]).Value;
+                        var __nodeChilds = ((JMXStructure)_nodeClass[2]).Childs;
+                        entry.Events = new List<JMXVRES_0109.AnimationGroup.Entry.Event>();
+                        for (int k = 0; k < __nodeChilds.Count; k++)
+                        {
+                            // Create
+                            var _event = new JMXVRES_0109.AnimationGroup.Entry.Event();
+                            entry.Events.Add(_event);
+                            // Copy
+                            var __nodeClass = ((JMXStructure)__nodeChilds[k]).Childs;
+                            _event.KeyTime = (uint)((JMXAttribute)__nodeClass[0]).Value;
+                            _event.Type = (uint)((JMXAttribute)__nodeClass[1]).Value;
+                            _event.UnkUInt01 = (uint)((JMXAttribute)__nodeClass[2]).Value;
+                            _event.UnkUInt02 = (uint)((JMXAttribute)__nodeClass[3]).Value;
+                        }
+                        entry.WalkingLength = (float)((JMXAttribute)_nodeClass[3]).Value;
+                        __nodeChilds = ((JMXStructure)_nodeClass[4]).Childs;
+                        entry.WalkPoints = new List<JMXVRES_0109.AnimationGroup.Entry.Point>();
+                        for (int k = 0; k < __nodeChilds.Count; k++)
+                        {
+                            // Create
+                            var point = new JMXVRES_0109.AnimationGroup.Entry.Point();
+                            entry.WalkPoints.Add(point);
+                            // Copy
+                            var __nodeClass = ((JMXStructure)__nodeChilds[k]).Childs;
+                            point.X = (float)((JMXAttribute)__nodeClass[0]).Value;
+                            point.Y = (float)((JMXAttribute)__nodeClass[1]).Value;
+                        }
+                    }
+                }
+
+                // Pointer.SoundEffect
+                nodeChilds = ((JMXStructure)Childs[29]).Childs;
+                file.SoundEffectUndecodedBytes = new byte[nodeChilds.Count];
+                for (int i = 0; i < nodeChilds.Count; i++)
+                {
+                    file.SoundEffectUndecodedBytes[i] = (byte)((JMXAttribute)nodeChilds[i]).Value;
+                }
 
                 // Return result
-                throw new NotImplementedException();
-                //return file;
+                return file;
             }
             return null;
         }
@@ -354,14 +448,14 @@ namespace JMXFileEditor.ViewModels
                     nodeClassLevel1.Childs.Add(new JMXAttribute("Name", jmxvres_0109.AnimationGroups[i].Name));
                     var nodeLevel2 = new JMXStructure("Entries",typeof(JMXVRES_0109.AnimationGroup.Entry));
                     nodeClassLevel1.Childs.Add(nodeLevel2);
-                    for (int j = 0; j < jmxvres_0109.AnimationGroups[i].Entries.Length; j++)
+                    for (int j = 0; j < jmxvres_0109.AnimationGroups[i].Entries.Count; j++)
                     {
                         var nodeClassLevel2 = new JMXStructure("[" + j + "]");
                         nodeClassLevel2.Childs.Add(new JMXAttribute("Type", jmxvres_0109.AnimationGroups[i].Entries[j].Type));
                         nodeClassLevel2.Childs.Add(new JMXAttribute("FileIndex", jmxvres_0109.AnimationGroups[i].Entries[j].FileIndex));
                         var nodeLevel3 = new JMXStructure("Events",typeof(JMXVRES_0109.AnimationGroup.Entry.Event));
                         nodeClassLevel2.Childs.Add(nodeLevel3);
-                        for (int k = 0; k < jmxvres_0109.AnimationGroups[i].Entries[j].Events.Length; k++)
+                        for (int k = 0; k < jmxvres_0109.AnimationGroups[i].Entries[j].Events.Count; k++)
                         {
                             var nodeClassLevel3 = new JMXStructure("[" + k + "]");
                             nodeClassLevel3.Childs.Add(new JMXAttribute("KeyTime", jmxvres_0109.AnimationGroups[i].Entries[j].Events[k].KeyTime));
@@ -371,9 +465,9 @@ namespace JMXFileEditor.ViewModels
                             nodeLevel3.Childs.Add(nodeClassLevel3);
                         }
                         nodeClassLevel2.Childs.Add(new JMXAttribute("WalkingLength", jmxvres_0109.AnimationGroups[i].Entries[j].WalkingLength));
-                        nodeLevel3 = new JMXStructure("WalkPoints",typeof(System.Windows.Point));
+                        nodeLevel3 = new JMXStructure("WalkPoints",typeof(JMXVRES_0109.AnimationGroup.Entry.Point));
                         nodeClassLevel2.Childs.Add(nodeLevel3);
-                        for (int k = 0; k < jmxvres_0109.AnimationGroups[i].Entries[j].WalkPoints.Length; k++)
+                        for (int k = 0; k < jmxvres_0109.AnimationGroups[i].Entries[j].WalkPoints.Count; k++)
                         {
                             var nodeClassLevel3 = new JMXStructure("[" + k + "]");
                             nodeClassLevel3.Childs.Add(new JMXAttribute("X", jmxvres_0109.AnimationGroups[i].Entries[j].WalkPoints[k].X));

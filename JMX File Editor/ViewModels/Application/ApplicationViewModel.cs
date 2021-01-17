@@ -161,7 +161,7 @@ namespace JMXFileEditor.ViewModels
                             file = new JMXVRES_0109();
                             break;
                         default:
-                            throw new FileFormatException("JMX File not supported.");
+                            throw new FileFormatException("JMX Header not found! File not supported.");
                     }
                     // Load it
                     fs.Seek(0, SeekOrigin.Begin);

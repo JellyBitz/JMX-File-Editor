@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Images\Logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -66,6 +69,7 @@
     <Compile Include="Silkroad\Data\ResourceAnimationType.cs" />
     <Compile Include="Silkroad\Data\ResourceType.cs" />
     <Compile Include="Utility\BinaryReaderHelpers.cs" />
+    <Compile Include="Utility\BinaryWriterHelpers.cs" />
     <Compile Include="Utility\ByteArrayHelpers.cs" />
     <Compile Include="Utility\ExpressionHelpers.cs" />
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
@@ -137,6 +141,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Images\Logo.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
