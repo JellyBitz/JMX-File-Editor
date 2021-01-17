@@ -1,7 +1,6 @@
 ﻿using JMXFileEditor.ViewModels;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace JMXFileEditor
 {
@@ -23,33 +22,42 @@ namespace JMXFileEditor
         #endregion
 
         #region Interface implementation
-        public string OpenFileDialog(string Title, string Filter = "")
+        public string OpenFileDialog(string Title, string Filter)
         {
             // Build dialog to search the file path
-            var openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            openFileDialog.Title = Title;
-            openFileDialog.Filter = Filter;
-            if (openFileDialog.ShowDialog(this) == true)
+            var fileBrowserDialog = new Microsoft.Win32.OpenFileDialog();
+            fileBrowserDialog.Title = Title;
+            fileBrowserDialog.Filter = Filter;
+            if (fileBrowserDialog.ShowDialog(this) == true)
             {
-                return openFileDialog.FileName;
+                return fileBrowserDialog.FileName;
             }
-            return "";
+            return string.Empty;
         }
-        public void ShowMessage(string Title,string Message)
+
+        public string OpenFolderDialog(string Title, ref string DefaultFilename)
+        {
+            // Build dialog to search folder path
+            var folderBrowserDialog = new Microsoft.Win32.OpenFileDialog();
+            folderBrowserDialog.Title = Title;
+            // setup to fake a folder browser
+            folderBrowserDialog.ValidateNames = !string.IsNullOrEmpty(DefaultFilename);
+            folderBrowserDialog.CheckFileExists = false;
+            folderBrowserDialog.CheckPathExists = true;
+            folderBrowserDialog.FileName = DefaultFilename;
+            if (folderBrowserDialog.ShowDialog(this) == true)
+            {
+                var folderPath = Path.GetDirectoryName(folderBrowserDialog.FileName);
+                DefaultFilename = folderBrowserDialog.FileName.Replace(folderPath+"\\", "");
+                return folderPath;
+            }
+            DefaultFilename = string.Empty;
+            return string.Empty;
+        }
+
+        public void ShowMessage(string Title, string Message)
         {
             MessageBox.Show(this, Message, Title, MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-        #endregion
-
-        #region UI stuffs
-        private void TreeViewItem_PreviewMouseRightButtonDown(object sender, MouseEventArgs e)
-        {
-            TreeViewItem item = sender as TreeViewItem;
-            if (item != null)
-            {
-                item.Focus();
-                e.Handled = true;
-            }
         }
         #endregion
     }

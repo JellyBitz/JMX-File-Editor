@@ -142,10 +142,11 @@ namespace JMXFileEditor.ViewModels
         public IJMXFile ToJMXFile()
         {
             // Read format
-            if (this.Name == JMXVRES_0109.FileHeader)
+            string header = (string)((JMXAttribute)Childs[0]).Value;
+            if (header == JMXVRES_0109.FileHeader)
             {
                 JMXVRES_0109 file = new JMXVRES_0109();
-                file.Header = (string)((JMXAttribute)Childs[0]).Value;
+                file.Header = header;
                 // Pointers will be calculated in the process
                 // Flags
                 file.FlagUInt01 = (uint)((JMXAttribute)Childs[9]).Value;
@@ -486,8 +487,9 @@ namespace JMXFileEditor.ViewModels
                     nodeLevel1.Childs.Add(new JMXAttribute("[" + i + "]", jmxvres_0109.SoundEffectUndecodedBytes[i]));
                 }
                 root.Childs.Add(nodeLevel1);
+                return root;
             }
-            return root;
+            return null;
         }
         #endregion
     }

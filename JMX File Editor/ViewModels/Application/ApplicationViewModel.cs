@@ -12,7 +12,7 @@ namespace JMXFileEditor.ViewModels
     /// </summary>
     public class ApplicationViewModel : BaseViewModel
     {
-        #region Private Members 
+        #region Private Members
         private JMXStructure m_JMXFileProperties;
         private JMXProperty m_JMXFileSelectedProperty;
         private string m_FilePath;
@@ -104,7 +104,7 @@ namespace JMXFileEditor.ViewModels
                     var jmxFile = LoadJMXFile(path);
                     // Create and set nodes
                     FileProperties = JMXStructure.Create(jmxFile);
-                    // Set current path being used
+                    // Set current file path used
                     FilePath = path;
                 }
                 catch (Exception ex)
@@ -135,7 +135,35 @@ namespace JMXFileEditor.ViewModels
                 }
             });
             CommandSaveAsFile = new RelayCommand(() => {
-                
+                // Just in case
+                if (IsFileOpen)
+                {
+                    // Try to save the file
+                    try
+                    {
+                        // Converts to JMX File
+                        var jmxFile = FileProperties.ToJMXFile();
+
+                        // Ask for file path and avoid empty result / canceled operation
+                        var filename = (FileProperties.Name != string.Empty ? FileProperties.Name : jmxFile.Format) + "." + jmxFile.Extension;
+                        var folderPath = Window.OpenFolderDialog("Save...", ref filename);
+                        // check paths are correct
+                        if (folderPath == string.Empty)
+                            return;
+                        // Search for a path if is not specified
+                        var filePath = Path.Combine(folderPath, filename);
+                        // Save it
+                        jmxFile.Save(filePath);
+                        // Update values changed in the process
+                        FileProperties = JMXStructure.Create(jmxFile);
+                        FilePath = filePath;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Show details to user
+                        Window.ShowMessage("File Error", ex.Message);
+                    }
+                }
             });
             #endregion
         }

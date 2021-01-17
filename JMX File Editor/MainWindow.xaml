@@ -32,10 +32,11 @@
                               Header="Open..."
                               Command="{Binding CommandOpenFile}" />
                     <MenuItem Style="{StaticResource MenuItemLevel2NewStyle}"
-                              Header="Save" IsEnabled="{Binding IsFileOpen}"
+                              Header="Save"
+                              IsEnabled="{Binding IsFileOpen}"
                               Command="{Binding CommandSaveFile}" />
                     <MenuItem Style="{StaticResource MenuItemLevel2NewStyle}"
-                              Header="Save As..."
+                              Header="Save..."
                               IsEnabled="{Binding IsFileOpen}"
                               Command="{Binding CommandSaveAsFile}" />
                 </MenuItem>
@@ -110,7 +111,6 @@
                             <!-- Show Menu if element size can be edited -->
                             <StackPanel.ContextMenu>
                                 <ContextMenu StaysOpen="True"
-                                             x:Name="aaaaa"
                                              Visibility="{Binding IsEditable,Converter={local:ValueToVisibilityConverter}}">
                                     <MenuItem Header="Add"
                                               Command="{Binding CommandAddChild}"/>
@@ -141,7 +141,7 @@
                             <TextBlock Text=" : "
                                        VerticalAlignment="Center" />
                             <TextBox Style="{StaticResource TooltipErrorTextBoxStyle}"
-                                     Text="{Binding Path=Value,ValidatesOnExceptions=True}"
+                                     Text="{Binding Path=Value,ValidatesOnExceptions=True,UpdateSourceTrigger=PropertyChanged}"
                                      MinWidth="100"
                                      TextAlignment="Center"
                                      IsEnabled="{Binding IsEditable}">
