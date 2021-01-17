@@ -1,5 +1,4 @@
 ﻿using JMXFileEditor.Utility;
-using System;
 using System.Collections.Generic;
 using System.IO;
 namespace JMXFileEditor.Silkroad.Data
@@ -247,7 +246,7 @@ namespace JMXFileEditor.Silkroad.Data
             // Override file structure
             using (BinaryWriter bw = new BinaryWriter(new FileStream(Path, FileMode.Create, FileAccess.Write)))
             {
-                bw.Write(Header);
+                bw.Write(Header.ToCharArray());
                 // Pointers are calculated always before saving for safety
                 UpdatePointers();
                 bw.Write(PointerMaterial);
@@ -267,12 +266,12 @@ namespace JMXFileEditor.Silkroad.Data
                 // Details
                 bw.Write((uint)ResourceType);
                 bw.Write(Name.Length);
-                bw.Write(Name);
+                bw.Write(Name.ToCharArray());
                 bw.Write(UnkByteArray01);
 
                 // Pointer.BoundingBox
                 bw.Write(RootMesh.Length);
-                bw.Write(RootMesh);
+                bw.Write(RootMesh.ToCharArray());
                 bw.Write(BoundingBox01);
                 bw.Write(BoundingBox02);
                 bw.Write(ExtraBoundingData.Length > 0);
@@ -285,7 +284,7 @@ namespace JMXFileEditor.Silkroad.Data
                 {
                     bw.Write(Materials[i].Index);
                     bw.Write(Materials[i].Path.Length);
-                    bw.Write(Materials[i].Path);
+                    bw.Write(Materials[i].Path.ToCharArray());
                 }
 
                 // Pointer.Mesh
@@ -293,7 +292,7 @@ namespace JMXFileEditor.Silkroad.Data
                 for (int i = 0; i < Meshes.Count; i++)
                 {
                     bw.Write(Meshes[i].Path.Length);
-                    bw.Write(Meshes[i].Path);
+                    bw.Write(Meshes[i].Path.ToCharArray());
                     bw.Write(Meshes[i].UnkUInt01);
                 }
 
@@ -304,7 +303,7 @@ namespace JMXFileEditor.Silkroad.Data
                 for (int i = 0; i < Animations.Count; i++)
                 {
                     bw.Write(Animations[i].Path.Length);
-                    bw.Write(Animations[i].Path);
+                    bw.Write(Animations[i].Path.ToCharArray());
                 }
 
                 // Pointer.Skeleton
@@ -312,7 +311,7 @@ namespace JMXFileEditor.Silkroad.Data
                 for (int i = 0; i < Skeletons.Count; i++)
                 {
                     bw.Write(Skeletons[i].Path.Length);
-                    bw.Write(Skeletons[i].Path);
+                    bw.Write(Skeletons[i].Path.ToCharArray());
                     bw.Write(Skeletons[i].ExtraData.Length);
                     bw.Write(Skeletons[i].ExtraData);
                 }
@@ -322,7 +321,7 @@ namespace JMXFileEditor.Silkroad.Data
                 for (int i = 0; i < MeshGroups.Count; i++)
                 {
                     bw.Write(MeshGroups[i].Name.Length);
-                    bw.Write(MeshGroups[i].Name);
+                    bw.Write(MeshGroups[i].Name.ToCharArray());
                     bw.Write(MeshGroups[i].FileIndexes.Length);
                     bw.Write(MeshGroups[i].FileIndexes);
                 }
@@ -332,7 +331,7 @@ namespace JMXFileEditor.Silkroad.Data
                 for (int i = 0; i < AnimationGroups.Count; i++)
                 {
                     bw.Write(AnimationGroups[i].Name.Length);
-                    bw.Write(AnimationGroups[i].Name);
+                    bw.Write(AnimationGroups[i].Name.ToCharArray());
                     bw.Write(AnimationGroups[i].Entries.Count);
                     for (int j = 0; j < AnimationGroups[i].Entries.Count; j++)
                     {
