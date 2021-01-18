@@ -144,8 +144,20 @@
                                      Text="{Binding Path=Value,ValidatesOnExceptions=True,UpdateSourceTrigger=PropertyChanged}"
                                      MinWidth="100"
                                      TextAlignment="Center"
-                                     IsEnabled="{Binding IsEditable}">
-                            </TextBox>
+                                     IsEnabled="{Binding IsEditable}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                    <!-- Binding JMXOption type -->
+                    <DataTemplate DataType="{x:Type VM:JMXOption}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding Name}" />
+                            <TextBlock Text=" : "
+                                       VerticalAlignment="Center" />
+                            <ComboBox ItemsSource="{Binding Options}"
+                                      SelectedValue="{Binding Value}"
+                                      MinWidth="100"
+                                      IsEnabled="{Binding IsEditable}"/>
                         </StackPanel>
                     </DataTemplate>
                 </TreeView.Resources>

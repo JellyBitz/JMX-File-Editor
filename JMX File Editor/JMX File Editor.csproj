@@ -80,6 +80,7 @@
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="ViewModels\Base\RelayParameterizedCommand.cs" />
     <Compile Include="ViewModels\Silkroad\Data\JMXAttribute.cs" />
+    <Compile Include="ViewModels\Silkroad\Data\JMXOption.cs" />
     <Compile Include="ViewModels\Silkroad\Data\JMXProperty.cs" />
     <Compile Include="ViewModels\Silkroad\Data\JMXStructure.cs" />
     <Page Include="MainWindow.xaml">

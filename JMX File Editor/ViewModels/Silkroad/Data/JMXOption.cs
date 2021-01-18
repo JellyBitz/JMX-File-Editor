@@ -1,9 +1,11 @@
-﻿namespace JMXFileEditor.ViewModels
+﻿using System;
+using System.Collections.Generic;
+namespace JMXFileEditor.ViewModels
 {
     /// <summary>
-    /// ViewModel representing a variable in the structure
+    /// ViewModel representing a strict variable in the structure
     /// </summary>
-    public class JMXAttribute : JMXProperty
+    public class JMXOption : JMXProperty
     {
         #region Private Members
         private object m_Value;
@@ -18,32 +20,37 @@
             get { return m_Value; }
             set
             {
-                // Ignore sets if cannot be edited
-                if (IsEditable)
+                // Check if value can be edited and is one of the options
+                if (IsEditable && Options.Contains(Value))
                 {
                     // Make sure the new value can be converted to the original value
                     var valueType = Value.GetType();
                     if (valueType.IsEnum)
                     {
-                        m_Value = System.Enum.Parse(valueType, value.ToString(), true);
+                        m_Value = Enum.Parse(valueType, value.ToString(), true);
                     }
                     else
                     {
-                        m_Value = System.Convert.ChangeType(value, valueType);
+                        m_Value = Convert.ChangeType(value, valueType);
                     }
                     OnPropertyChanged(nameof(Value));
                 }
             }
         }
+        /// <summary>
+        /// All possibilities the value can have
+        /// </summary>
+        public List<object> Options { get; }
         #endregion
 
         #region Constructor
         /// <summary>
         /// Creates a child node view model
         /// </summary>
-        public JMXAttribute(string Name, object Value, bool IsEditable = true) : base(Name, IsEditable)
+        public JMXOption(string Name, object Value, List<object> Options,bool IsEditable = true) : base(Name, IsEditable)
         {
             m_Value = Value;
+            this.Options = Options;
         }
         #endregion
     }

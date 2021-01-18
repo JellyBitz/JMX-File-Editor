@@ -3,9 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-
+using System.Linq;
 namespace JMXFileEditor.ViewModels
 {
+    /// <summary>
+    /// ViewModel representing a data structure which contains more properties
+    /// </summary>
     public class JMXStructure : JMXProperty
     {
         #region Public Properties
@@ -360,7 +363,7 @@ namespace JMXFileEditor.ViewModels
                 root.Childs.Add(new JMXAttribute("Flags.UInt04", jmxvres_0109.FlagUInt04));
                 root.Childs.Add(new JMXAttribute("Flags.UInt05", jmxvres_0109.FlagUInt05));
                 // Details
-                root.Childs.Add(new JMXAttribute("ResourceType", jmxvres_0109.ResourceType));
+                root.Childs.Add(new JMXOption("ResourceType", jmxvres_0109.ResourceType, GetValues<object>(typeof(ResourceType))));
                 root.Childs.Add(new JMXAttribute("Name", jmxvres_0109.Name));
                 var nodeLevel1 = new JMXStructure("UnkByteArray01");
                 for (int i = 0; i < jmxvres_0109.UnkByteArray01.Length; i++)
@@ -452,7 +455,8 @@ namespace JMXFileEditor.ViewModels
                     for (int j = 0; j < jmxvres_0109.AnimationGroups[i].Entries.Count; j++)
                     {
                         var nodeClassLevel2 = new JMXStructure("[" + j + "]");
-                        nodeClassLevel2.Childs.Add(new JMXAttribute("Type", jmxvres_0109.AnimationGroups[i].Entries[j].Type));
+                        var options = Enum.GetValues(typeof(ResourceAnimationType));
+                        nodeClassLevel2.Childs.Add(new JMXOption("Type", jmxvres_0109.AnimationGroups[i].Entries[j].Type,GetValues<object>(typeof(ResourceAnimationType))));
                         nodeClassLevel2.Childs.Add(new JMXAttribute("FileIndex", jmxvres_0109.AnimationGroups[i].Entries[j].FileIndex));
                         var nodeLevel3 = new JMXStructure("Events",typeof(JMXVRES_0109.AnimationGroup.Entry.Event));
                         nodeClassLevel2.Childs.Add(nodeLevel3);
@@ -490,6 +494,16 @@ namespace JMXFileEditor.ViewModels
                 return root;
             }
             return null;
+        }
+        #endregion
+
+        #region Private Helpers
+        /// <summary>
+        /// Get all the values from the enum type specified as array list
+        /// </summary>
+        public static List<T> GetValues<T>(Type EnumType)
+        {
+            return Enum.GetValues(EnumType).Cast<T>().ToList();
         }
         #endregion
     }
