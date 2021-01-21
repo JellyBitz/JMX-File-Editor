@@ -17,7 +17,7 @@ namespace JMXFileEditor.Silkroad.Data
         public uint PointerAnimation { get; private set; }
         public uint PointerMeshGroup { get; private set; }
         public uint PointerAnimationGroup { get; private set; }
-        public uint PointerSoundEffect { get; private set; }
+        public uint PointerSystemMods { get; private set; }
         public uint PointerBoundingBox { get; private set; }
         public uint FlagUInt01 { get; set; }
         public uint FlagUInt02 { get; set; }
@@ -39,7 +39,9 @@ namespace JMXFileEditor.Silkroad.Data
         public List<Skeleton> Skeletons { get; set; }
         public List<MeshGroup> MeshGroups { get; set; }
         public List<AnimationGroup> AnimationGroups { get; set; }
-        public byte[] SoundEffectUndecodedBytes { get; set; }
+        public uint UnkUInt03 { get; private set; }
+        public List<SystemMod.Data> SystemMods { get; set; }
+        public byte[] SystemModsUndecodedBytes { get; set; }
         #endregion
 
         #region Public Methods
@@ -75,13 +77,13 @@ namespace JMXFileEditor.Silkroad.Data
             {
                 PointerAnimationGroup += (uint)((4 + MeshGroups[i].Name.Length) + (4 + MeshGroups[i].FileIndexes.Length * 4));
             }
-            PointerSoundEffect = PointerAnimationGroup + 4;
+            PointerSystemMods = PointerAnimationGroup + 4;
             for (int i = 0; i < AnimationGroups.Count; i++)
             {
-                PointerSoundEffect += (uint)((4 + AnimationGroups[i].Name.Length) + 4);
+                PointerSystemMods += (uint)((4 + AnimationGroups[i].Name.Length) + 4);
                 for (int j = 0; j < AnimationGroups[i].Entries.Count; j++)
                 {
-                    PointerSoundEffect += (uint)(4 + 4 + (4 + AnimationGroups[i].Entries[j].Events.Count * 16) + 4 + (4 + AnimationGroups[i].Entries[j].WalkPoints.Count * 8));
+                    PointerSystemMods += (uint)(4 + 4 + (4 + AnimationGroups[i].Entries[j].Events.Count * 16) + 4 + (4 + AnimationGroups[i].Entries[j].WalkPoints.Count * 8));
                 }
             }
         }
@@ -104,7 +106,7 @@ namespace JMXFileEditor.Silkroad.Data
                 PointerAnimation = br.ReadUInt32();
                 PointerMeshGroup = br.ReadUInt32();
                 PointerAnimationGroup = br.ReadUInt32();
-                PointerSoundEffect = br.ReadUInt32();
+                PointerSystemMods = br.ReadUInt32();
                 PointerBoundingBox = br.ReadUInt32();
                 // Flags
                 FlagUInt01 = br.ReadUInt32();
@@ -114,11 +116,11 @@ namespace JMXFileEditor.Silkroad.Data
                 FlagUInt05 = br.ReadUInt32();
                 // Details
                 ResourceType = (ResourceType)br.ReadUInt32();
-                Name = new string(br.ReadChars(br.ReadInt32()));
+                Name = br.ReadString32();
                 UnkByteArray01 = br.ReadBytes(48);
 
                 // Pointer.BoundingBox
-                RootMesh = new string(br.ReadChars(br.ReadInt32()));
+                RootMesh = br.ReadString32();
                 BoundingBox01 = br.ReadSingleArray(6);
                 BoundingBox02 = br.ReadSingleArray(6);
                 if (br.ReadUInt32() == 1)
@@ -134,8 +136,8 @@ namespace JMXFileEditor.Silkroad.Data
                     // create
                     Materials.Add(new Material() {
                         Index = br.ReadUInt32(),
-                        Path = new string(br.ReadChars(br.ReadInt32()))
-                    });
+                        Path = br.ReadString32()
+                });
                 }
 
                 // Pointer.Mesh
@@ -146,7 +148,7 @@ namespace JMXFileEditor.Silkroad.Data
                     // create
                     Meshes.Add(new Mesh()
                     {
-                        Path = new string(br.ReadChars(br.ReadInt32())),
+                        Path = br.ReadString32(),
                         UnkUInt01 = FlagUInt01 == 1 ? br.ReadUInt32() : 0
                     });
                 }
@@ -161,7 +163,7 @@ namespace JMXFileEditor.Silkroad.Data
                     // create
                     Animations.Add(new Animation()
                     {
-                        Path = new string(br.ReadChars(br.ReadInt32())),
+                        Path = br.ReadString32(),
                     });
                 }
 
@@ -173,7 +175,7 @@ namespace JMXFileEditor.Silkroad.Data
                     // create
                     Skeletons.Add(new Skeleton()
                     {
-                        Path = new string(br.ReadChars(br.ReadInt32())),
+                        Path = br.ReadString32(),
                         ExtraData = br.ReadBytes(br.ReadInt32())
                     });
                 }
@@ -185,7 +187,7 @@ namespace JMXFileEditor.Silkroad.Data
                 {
                     // create
                     MeshGroups.Add(new MeshGroup() {
-                        Name = new string(br.ReadChars(br.ReadInt32())),
+                        Name = br.ReadString32(),
                         FileIndexes = br.ReadUInt32Array(br.ReadInt32())
                     });
                 }
@@ -199,7 +201,7 @@ namespace JMXFileEditor.Silkroad.Data
                     var animationGroup = new AnimationGroup();
                     AnimationGroups.Add(animationGroup);
                     // read
-                    animationGroup.Name = new string(br.ReadChars(br.ReadInt32()));
+                    animationGroup.Name = br.ReadString32();
                     var animationEntryCount = br.ReadUInt32();
                     animationGroup.Entries = new List<AnimationGroup.Entry>();
                     for (int j = 0; j < animationEntryCount; j++)
@@ -237,8 +239,68 @@ namespace JMXFileEditor.Silkroad.Data
                     }
                 }
 
-                // Pointer.SoundEffect
-                SoundEffectUndecodedBytes = br.ReadBytes((int)(br.BaseStream.Length - br.BaseStream.Position));
+                // Pointer.SystemMod
+                UnkUInt03 = br.ReadUInt32();
+                var systemModsCount = br.ReadUInt32();
+                SystemMods = new List<SystemMod.Data>();
+                for (int i = 0; i < systemModsCount; i++)
+                {
+                    var type = (SystemModType)br.ReadUInt32();
+                    switch (type)
+                    {
+                        case SystemModType.SoundEffect:
+                            {
+                                var soundEffect = new SystemMod.SoundEffect(type);
+                                soundEffect.UnkUInt01 = br.ReadUInt32();
+                                soundEffect.GroupName = br.ReadString32();
+                                soundEffect.UnkUInt02 = br.ReadUInt32();
+                                soundEffect.UnkUInt03 = br.ReadUInt32();
+                                soundEffect.UnkUInt04 = br.ReadUInt32();
+                                soundEffect.UnkUInt05 = br.ReadUInt32();
+                                soundEffect.UnkUInt06 = br.ReadUInt32();
+                                soundEffect.UnkUInt07 = br.ReadUInt32();
+                                soundEffect.UnkUInt08 = br.ReadUInt32();
+                                soundEffect.UnkUInt09 = br.ReadUInt32();
+                                soundEffect.UnkUInt10 = br.ReadUInt32();
+                                soundEffect.UnkUInt11 = br.ReadUInt32();
+                                soundEffect.UnkUInt12 = br.ReadUInt32();
+                                soundEffect.UnkUInt13 = br.ReadUInt32();
+                                soundEffect.UnkUInt14 = br.ReadUInt32();
+                                soundEffect.UnkUInt15 = br.ReadUInt32();
+                                soundEffect.UnkUInt16 = br.ReadUInt32();
+                                soundEffect.UnkUInt17 = br.ReadUInt32();
+                                soundEffect.UnkUInt18 = br.ReadUInt32();
+                                soundEffect.UnkUInt19 = br.ReadUInt32();
+                                soundEffect.UnkUInt20 = br.ReadUInt32();
+                                soundEffect.UnkUInt21 = br.ReadUInt32();
+                                soundEffect.UnkUInt22 = br.ReadUInt32();
+                                soundEffect.Name = br.ReadString32();
+                                var sounds = br.ReadUInt32();
+                                soundEffect.Sounds = new List<SystemMod.SoundEffect.Sound>();
+                                for (int j = 0; j < sounds; j++)
+                                {
+                                    // create
+                                    soundEffect.Sounds.Add(new SystemMod.SoundEffect.Sound()
+                                    {
+                                        UnkUInt01 = br.ReadUInt32(),
+                                        Path = br.ReadString32(),
+                                        Time = br.ReadUInt32(),
+                                        Key = br.ReadString32()
+                                    });
+                                }
+                                // Add it
+                                SystemMods.Add(soundEffect);
+                            }
+                            break;
+                        default:
+                            // Restore cursor and stop reading
+                            br.BaseStream.Seek(-4, SeekOrigin.Current);
+                            break;
+                    }
+                }
+
+                // End reading undecoded bytes
+                SystemModsUndecodedBytes = br.ReadBytes((int)(br.BaseStream.Length - br.BaseStream.Position));
             }
         }
         public void Save(string Path)
@@ -255,7 +317,7 @@ namespace JMXFileEditor.Silkroad.Data
                 bw.Write(PointerAnimation);
                 bw.Write(PointerMeshGroup);
                 bw.Write(PointerAnimationGroup);
-                bw.Write(PointerSoundEffect);
+                bw.Write(PointerSystemMods);
                 bw.Write(PointerBoundingBox);
                 // Flags
                 bw.Write(FlagUInt01);
@@ -265,13 +327,11 @@ namespace JMXFileEditor.Silkroad.Data
                 bw.Write(FlagUInt05);
                 // Details
                 bw.Write((uint)ResourceType);
-                bw.Write(Name.Length);
-                bw.Write(Name.ToCharArray());
+                bw.WriteString32(Name);
                 bw.Write(UnkByteArray01);
 
                 // Pointer.BoundingBox
-                bw.Write(RootMesh.Length);
-                bw.Write(RootMesh.ToCharArray());
+                bw.WriteString32(RootMesh);
                 bw.Write(BoundingBox01);
                 bw.Write(BoundingBox02);
                 bw.Write(ExtraBoundingData.Length > 0);
@@ -283,16 +343,14 @@ namespace JMXFileEditor.Silkroad.Data
                 for (int i = 0; i < Materials.Count; i++)
                 {
                     bw.Write(Materials[i].Index);
-                    bw.Write(Materials[i].Path.Length);
-                    bw.Write(Materials[i].Path.ToCharArray());
+                    bw.WriteString32(Materials[i].Path);
                 }
 
                 // Pointer.Mesh
                 bw.Write(Meshes.Count);
                 for (int i = 0; i < Meshes.Count; i++)
                 {
-                    bw.Write(Meshes[i].Path.Length);
-                    bw.Write(Meshes[i].Path.ToCharArray());
+                    bw.WriteString32(Meshes[i].Path);
                     bw.Write(Meshes[i].UnkUInt01);
                 }
 
@@ -302,16 +360,14 @@ namespace JMXFileEditor.Silkroad.Data
                 bw.Write(Animations.Count);
                 for (int i = 0; i < Animations.Count; i++)
                 {
-                    bw.Write(Animations[i].Path.Length);
-                    bw.Write(Animations[i].Path.ToCharArray());
+                    bw.WriteString32(Animations[i].Path);
                 }
 
                 // Pointer.Skeleton
                 bw.Write(Skeletons.Count);
                 for (int i = 0; i < Skeletons.Count; i++)
                 {
-                    bw.Write(Skeletons[i].Path.Length);
-                    bw.Write(Skeletons[i].Path.ToCharArray());
+                    bw.WriteString32(Skeletons[i].Path);
                     bw.Write(Skeletons[i].ExtraData.Length);
                     bw.Write(Skeletons[i].ExtraData);
                 }
@@ -320,8 +376,7 @@ namespace JMXFileEditor.Silkroad.Data
                 bw.Write(MeshGroups.Count);
                 for (int i = 0; i < MeshGroups.Count; i++)
                 {
-                    bw.Write(MeshGroups[i].Name.Length);
-                    bw.Write(MeshGroups[i].Name.ToCharArray());
+                    bw.WriteString32(MeshGroups[i].Name);
                     bw.Write(MeshGroups[i].FileIndexes.Length);
                     bw.Write(MeshGroups[i].FileIndexes);
                 }
@@ -330,8 +385,7 @@ namespace JMXFileEditor.Silkroad.Data
                 bw.Write(AnimationGroups.Count);
                 for (int i = 0; i < AnimationGroups.Count; i++)
                 {
-                    bw.Write(AnimationGroups[i].Name.Length);
-                    bw.Write(AnimationGroups[i].Name.ToCharArray());
+                    bw.WriteString32(AnimationGroups[i].Name);
                     bw.Write(AnimationGroups[i].Entries.Count);
                     for (int j = 0; j < AnimationGroups[i].Entries.Count; j++)
                     {
@@ -355,8 +409,51 @@ namespace JMXFileEditor.Silkroad.Data
                     }
                 }
 
-                // Pointer.SoundEffect
-                bw.Write(SoundEffectUndecodedBytes);
+                // Pointer.SystemMod
+                bw.Write(UnkUInt03);
+                bw.Write(SystemMods.Count);
+                for (int i = 0; i < SystemMods.Count; i++)
+                {
+                    bw.Write((uint)SystemMods[i].Type);
+                    if (SystemMods[i] is SystemMod.SoundEffect soundEffect)
+                    {
+                        bw.Write(soundEffect.UnkUInt01);
+                        bw.WriteString32(soundEffect.GroupName);
+                        bw.Write(soundEffect.UnkUInt02);
+                        bw.Write(soundEffect.UnkUInt03);
+                        bw.Write(soundEffect.UnkUInt04);
+                        bw.Write(soundEffect.UnkUInt05);
+                        bw.Write(soundEffect.UnkUInt06);
+                        bw.Write(soundEffect.UnkUInt07);
+                        bw.Write(soundEffect.UnkUInt08);
+                        bw.Write(soundEffect.UnkUInt09);
+                        bw.Write(soundEffect.UnkUInt10);
+                        bw.Write(soundEffect.UnkUInt11);
+                        bw.Write(soundEffect.UnkUInt12);
+                        bw.Write(soundEffect.UnkUInt13);
+                        bw.Write(soundEffect.UnkUInt14);
+                        bw.Write(soundEffect.UnkUInt15);
+                        bw.Write(soundEffect.UnkUInt16);
+                        bw.Write(soundEffect.UnkUInt17);
+                        bw.Write(soundEffect.UnkUInt18);
+                        bw.Write(soundEffect.UnkUInt19);
+                        bw.Write(soundEffect.UnkUInt20);
+                        bw.Write(soundEffect.UnkUInt21);
+                        bw.Write(soundEffect.UnkUInt22);
+                        bw.WriteString32(soundEffect.Name);
+                        bw.Write(soundEffect.Sounds.Count);
+                        for (int j = 0; j < soundEffect.Sounds.Count; j++)
+                        {
+                            bw.Write(soundEffect.Sounds[j].UnkUInt01);
+                            bw.WriteString32(soundEffect.Sounds[j].Path);
+                            bw.Write(soundEffect.Sounds[j].Time);
+                            bw.WriteString32(soundEffect.Sounds[j].Key);
+                        }
+                    }
+                }
+                
+                // Left bytes
+                bw.Write(SystemModsUndecodedBytes);
             }
         }
         #endregion
@@ -409,6 +506,59 @@ namespace JMXFileEditor.Silkroad.Data
                 {
                     public float X { get; set; }
                     public float Y { get; set; }
+                }
+            }
+        }
+        /// <summary>
+        /// Wrapper class
+        /// </summary>
+        public class SystemMod
+        {
+            /// <summary>
+            /// Data abstraction depends on reading type
+            /// </summary>
+            public abstract class Data
+            {
+                public SystemModType Type { get; set; }
+                public Data(SystemModType Type)
+                {
+                    this.Type = Type;
+                }
+            }
+            public class SoundEffect : Data
+            {
+                public uint UnkUInt01 { get; set; }
+                public string GroupName { get; set; }
+                public uint UnkUInt02 { get; set; }
+                public uint UnkUInt03 { get; set; }
+                public uint UnkUInt04 { get; set; }
+                public uint UnkUInt05 { get; set; }
+                public uint UnkUInt06 { get; set; }
+                public uint UnkUInt07 { get; set; }
+                public uint UnkUInt08 { get; set; }
+                public uint UnkUInt09 { get; set; }
+                public uint UnkUInt10 { get; set; }
+                public uint UnkUInt11 { get; set; }
+                public uint UnkUInt12 { get; set; }
+                public uint UnkUInt13 { get; set; }
+                public uint UnkUInt14 { get; set; }
+                public uint UnkUInt15 { get; set; }
+                public uint UnkUInt16 { get; set; }
+                public uint UnkUInt17 { get; set; }
+                public uint UnkUInt18 { get; set; }
+                public uint UnkUInt19 { get; set; }
+                public uint UnkUInt20 { get; set; }
+                public uint UnkUInt21 { get; set; }
+                public uint UnkUInt22 { get; set; }
+                public string Name { get; set; }
+                public List<Sound> Sounds { get; set; }
+                public SoundEffect(SystemModType Type) : base(Type) { }
+                public class Sound
+                {
+                    public uint UnkUInt01 { get; set; }
+                    public string Path { get; set; }
+                    public uint Time { get; set; }
+                    public string Key { get; set; }
                 }
             }
         }

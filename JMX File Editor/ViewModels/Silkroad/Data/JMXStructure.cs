@@ -323,10 +323,10 @@ namespace JMXFileEditor.ViewModels
 
                 // Pointer.SoundEffect
                 nodeChilds = ((JMXStructure)Childs[29]).Childs;
-                file.SoundEffectUndecodedBytes = new byte[nodeChilds.Count];
+                file.SystemModsUndecodedBytes = new byte[nodeChilds.Count];
                 for (int i = 0; i < nodeChilds.Count; i++)
                 {
-                    file.SoundEffectUndecodedBytes[i] = (byte)((JMXAttribute)nodeChilds[i]).Value;
+                    file.SystemModsUndecodedBytes[i] = (byte)((JMXAttribute)nodeChilds[i]).Value;
                 }
 
                 // Return result
@@ -354,7 +354,7 @@ namespace JMXFileEditor.ViewModels
                 root.Childs.Add(new JMXAttribute("Pointer.Animation", jmxvres_0109.PointerAnimation, false));
                 root.Childs.Add(new JMXAttribute("Pointer.MeshGroup", jmxvres_0109.PointerMeshGroup, false));
                 root.Childs.Add(new JMXAttribute("Pointer.AnimationGroup", jmxvres_0109.PointerAnimationGroup, false));
-                root.Childs.Add(new JMXAttribute("Pointer.SoundEffect", jmxvres_0109.PointerSoundEffect, false));
+                root.Childs.Add(new JMXAttribute("Pointer.SystemMods", jmxvres_0109.PointerSystemMods, false));
                 root.Childs.Add(new JMXAttribute("Pointer.BoundingBox", jmxvres_0109.PointerBoundingBox, false));
                 // Flags
                 root.Childs.Add(new JMXAttribute("Flags.UInt01", jmxvres_0109.FlagUInt01));
@@ -485,10 +485,10 @@ namespace JMXFileEditor.ViewModels
                 }
                 root.Childs.Add(nodeLevel1);
                 // Pointer.SoundEffect
-                nodeLevel1 = new JMXStructure("SoundEffectUndecodedBytes");
-                for (int i = 0; i < jmxvres_0109.SoundEffectUndecodedBytes.Length; i++)
+                nodeLevel1 = new JMXStructure("SystemModsUndecodedBytes");
+                for (int i = 0; i < jmxvres_0109.SystemModsUndecodedBytes.Length; i++)
                 {
-                    nodeLevel1.Childs.Add(new JMXAttribute("[" + i + "]", jmxvres_0109.SoundEffectUndecodedBytes[i]));
+                    nodeLevel1.Childs.Add(new JMXAttribute("[" + i + "]", jmxvres_0109.SystemModsUndecodedBytes[i]));
                 }
                 root.Childs.Add(nodeLevel1);
                 return root;
