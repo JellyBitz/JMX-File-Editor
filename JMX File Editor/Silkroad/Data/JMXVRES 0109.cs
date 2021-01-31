@@ -39,9 +39,8 @@ namespace JMXFileEditor.Silkroad.Data
         public List<Skeleton> Skeletons { get; set; }
         public List<MeshGroup> MeshGroups { get; set; }
         public List<AnimationGroup> AnimationGroups { get; set; }
-        public uint UnkUInt03 { get; private set; }
-        public List<SystemMod.Data> SystemMods { get; set; }
-        public byte[] SystemModsUndecodedBytes { get; set; }
+        public List<List<SystemModSet.Mod>> SystemMods { get; private set; }
+        public byte[] SystemModsNonDecodedBytes { get; set; }
         #endregion
 
         #region Public Methods
@@ -202,8 +201,8 @@ namespace JMXFileEditor.Silkroad.Data
                     AnimationGroups.Add(animationGroup);
                     // read
                     animationGroup.Name = br.ReadString32();
-                    var animationEntryCount = br.ReadUInt32();
-                    animationGroup.Entries = new List<AnimationGroup.Entry>();
+                    var animationEntryCount = br.ReadInt32();
+                    animationGroup.Entries = new List<AnimationGroup.Entry>(animationEntryCount);
                     for (int j = 0; j < animationEntryCount; j++)
                     {
                         // create
@@ -212,8 +211,8 @@ namespace JMXFileEditor.Silkroad.Data
                         // read
                         entry.Type = (ResourceAnimationType)br.ReadUInt32();
                         entry.FileIndex = br.ReadUInt32();
-                        var eventCount = br.ReadUInt32();
-                        entry.Events = new List<AnimationGroup.Entry.Event>();
+                        var eventCount = br.ReadInt32();
+                        entry.Events = new List<AnimationGroup.Entry.Event>(eventCount);
                         for (int k = 0; k < eventCount; k++)
                         {
                             // create
@@ -224,9 +223,9 @@ namespace JMXFileEditor.Silkroad.Data
                                 UnkUInt02 = br.ReadUInt32()
                             });
                         }
-                        var WalkGraphPointCount = br.ReadUInt32();
-                        entry.WalkPoints = new List<AnimationGroup.Entry.Point>();
+                        var WalkGraphPointCount = br.ReadInt32();
                         entry.WalkingLength = br.ReadSingle();
+                        entry.WalkPoints = new List<AnimationGroup.Entry.Point>(WalkGraphPointCount);
                         for (int k = 0; k < WalkGraphPointCount; k++)
                         {
                             // create
@@ -240,67 +239,217 @@ namespace JMXFileEditor.Silkroad.Data
                 }
 
                 // Pointer.SystemMod
-                UnkUInt03 = br.ReadUInt32();
-                var systemModsCount = br.ReadUInt32();
-                SystemMods = new List<SystemMod.Data>();
-                for (int i = 0; i < systemModsCount; i++)
+                SystemMods = new List<List<SystemModSet.Mod>>(2);
+                long lastSystemModPosition = default;
+                // Try to read it
+                try
                 {
-                    var type = (SystemModType)br.ReadUInt32();
-                    switch (type)
+                    // Both systems follow the same pattern but the first one is about enviroment stuffs only
+                    for (int sysCount = 0; sysCount < 2; sysCount++)
                     {
-                        case SystemModType.SoundEffect:
+                        lastSystemModPosition = br.BaseStream.Position;
+                        // create
+                        var mods = new List<SystemModSet.Mod>();
+                        // read
+                        var modCount = br.ReadUInt32();
+                        for (int i = 0; i < modCount; i++)
+                        {
+                            // create
+                            var mod = new SystemModSet.Mod();
+                            mods.Add(mod);
+                            // read
+                            mod.UnkUInt01 = br.ReadUInt32(); // 1, 2
+                            mod.UnkUInt02 = br.ReadUInt32(); // 1, 2, 4, 9, 13, 15, 16, 17, 19, 22, 4294967295
+                            mod.GroupName = br.ReadString32(); // default, ambient
+                            count = br.ReadInt32();
+                            mod.ModsData = new List<SystemModSet.ModData>(count);
+                            for (int r = 0; r < count; r++)
                             {
-                                var soundEffect = new SystemMod.SoundEffect(type);
-                                soundEffect.UnkUInt01 = br.ReadUInt32();
-                                soundEffect.GroupName = br.ReadString32();
-                                soundEffect.UnkUInt02 = br.ReadUInt32();
-                                soundEffect.UnkUInt03 = br.ReadUInt32();
-                                soundEffect.UnkUInt04 = br.ReadUInt32();
-                                soundEffect.UnkUInt05 = br.ReadUInt32();
-                                soundEffect.UnkUInt06 = br.ReadUInt32();
-                                soundEffect.UnkUInt07 = br.ReadUInt32();
-                                soundEffect.UnkUInt08 = br.ReadUInt32();
-                                soundEffect.UnkUInt09 = br.ReadUInt32();
-                                soundEffect.UnkUInt10 = br.ReadUInt32();
-                                soundEffect.UnkUInt11 = br.ReadUInt32();
-                                soundEffect.UnkUInt12 = br.ReadUInt32();
-                                soundEffect.UnkUInt13 = br.ReadUInt32();
-                                soundEffect.UnkUInt14 = br.ReadUInt32();
-                                soundEffect.UnkUInt15 = br.ReadUInt32();
-                                soundEffect.UnkUInt16 = br.ReadUInt32();
-                                soundEffect.UnkUInt17 = br.ReadUInt32();
-                                soundEffect.UnkUInt18 = br.ReadUInt32();
-                                soundEffect.UnkUInt19 = br.ReadUInt32();
-                                soundEffect.UnkUInt20 = br.ReadUInt32();
-                                soundEffect.UnkUInt21 = br.ReadUInt32();
-                                soundEffect.UnkUInt22 = br.ReadUInt32();
-                                soundEffect.Name = br.ReadString32();
-                                var sounds = br.ReadUInt32();
-                                soundEffect.Sounds = new List<SystemMod.SoundEffect.Sound>();
-                                for (int j = 0; j < sounds; j++)
+                                // create
+                                var modData = new SystemModSet.ModData();
+                                mod.ModsData.Add(modData);
+                                // read
+                                modData.UnkUShort01 = br.ReadUInt16(); // 0
+                                modData.UnkUShort02 = br.ReadUInt16(); // 0, 4, 5, 6
+                                modData.UnkFloat01 = br.ReadSingle(); // 0.5
+                                modData.UnkUInt01 = br.ReadUInt32(); // 1
+                                modData.UnkFlags = br.ReadUInt32(); // 0, 16, 48, 256 (avatar), 272, 768 (Weapon)
+                                modData.UnkUInt02 = br.ReadUInt32(); // 4294967295
+                                modData.UnkUInt03 = br.ReadUInt32(); // 0
+                                modData.UnkUInt04 = br.ReadUInt32(); // 0, 1 (Weapon), 3 (avatar)
+                                modData.UnkUInt05 = br.ReadUInt32(); // 0
+                                switch (modData.UnkFlags)
                                 {
-                                    // create
-                                    soundEffect.Sounds.Add(new SystemMod.SoundEffect.Sound()
-                                    {
-                                        UnkUInt01 = br.ReadUInt32(),
-                                        Path = br.ReadString32(),
-                                        Time = br.ReadUInt32(),
-                                        Key = br.ReadString32()
-                                    });
+                                    case 0:
+                                        // Has no more data
+                                        break;
+                                    case 16:
+                                        {
+                                            // abstraction
+                                            var data = modData as SystemModSet.IDataEnvMap;
+                                            // read
+                                            data.IsEnabled = br.ReadUInt32();
+                                            if (data.IsEnabled == 0)
+                                                break;
+                                            data.UnkUInt01 = br.ReadUInt32(); // 192
+                                            data.UnkUInt02 = br.ReadUInt32(); // 3
+                                            data.UnkUInt03 = br.ReadUInt32(); // 0
+                                            data.UnkFloat02 = br.ReadSingle(); // 10
+                                            data.UnkFloat03 = br.ReadSingle(); // 100
+                                            data.UnkUInt02 = br.ReadUInt32(); // 0
+                                            data.UnkUInt03 = br.ReadUInt32(); // 0
+                                            data.UnkUInt04 = br.ReadUInt32(); // 0
+                                            data.UnkUInt05 = br.ReadUInt32(); // 0
+                                            data.UnkUInt06 = br.ReadUInt32(); // 0
+                                            data.UnkUInt07 = br.ReadUInt32(); // 0
+                                            data.Name = br.ReadString32(); // default
+                                            var eventCount = br.ReadInt32();
+                                            data.Events = new List<SystemModSet.IDataEnvMapEvent>(eventCount);
+                                            for (int j = 0; j < eventCount; j++)
+                                            {
+                                                // create
+                                                var e = new SystemModSet.IDataEnvMapEvent();
+                                                data.Events.Add(e);
+                                                // read
+                                                e.IsEnabled = br.ReadUInt32();
+                                                if (e.IsEnabled == 0)
+                                                    continue;
+                                                e.Path = br.ReadString32();
+                                                e.Time = br.ReadUInt32();
+                                                e.Keyword = br.ReadString32();
+                                            }
+                                        }
+                                        break;
+                                    case 48:
+                                        {
+                                            // abstraction
+                                            var data = modData as SystemModSet.IDataParticle;
+                                            // read
+                                            data.IsEnabled = br.ReadUInt32();
+                                            if (data.IsEnabled == 0)
+                                                break;
+                                            data.UnkUInt01 = br.ReadUInt32(); // 1
+                                            data.Path = br.ReadString32(); // *.efp
+                                            data.UnkUInt02 = br.ReadUInt32(); // 0
+                                            data.UnkUInt03 = br.ReadUInt32(); // 0
+                                            data.UnkUInt04 = br.ReadUInt32(); // 0
+                                            data.UnkUInt05 = br.ReadUInt32(); // 0 
+                                            data.UnkUInt06 = br.ReadUInt32(); // 0
+                                            data.UnkUInt07 = br.ReadUInt32(); // 0
+                                        }
+                                        break;
+                                    case 256:
+                                        {
+                                            // abstraction
+                                            var data = modData as SystemModSet.IData256;
+                                            // read
+                                            data.IsEnabled = br.ReadUInt32();
+                                            if (data.IsEnabled == 0)
+                                                break;
+                                            data.UnkUShort01 = br.ReadUInt16(); // 0
+                                            data.UnkUShort02 = br.ReadUInt16(); // 1
+                                            data.UnkUInt01 = br.ReadUInt32(); // 1
+                                            data.UnkUInt02 = br.ReadUInt32(); // 7
+                                        }
+                                        break;
+                                    case 272:
+                                        {
+                                            // abstraction
+                                            var data = modData as SystemModSet.IData272;
+                                            // read
+                                            data.UnkUInt01 = br.ReadUInt32(); // 1000
+                                            data.UnkUInt02 = br.ReadUInt32(); // 2
+                                            data.UnkUInt03 = br.ReadUInt32(); // 0
+                                            data.UnkUInt04 = br.ReadUInt32(); // 2
+                                            data.UnkUInt05 = br.ReadUInt32(); // 0
+                                            data.UnkFloat01 = br.ReadSingle(); // 0.58
+                                            data.UnkFloat02 = br.ReadSingle(); // 0.58
+                                            data.UnkFloat03 = br.ReadSingle(); // 0.58
+                                            data.UnkFloat04 = br.ReadSingle(); // 1
+                                            data.UnkUInt06 = br.ReadUInt32(); // 1000
+                                            data.UnkFloat05 = br.ReadSingle(); // 0.58
+                                            data.UnkFloat06 = br.ReadSingle(); // 0.58
+                                            data.UnkFloat07 = br.ReadSingle(); // 0.58
+                                            data.UnkFloat08 = br.ReadSingle(); // 1
+                                            data.UnkUInt07 = br.ReadUInt32(); // 0
+                                            data.UnkUInt08 = br.ReadUInt32(); // 0
+                                            data.UnkUInt09 = br.ReadUInt32(); // 0
+                                            data.UnkUInt10 = br.ReadUInt32(); // 0
+                                            data.UnkUShort01 = br.ReadUInt16(); // 1541
+                                            data.UnkUShort02 = br.ReadUInt16(); // 5
+                                            data.UnkUShort03 = br.ReadUInt16(); // 514
+                                            data.UnkUShort04 = br.ReadUInt16(); // 514
+                                            data.UnkUShort05 = br.ReadUInt16(); // 1920
+                                            data.UnkUShort06 = br.ReadUInt16(); // 51300
+                                            data.UnkFloat09 = br.ReadSingle(); // 1
+                                            data.UnkUInt11 = br.ReadUInt32(); // 0
+                                        }
+                                        break;
+                                    case 768:
+                                        {
+                                            // abstraction
+                                            var data = modData as SystemModSet.IData768;
+                                            // read
+                                            data.UnkUShort01 = br.ReadUInt16(); // 1
+                                            data.UnkUInt01 = br.ReadUInt32(); // 0
+                                            data.UnkUInt02 = br.ReadUInt32(); // 3
+                                            data.UnkUInt03 = br.ReadUInt32(); // 0
+                                            data.UnkUShort02 = br.ReadUInt16(); // 31744
+                                            data.UnkUInt04 = br.ReadUInt32(); // 0
+                                            data.UnkUInt05 = br.ReadUInt32(); // 1
+                                            data.UnkUInt06 = br.ReadUInt32(); // 7
+                                            data.UnkUInt07 = br.ReadUInt32(); // 2
+                                            data.UnkUInt08 = br.ReadUInt32(); // 1
+                                            data.UnkUInt09 = br.ReadUInt32(); // 9
+                                        }
+                                        break;
+                                    default:
+                                        // Unknown flags
+                                        System.Diagnostics.Debugger.Break();
+                                        throw new System.NotImplementedException();
                                 }
-                                // Add it
-                                SystemMods.Add(soundEffect);
                             }
-                            break;
-                        default:
-                            // Restore cursor and stop reading
-                            br.BaseStream.Seek(-4, SeekOrigin.Current);
-                            break;
+                        }
+                        // add
+                        SystemMods.Add(mods);
                     }
+                    // Stuffs about hidden mesh if some equipment is putting on
+                    //if (this.ResourceType == ResourceType.Character || this.ResourceType == ResourceType.NPC)
+                    //{
+                    //    uint unkUInt01 = br.ReadUInt32(); // 0, 4294967295
+                    //    if (this.ResourceType == ResourceType.Character || this.ResourceType == ResourceType.NPC && unkUInt01 == uint.MaxValue)
+                    //    {
+                    //        ushort unkFlag01 = br.ReadUInt16(); // 13
+                    //        if (unkFlag01 != 0)
+                    //        {
+                    //            var unkUShort01 = br.ReadUInt16(); // 0
+                    //            uint unkUInt03 = br.ReadUInt32(); // 0
+                    //            count = br.ReadInt32();
+                    //            for (int i = 0; i < count; i++)
+                    //            {
+                    //                uint index = br.ReadUInt32();
+                    //                uint value = br.ReadUInt32();
+                    //            }
+                    //            uint unkUInt23 = br.ReadUInt32(); // 0
+                    //        }
+                    //    }
+                    //}
+                }
+                catch
+                {
+                    // Section not yet, reset and show it as non decoded
+                    br.BaseStream.Seek(lastSystemModPosition, SeekOrigin.Begin);
                 }
 
-                // End reading undecoded bytes
-                SystemModsUndecodedBytes = br.ReadBytes((int)(br.BaseStream.Length - br.BaseStream.Position));
+                // End reading non decoded bytes
+                long nonDecodedBytesCount = br.BaseStream.Length - br.BaseStream.Position;
+                SystemModsNonDecodedBytes = new byte[0];
+                if (nonDecodedBytesCount > 0)
+                {
+                    SystemModsNonDecodedBytes = br.ReadBytes((int)nonDecodedBytesCount);
+                    // print for checking it eventually
+                    System.Diagnostics.Debug.WriteLine(SystemModsNonDecodedBytes.ToHexDump());
+                }
             }
         }
         public void Save(string Path)
@@ -409,51 +558,14 @@ namespace JMXFileEditor.Silkroad.Data
                     }
                 }
 
-                // Pointer.SystemMod
-                bw.Write(UnkUInt03);
-                bw.Write(SystemMods.Count);
-                for (int i = 0; i < SystemMods.Count; i++)
+                // Pointer.SystemModSet
+
+
+                // Write remaining bytes
+                if (SystemModsNonDecodedBytes.Length != 0)
                 {
-                    bw.Write((uint)SystemMods[i].Type);
-                    if (SystemMods[i] is SystemMod.SoundEffect soundEffect)
-                    {
-                        bw.Write(soundEffect.UnkUInt01);
-                        bw.WriteString32(soundEffect.GroupName);
-                        bw.Write(soundEffect.UnkUInt02);
-                        bw.Write(soundEffect.UnkUInt03);
-                        bw.Write(soundEffect.UnkUInt04);
-                        bw.Write(soundEffect.UnkUInt05);
-                        bw.Write(soundEffect.UnkUInt06);
-                        bw.Write(soundEffect.UnkUInt07);
-                        bw.Write(soundEffect.UnkUInt08);
-                        bw.Write(soundEffect.UnkUInt09);
-                        bw.Write(soundEffect.UnkUInt10);
-                        bw.Write(soundEffect.UnkUInt11);
-                        bw.Write(soundEffect.UnkUInt12);
-                        bw.Write(soundEffect.UnkUInt13);
-                        bw.Write(soundEffect.UnkUInt14);
-                        bw.Write(soundEffect.UnkUInt15);
-                        bw.Write(soundEffect.UnkUInt16);
-                        bw.Write(soundEffect.UnkUInt17);
-                        bw.Write(soundEffect.UnkUInt18);
-                        bw.Write(soundEffect.UnkUInt19);
-                        bw.Write(soundEffect.UnkUInt20);
-                        bw.Write(soundEffect.UnkUInt21);
-                        bw.Write(soundEffect.UnkUInt22);
-                        bw.WriteString32(soundEffect.Name);
-                        bw.Write(soundEffect.Sounds.Count);
-                        for (int j = 0; j < soundEffect.Sounds.Count; j++)
-                        {
-                            bw.Write(soundEffect.Sounds[j].UnkUInt01);
-                            bw.WriteString32(soundEffect.Sounds[j].Path);
-                            bw.Write(soundEffect.Sounds[j].Time);
-                            bw.WriteString32(soundEffect.Sounds[j].Key);
-                        }
-                    }
+                    bw.Write(SystemModsNonDecodedBytes);
                 }
-                
-                // Left bytes
-                bw.Write(SystemModsUndecodedBytes);
             }
         }
         #endregion
@@ -512,54 +624,193 @@ namespace JMXFileEditor.Silkroad.Data
         /// <summary>
         /// Wrapper class
         /// </summary>
-        public class SystemMod
+        public class SystemModSet
         {
-            /// <summary>
-            /// Data abstraction depends on reading type
-            /// </summary>
-            public abstract class Data
-            {
-                public SystemModType Type { get; set; }
-                public Data(SystemModType Type)
-                {
-                    this.Type = Type;
-                }
-            }
-            public class SoundEffect : Data
+            public class Mod
             {
                 public uint UnkUInt01 { get; set; }
+                public uint UnkUInt02 { get; set; }
                 public string GroupName { get; set; }
+                public List<ModData> ModsData { get; set; }
+            }
+            public class ModData : IDataEnvMap, IDataParticle, IData256, IData272, IData768
+            {
+                public ushort UnkUShort01 { get; set; }
+                public ushort UnkUShort02 { get; set; }
+                public float UnkFloat01 { get; set; }
+                public uint UnkUInt01 { get; set; }
+                public uint UnkFlags { get; set; }
                 public uint UnkUInt02 { get; set; }
                 public uint UnkUInt03 { get; set; }
                 public uint UnkUInt04 { get; set; }
                 public uint UnkUInt05 { get; set; }
-                public uint UnkUInt06 { get; set; }
-                public uint UnkUInt07 { get; set; }
-                public uint UnkUInt08 { get; set; }
-                public uint UnkUInt09 { get; set; }
-                public uint UnkUInt10 { get; set; }
-                public uint UnkUInt11 { get; set; }
-                public uint UnkUInt12 { get; set; }
-                public uint UnkUInt13 { get; set; }
-                public uint UnkUInt14 { get; set; }
-                public uint UnkUInt15 { get; set; }
-                public uint UnkUInt16 { get; set; }
-                public uint UnkUInt17 { get; set; }
-                public uint UnkUInt18 { get; set; }
-                public uint UnkUInt19 { get; set; }
-                public uint UnkUInt20 { get; set; }
-                public uint UnkUInt21 { get; set; }
-                public uint UnkUInt22 { get; set; }
-                public string Name { get; set; }
-                public List<Sound> Sounds { get; set; }
-                public SoundEffect(SystemModType Type) : base(Type) { }
-                public class Sound
-                {
-                    public uint UnkUInt01 { get; set; }
-                    public string Path { get; set; }
-                    public uint Time { get; set; }
-                    public string Key { get; set; }
-                }
+
+                #region Interface Implementations
+
+                #region IDataEnvMap
+                uint IDataEnvMap.IsEnabled { get; set; }
+                uint IDataEnvMap.UnkUInt01 { get; set; }
+                float IDataEnvMap.UnkFloat02 { get; set; }
+                float IDataEnvMap.UnkFloat03 { get; set; }
+                uint IDataEnvMap.UnkUInt02 { get; set; }
+                uint IDataEnvMap.UnkUInt03 { get; set; }
+                uint IDataEnvMap.UnkUInt04 { get; set; }
+                uint IDataEnvMap.UnkUInt05 { get; set; }
+                uint IDataEnvMap.UnkUInt06 { get; set; }
+                uint IDataEnvMap.UnkUInt07 { get; set; }
+                string IDataEnvMap.Name { get; set; }
+                List<IDataEnvMapEvent> IDataEnvMap.Events { get; set; }
+                #endregion
+
+                #region IDataPartricle
+                uint IDataParticle.IsEnabled { get; set; }
+                uint IDataParticle.UnkUInt01 { get; set; }
+                string IDataParticle.Path { get; set; }
+                uint IDataParticle.UnkUInt02 { get; set; }
+                uint IDataParticle.UnkUInt03 { get; set; }
+                uint IDataParticle.UnkUInt04 { get; set; }
+                uint IDataParticle.UnkUInt05 { get; set; }
+                uint IDataParticle.UnkUInt06 { get; set; }
+                uint IDataParticle.UnkUInt07 { get; set; }
+                #endregion
+
+                #region IData256
+                uint IData256.IsEnabled { get; set; }
+                ushort IData256.UnkUShort01 { get; set; }
+                ushort IData256.UnkUShort02 { get; set; }
+                uint IData256.UnkUInt01 { get; set; }
+                uint IData256.UnkUInt02 { get; set; }
+                #endregion
+
+                #region IData272
+                uint IData272.UnkUInt01 { get; set; }
+                uint IData272.UnkUInt02 { get; set; }
+                uint IData272.UnkUInt03 { get; set; }
+                uint IData272.UnkUInt04 { get; set; }
+                uint IData272.UnkUInt05 { get; set; }
+                float IData272.UnkFloat01 { get; set; }
+                float IData272.UnkFloat02 { get; set; }
+                float IData272.UnkFloat03 { get; set; }
+                float IData272.UnkFloat04 { get; set; }
+                uint IData272.UnkUInt06 { get; set; }
+                float IData272.UnkFloat05 { get; set; }
+                float IData272.UnkFloat06 { get; set; }
+                float IData272.UnkFloat07 { get; set; }
+                float IData272.UnkFloat08 { get; set; }
+                uint IData272.UnkUInt07 { get; set; }
+                uint IData272.UnkUInt08 { get; set; }
+                uint IData272.UnkUInt09 { get; set; }
+                uint IData272.UnkUInt10 { get; set; }
+                ushort IData272.UnkUShort01 { get; set; }
+                ushort IData272.UnkUShort02 { get; set; }
+                ushort IData272.UnkUShort03 { get; set; }
+                ushort IData272.UnkUShort04 { get; set; }
+                ushort IData272.UnkUShort05 { get; set; }
+                ushort IData272.UnkUShort06 { get; set; }
+                float IData272.UnkFloat09 { get; set; }
+                uint IData272.UnkUInt11 { get; set; }
+                #endregion
+
+                #region IData768
+                ushort IData768.UnkUShort01 { get; set; }
+                uint IData768.UnkUInt01 { get; set; }
+                uint IData768.UnkUInt02 { get; set; }
+                uint IData768.UnkUInt03 { get; set; }
+                ushort IData768.UnkUShort02 { get; set; }
+                uint IData768.UnkUInt04 { get; set; }
+                uint IData768.UnkUInt05 { get; set; }
+                uint IData768.UnkUInt06 { get; set; }
+                uint IData768.UnkUInt07 { get; set; }
+                uint IData768.UnkUInt08 { get; set; }
+                uint IData768.UnkUInt09 { get; set; }
+                #endregion
+
+                #endregion
+            }
+            public interface IDataEnvMap
+            {
+                uint IsEnabled { get; set; }
+                uint UnkUInt01 { get; set; }
+                float UnkFloat02 { get; set; }
+                float UnkFloat03 { get; set; }
+                uint UnkUInt02 { get; set; }
+                uint UnkUInt03 { get; set; }
+                uint UnkUInt04 { get; set; }
+                uint UnkUInt05 { get; set; }
+                uint UnkUInt06 { get; set; }
+                uint UnkUInt07 { get; set; }
+                string Name { get; set; }
+                List<IDataEnvMapEvent> Events { get; set; }
+            }
+            public class IDataEnvMapEvent
+            {
+                public uint IsEnabled { get; set; }
+                public string Path { get; set; }
+                public uint Time { get; set; }
+                public string Keyword { get; set; }
+            }
+            public interface IDataParticle
+            {
+                uint IsEnabled { get; set; }
+                uint UnkUInt01 { get; set; }
+                string Path { get; set; }
+                uint UnkUInt02 { get; set; }
+                uint UnkUInt03 { get; set; }
+                uint UnkUInt04 { get; set; }
+                uint UnkUInt05 { get; set; }
+                uint UnkUInt06 { get; set; }
+                uint UnkUInt07 { get; set; }
+            }
+            public interface IData256
+            {
+                uint IsEnabled { get; set; }
+                ushort UnkUShort01 { get; set; }
+                ushort UnkUShort02 { get; set; }
+                uint UnkUInt01 { get; set; }
+                uint UnkUInt02 { get; set; }
+            }
+            public interface IData272
+            {
+                uint UnkUInt01 { get; set; }
+                uint UnkUInt02 { get; set; }
+                uint UnkUInt03 { get; set; }
+                uint UnkUInt04 { get; set; }
+                uint UnkUInt05 { get; set; }
+                float UnkFloat01 { get; set; }
+                float UnkFloat02 { get; set; }
+                float UnkFloat03 { get; set; }
+                float UnkFloat04 { get; set; }
+                uint UnkUInt06 { get; set; }
+                float UnkFloat05 { get; set; }
+                float UnkFloat06 { get; set; }
+                float UnkFloat07 { get; set; }
+                float UnkFloat08 { get; set; }
+                uint UnkUInt07 { get; set; }
+                uint UnkUInt08 { get; set; }
+                uint UnkUInt09 { get; set; }
+                uint UnkUInt10 { get; set; }
+                ushort UnkUShort01 { get; set; }
+                ushort UnkUShort02 { get; set; }
+                ushort UnkUShort03 { get; set; }
+                ushort UnkUShort04 { get; set; }
+                ushort UnkUShort05 { get; set; }
+                ushort UnkUShort06 { get; set; }
+                float UnkFloat09 { get; set; }
+                uint UnkUInt11 { get; set; }
+            }
+            public interface IData768
+            {
+                ushort UnkUShort01 { get; set; }
+                uint UnkUInt01 { get; set; }
+                uint UnkUInt02 { get; set; }
+                uint UnkUInt03 { get; set; }
+                ushort UnkUShort02 { get; set; }
+                uint UnkUInt04 { get; set; }
+                uint UnkUInt05 { get; set; }
+                uint UnkUInt06 { get; set; }
+                uint UnkUInt07 { get; set; }
+                uint UnkUInt08 { get; set; }
+                uint UnkUInt09 { get; set; }
             }
         }
         #endregion
