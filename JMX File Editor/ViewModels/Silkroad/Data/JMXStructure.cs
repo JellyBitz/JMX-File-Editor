@@ -158,7 +158,7 @@ namespace JMXFileEditor.ViewModels
                 file.FlagUInt04 = (uint)((JMXAttribute)Childs[12]).Value;
                 file.FlagUInt05 = (uint)((JMXAttribute)Childs[13]).Value;
                 // Details
-                file.ResourceType = (ResourceType)((JMXAttribute)Childs[14]).Value;
+                file.ResourceType = (ResourceType)((JMXOption)Childs[14]).Value;
                 file.Name = (string)((JMXAttribute)Childs[15]).Value;
                 var nodeChilds = ((JMXStructure)Childs[16]).Childs;
                 file.UnkByteArray01 = new byte[nodeChilds.Count];
@@ -289,7 +289,7 @@ namespace JMXFileEditor.ViewModels
                         animationGroup.Entries.Add(entry);
                         // Copy
                         var _nodeClass = ((JMXStructure)_nodeChilds[j]).Childs;
-                        entry.Type = (ResourceAnimationType)((JMXAttribute)_nodeClass[0]).Value;
+                        entry.Type = (ResourceAnimationType)((JMXOption)_nodeClass[0]).Value;
                         entry.FileIndex = (uint)((JMXAttribute)_nodeClass[1]).Value;
                         var __nodeChilds = ((JMXStructure)_nodeClass[2]).Childs;
                         entry.Events = new List<JMXVRES_0109.AnimationGroup.Entry.Event>();

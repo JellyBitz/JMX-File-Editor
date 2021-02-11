@@ -147,7 +147,7 @@ namespace JMXFileEditor.Silkroad.Data
                     Meshes.Add(new Mesh()
                     {
                         Path = new string(br.ReadChars(br.ReadInt32())),
-                        UnkUInt01 = FlagUInt01 == 1 ? br.ReadUInt32() : 0
+                        UnkUInt01 = FlagUInt01 != 0 ? br.ReadUInt32() : 0
                     });
                 }
 
@@ -274,9 +274,8 @@ namespace JMXFileEditor.Silkroad.Data
                 bw.Write(RootMesh.ToCharArray());
                 bw.Write(BoundingBox01);
                 bw.Write(BoundingBox02);
-                bw.Write(ExtraBoundingData.Length > 0);
-                if (ExtraBoundingData.Length > 0)
-                    bw.Write(ExtraBoundingData);
+                bw.Write(ExtraBoundingData.Length > 0 ? 1 : 0);
+                bw.Write(ExtraBoundingData);
 
                 // Pointer.Material
                 bw.Write(Materials.Count);
@@ -293,7 +292,8 @@ namespace JMXFileEditor.Silkroad.Data
                 {
                     bw.Write(Meshes[i].Path.Length);
                     bw.Write(Meshes[i].Path.ToCharArray());
-                    bw.Write(Meshes[i].UnkUInt01);
+                    if(FlagUInt01 != 0)
+                        bw.Write(Meshes[i].UnkUInt01);
                 }
 
                 // Pointer.Animation
