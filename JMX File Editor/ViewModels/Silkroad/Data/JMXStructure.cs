@@ -99,7 +99,7 @@ namespace JMXFileEditor.ViewModels
                     else if (ChildType == typeof(JMXVRES_0109.AnimationGroup.Entry))
                     {
                         var animationGroupEntry = new JMXVRES_0109.AnimationGroup.Entry();
-                        nodeClass.Childs.Add(new JMXAttribute("Type", animationGroupEntry.Type));
+                        nodeClass.Childs.Add(new JMXOption("Type", animationGroupEntry.Type, GetValues<object>(typeof(ResourceAnimationType))));
                         nodeClass.Childs.Add(new JMXAttribute("FileIndex", animationGroupEntry.FileIndex));
                         nodeClass.Childs.Add(new JMXStructure("Events", typeof(JMXVRES_0109.AnimationGroup.Entry.Event)));
                         nodeClass.Childs.Add(new JMXAttribute("WalkingLength", animationGroupEntry.WalkingLength));
@@ -455,7 +455,6 @@ namespace JMXFileEditor.ViewModels
                     for (int j = 0; j < jmxvres_0109.AnimationGroups[i].Entries.Count; j++)
                     {
                         var nodeClassLevel2 = new JMXStructure("[" + j + "]");
-                        var options = Enum.GetValues(typeof(ResourceAnimationType));
                         nodeClassLevel2.Childs.Add(new JMXOption("Type", jmxvres_0109.AnimationGroups[i].Entries[j].Type,GetValues<object>(typeof(ResourceAnimationType))));
                         nodeClassLevel2.Childs.Add(new JMXAttribute("FileIndex", jmxvres_0109.AnimationGroups[i].Entries[j].FileIndex));
                         var nodeLevel3 = new JMXStructure("Events",typeof(JMXVRES_0109.AnimationGroup.Entry.Event));
