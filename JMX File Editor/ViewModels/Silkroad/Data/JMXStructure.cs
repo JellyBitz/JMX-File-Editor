@@ -246,7 +246,7 @@ namespace JMXFileEditor.ViewModels
                     skeleton.ExtraData = new byte[_nodeChilds.Count];
                     for (int j = 0; j < _nodeChilds.Count; j++)
                     {
-                        skeleton.ExtraData[j] = (byte)((JMXAttribute)_nodeChilds[i]).Value;
+                        skeleton.ExtraData[j] = (byte)((JMXAttribute)_nodeChilds[j]).Value;
                     }
                 }
 
@@ -265,7 +265,7 @@ namespace JMXFileEditor.ViewModels
                     meshGroup.FileIndexes = new uint[_nodeChilds.Count];
                     for (int j = 0; j < _nodeChilds.Count; j++)
                     {
-                        meshGroup.FileIndexes[j] = (uint)((JMXAttribute)_nodeChilds[i]).Value;
+                        meshGroup.FileIndexes[j] = (uint)((JMXAttribute)_nodeChilds[j]).Value;
                     }
                 }
 
