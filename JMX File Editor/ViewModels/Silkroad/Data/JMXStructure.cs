@@ -82,7 +82,7 @@ namespace JMXFileEditor.ViewModels
                     {
                         var skeleton = new JMXVRES_0109.Skeleton();
                         nodeClass.Childs.Add(new JMXAttribute("Path", skeleton.Path));
-                        nodeClass.Childs.Add(new JMXStructure("ExtraData", typeof(byte)));
+                        nodeClass.Childs.Add(new JMXAttribute("ExtraBone", skeleton.ExtraBone));
                     }
                     else if (ChildType == typeof(JMXVRES_0109.MeshGroup))
                     {
@@ -242,12 +242,7 @@ namespace JMXFileEditor.ViewModels
                     // Copy
                     var nodeClass = ((JMXStructure)nodeChilds[i]).Childs;
                     skeleton.Path = (string)((JMXAttribute)nodeClass[0]).Value;
-                    var _nodeChilds = ((JMXStructure)nodeClass[1]).Childs;
-                    skeleton.ExtraData = new byte[_nodeChilds.Count];
-                    for (int j = 0; j < _nodeChilds.Count; j++)
-                    {
-                        skeleton.ExtraData[j] = (byte)((JMXAttribute)_nodeChilds[j]).Value;
-                    }
+                    skeleton.ExtraBone = (string)((JMXAttribute)nodeClass[1]).Value;
                 }
 
                 // Pointer.MeshGroup
@@ -420,12 +415,7 @@ namespace JMXFileEditor.ViewModels
                 {
                     var nodeClassLevel1 = new JMXStructure("[" + i + "]");
                     nodeClassLevel1.Childs.Add(new JMXAttribute("Path", jmxvres_0109.Skeletons[i].Path));
-                    var nodeLevel2 = new JMXStructure("ExtraData", typeof(byte));
-                    nodeClassLevel1.Childs.Add(nodeLevel2);
-                    for (int j = 0; j < jmxvres_0109.Skeletons[i].ExtraData.Length; j++)
-                    {
-                        nodeLevel2.Childs.Add(new JMXAttribute("[" + j + "]", jmxvres_0109.Skeletons[i].ExtraData[j]));
-                    }
+                    nodeClassLevel1.Childs.Add(new JMXAttribute("ExtraBone", jmxvres_0109.Skeletons[i].ExtraBone));
                     nodeLevel1.Childs.Add(nodeClassLevel1);
                 }
                 root.Childs.Add(nodeLevel1);

@@ -68,7 +68,7 @@ namespace JMXFileEditor.Silkroad.Data
             PointerMeshGroup = PointerSkeleton + 4;
             for (int i = 0; i < Skeletons.Count; i++)
             {
-                PointerMeshGroup += (uint)((4 + Skeletons[i].Path.Length) + (4 + Skeletons[i].ExtraData.Length));
+                PointerMeshGroup += (uint)((4 + Skeletons[i].Path.Length) + (4 + Skeletons[i].ExtraBone.Length));
             }
             PointerAnimationGroup = PointerMeshGroup + 4;
             for (int i = 0; i < MeshGroups.Count; i++)
@@ -174,7 +174,7 @@ namespace JMXFileEditor.Silkroad.Data
                     Skeletons.Add(new Skeleton()
                     {
                         Path = new string(br.ReadChars(br.ReadInt32())),
-                        ExtraData = br.ReadBytes(br.ReadInt32())
+                        ExtraBone = new string(br.ReadChars(br.ReadInt32()))
                     });
                 }
 
@@ -312,8 +312,8 @@ namespace JMXFileEditor.Silkroad.Data
                 {
                     bw.Write(Skeletons[i].Path.Length);
                     bw.Write(Skeletons[i].Path.ToCharArray());
-                    bw.Write(Skeletons[i].ExtraData.Length);
-                    bw.Write(Skeletons[i].ExtraData);
+                    bw.Write(Skeletons[i].ExtraBone.Length);
+                    bw.Write(Skeletons[i].ExtraBone.ToCharArray());
                 }
 
                 // Pointer.MeshGroup
@@ -379,7 +379,7 @@ namespace JMXFileEditor.Silkroad.Data
         public class Skeleton
         {
             public string Path { get; set; } = string.Empty;
-            public byte[] ExtraData { get; set; }
+            public string ExtraBone { get; set; } = string.Empty;
         }
         public class MeshGroup
         {
