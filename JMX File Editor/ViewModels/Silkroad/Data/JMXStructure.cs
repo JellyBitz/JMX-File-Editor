@@ -33,7 +33,7 @@ namespace JMXFileEditor.ViewModels
         /// <summary>
         /// Creates a root node view model
         /// </summary>
-        private JMXStructure(string Name, Type ChildType = null) : base(Name, ChildType != null)
+        public JMXStructure(string Name, Type ChildType = null) : base(Name, ChildType != null)
         {
             // Make sure the type is specified
             if (ChildType == null)
@@ -44,7 +44,7 @@ namespace JMXFileEditor.ViewModels
             }
             
             /// Commands setup
-            CommandAddChild = new RelayCommand(() =>
+            CommandAddChild = new RelayParameterizedCommand((object parameter) =>
             {
                 /// Create and add a default instance to nodes queue
                 string name = "[" + Childs.Count.ToString() + "]";
@@ -63,7 +63,7 @@ namespace JMXFileEditor.ViewModels
                     var nodeClass = new JMXStructure(name);
                     if (ChildType == typeof(JMXVRES_0109.Material))
                     {
-                        var material = new JMXVRES_0109.Material();
+                        var material = parameter is JMXVRES_0109.Material ? parameter as JMXVRES_0109.Material : new JMXVRES_0109.Material();
                         nodeClass.Childs.Add(new JMXAttribute("Index", material.Index));
                         nodeClass.Childs.Add(new JMXAttribute("Path", material.Path));
                     }
@@ -119,6 +119,14 @@ namespace JMXFileEditor.ViewModels
                         nodeClass.Childs.Add(new JMXAttribute("X", animationGroupEntryEventPoint.X));
                         nodeClass.Childs.Add(new JMXAttribute("Y", animationGroupEntryEventPoint.Y));
                     }
+                    else if (ChildType == typeof(JMXVRES_0109.SystemModSet.IDataEnvMapEvent))
+                    {
+                        var envMapEvent = parameter is JMXVRES_0109.SystemModSet.IDataEnvMapEvent ? parameter as JMXVRES_0109.SystemModSet.IDataEnvMapEvent : new JMXVRES_0109.SystemModSet.IDataEnvMapEvent();
+                        nodeClass.Childs.Add(new JMXAttribute("IsEnabled", envMapEvent.IsEnabled));
+                        nodeClass.Childs.Add(new JMXAttribute("Path", envMapEvent.Path));
+                        nodeClass.Childs.Add(new JMXAttribute("Time", envMapEvent.Time));
+                        nodeClass.Childs.Add(new JMXAttribute("Keyword", envMapEvent.Keyword));
+                    }
                     else
                     {
                         // type not found
@@ -158,7 +166,7 @@ namespace JMXFileEditor.ViewModels
                 file.FlagUInt04 = (uint)((JMXAttribute)Childs[12]).Value;
                 file.FlagUInt05 = (uint)((JMXAttribute)Childs[13]).Value;
                 // Details
-                file.ResourceType = (ResourceType)((JMXAttribute)Childs[14]).Value;
+                file.ResourceType = (ResourceType)((JMXOption)Childs[14]).Value;
                 file.Name = (string)((JMXAttribute)Childs[15]).Value;
                 var nodeChilds = ((JMXStructure)Childs[16]).Childs;
                 file.UnkByteArray01 = new byte[nodeChilds.Count];
@@ -181,7 +189,8 @@ namespace JMXFileEditor.ViewModels
                 {
                     file.BoundingBox02[i] = (float)((JMXAttribute)nodeChilds[i]).Value;
                 }
-                nodeChilds = ((JMXStructure)Childs[20]).Childs;
+                file.HasExtraBoundingData = (bool)((JMXAttribute)Childs[20]).Value;
+                nodeChilds = ((JMXStructure)Childs[21]).Childs;
                 file.ExtraBoundingData = new byte[nodeChilds.Count];
                 for (int i = 0; i < nodeChilds.Count; i++)
                 {
@@ -189,7 +198,7 @@ namespace JMXFileEditor.ViewModels
                 }
 
                 // Pointer.Material
-                nodeChilds = ((JMXStructure)Childs[21]).Childs;
+                nodeChilds = ((JMXStructure)Childs[22]).Childs;
                 file.Materials = new List<JMXVRES_0109.Material>(nodeChilds.Count);
                 for (int i = 0; i < nodeChilds.Count; i++)
                 {
@@ -203,7 +212,7 @@ namespace JMXFileEditor.ViewModels
                 }
 
                 // Pointer.Mesh
-                nodeChilds = ((JMXStructure)Childs[22]).Childs;
+                nodeChilds = ((JMXStructure)Childs[23]).Childs;
                 file.Meshes = new List<JMXVRES_0109.Mesh>(nodeChilds.Count);
                 for (int i = 0; i < nodeChilds.Count; i++)
                 {
@@ -217,9 +226,9 @@ namespace JMXFileEditor.ViewModels
                 }
 
                 // Pointer.Animation
-                file.UnkUInt01 = (uint)((JMXAttribute)Childs[23]).Value;
-                file.UnkUInt02 = (uint)((JMXAttribute)Childs[24]).Value;
-                nodeChilds = ((JMXStructure)Childs[25]).Childs;
+                file.UnkUInt01 = (uint)((JMXAttribute)Childs[24]).Value;
+                file.UnkUInt02 = (uint)((JMXAttribute)Childs[25]).Value;
+                nodeChilds = ((JMXStructure)Childs[26]).Childs;
                 file.Animations = new List<JMXVRES_0109.Animation>(nodeChilds.Count);
                 for (int i = 0; i < nodeChilds.Count; i++)
                 {
@@ -232,7 +241,7 @@ namespace JMXFileEditor.ViewModels
                 }
 
                 // Pointer.Skeleton
-                nodeChilds = ((JMXStructure)Childs[26]).Childs;
+                nodeChilds = ((JMXStructure)Childs[27]).Childs;
                 file.Skeletons = new List<JMXVRES_0109.Skeleton>(nodeChilds.Count);
                 for (int i = 0; i < nodeChilds.Count; i++)
                 {
@@ -251,7 +260,7 @@ namespace JMXFileEditor.ViewModels
                 }
 
                 // Pointer.MeshGroup
-                nodeChilds = ((JMXStructure)Childs[27]).Childs;
+                nodeChilds = ((JMXStructure)Childs[28]).Childs;
                 file.MeshGroups = new List<JMXVRES_0109.MeshGroup>(nodeChilds.Count);
                 for (int i = 0; i < nodeChilds.Count; i++)
                 {
@@ -270,7 +279,7 @@ namespace JMXFileEditor.ViewModels
                 }
 
                 // Pointer.AnimationGroups
-                nodeChilds = ((JMXStructure)Childs[28]).Childs;
+                nodeChilds = ((JMXStructure)Childs[29]).Childs;
                 file.AnimationGroups = new List<JMXVRES_0109.AnimationGroup>(nodeChilds.Count);
                 for (int i = 0; i < nodeChilds.Count; i++)
                 {
@@ -289,7 +298,7 @@ namespace JMXFileEditor.ViewModels
                         animationGroup.Entries.Add(entry);
                         // Copy
                         var _nodeClass = ((JMXStructure)_nodeChilds[j]).Childs;
-                        entry.Type = (ResourceAnimationType)((JMXAttribute)_nodeClass[0]).Value;
+                        entry.Type = (ResourceAnimationType)((JMXOption)_nodeClass[0]).Value;
                         entry.FileIndex = (uint)((JMXAttribute)_nodeClass[1]).Value;
                         var __nodeChilds = ((JMXStructure)_nodeClass[2]).Childs;
                         entry.Events = new List<JMXVRES_0109.AnimationGroup.Entry.Event>();
@@ -321,13 +330,174 @@ namespace JMXFileEditor.ViewModels
                     }
                 }
 
-                // Pointer.SoundEffect
-                nodeChilds = ((JMXStructure)Childs[29]).Childs;
+                // Pointer.SystemMods
+                var nc1 = ((JMXStructure)Childs[30]).Childs;
+                file.SystemMods = new List<List<JMXVRES_0109.SystemModSet.Mod>>(nc1.Count);
+                for (int i = 0; i < nc1.Count; i++)
+                {
+                    // Create
+                    var systemMods = new List<JMXVRES_0109.SystemModSet.Mod>();
+                    file.SystemMods.Add(systemMods);
+                    // Copy
+                    var n2 = (((JMXStructure)nc1[i]).Childs[0] as JMXStructure).Childs;
+                    for (int j = 0; j < n2.Count; j++)
+                    {
+                        // Create
+                        var mod = new JMXVRES_0109.SystemModSet.Mod();
+                        systemMods.Add(mod);
+                        // Copy
+                        var nc2 = ((JMXStructure)n2[j]).Childs;
+                        mod.UnkUInt01 = (uint)((JMXAttribute)nc2[0]).Value;
+                        mod.UnkUInt02 = (uint)((JMXAttribute)nc2[1]).Value;
+                        mod.GroupName = (string)((JMXAttribute)nc2[2]).Value;
+                        var n3 = ((JMXStructure)nc2[3]).Childs;
+                        mod.ModsData = new List<JMXVRES_0109.SystemModSet.ModData>(n3.Count);
+                        for (int k = 0; k < n3.Count; k++)
+                        {
+                            // Create
+                            var modData = new JMXVRES_0109.SystemModSet.ModData();
+                            mod.ModsData.Add(modData);
+                            // Copy
+                            var nc3 = ((JMXStructure)n3[k]).Childs;
+                            modData.UnkUShort01 = (ushort)((JMXAttribute)nc3[0]).Value;
+                            modData.UnkUShort02 = (ushort)((JMXAttribute)nc3[1]).Value;
+                            modData.UnkFloat01 = (float)((JMXAttribute)nc3[2]).Value;
+                            modData.UnkUInt01 = (uint)((JMXAttribute)nc3[3]).Value;
+                            modData.IDataFlags = (uint)((JMXAttribute)nc3[4]).Value;
+                            modData.UnkUInt02 = (uint)((JMXAttribute)nc3[5]).Value;
+                            modData.UnkUInt03 = (uint)((JMXAttribute)nc3[6]).Value;
+                            modData.UnkUInt04 = (uint)((JMXAttribute)nc3[7]).Value;
+                            modData.UnkUInt05 = (uint)((JMXAttribute)nc3[8]).Value;
+							switch (modData.IDataFlags)
+							{
+                                case 16:
+                                    {
+                                        // abstraction
+                                        var data = modData as JMXVRES_0109.SystemModSet.IDataEnvMap;
+                                        // Copy
+                                        var nc4 = ((JMXAbstract)nc3[9]).Childs;
+                                        data.IsEnabled = (uint)((JMXAttribute)nc4[0]).Value;
+                                        data.UnkUInt01 = (uint)((JMXAttribute)nc4[1]).Value;
+                                        data.UnkUInt02 = (uint)((JMXAttribute)nc4[2]).Value;
+                                        data.UnkUInt03 = (uint)((JMXAttribute)nc4[3]).Value;
+                                        data.UnkFloat02 = (float)((JMXAttribute)nc4[4]).Value;
+                                        data.UnkFloat03 = (float)((JMXAttribute)nc4[5]).Value;
+                                        data.UnkUInt04 = (uint)((JMXAttribute)nc4[6]).Value;
+                                        data.UnkUInt05 = (uint)((JMXAttribute)nc4[7]).Value;
+                                        data.UnkUInt06 = (uint)((JMXAttribute)nc4[8]).Value;
+                                        data.UnkUInt07 = (uint)((JMXAttribute)nc4[9]).Value;
+                                        data.UnkUInt08 = (uint)((JMXAttribute)nc4[10]).Value;
+                                        data.UnkUInt09 = (uint)((JMXAttribute)nc4[11]).Value;
+                                        data.Name = (string)((JMXAttribute)nc4[12]).Value;
+                                        var n5 = ((JMXStructure)nc4[13]).Childs;
+                                        data.Events = new List<JMXVRES_0109.SystemModSet.IDataEnvMapEvent>(n5.Count);
+                                        for (int x = 0; x < n5.Count; x++)
+                                        {
+                                            // Create
+                                            var e = new JMXVRES_0109.SystemModSet.IDataEnvMapEvent();
+                                            data.Events.Add(e);
+                                            // Copy
+                                            var nc5 = ((JMXStructure)n5[x]).Childs;
+                                            e.IsEnabled = (uint)((JMXAttribute)nc5[0]).Value;
+                                            e.Path = (string)((JMXAttribute)nc5[1]).Value;
+                                            e.Time = (uint)((JMXAttribute)nc5[2]).Value;
+                                            e.Keyword = (string)((JMXAttribute)nc5[3]).Value;
+                                        }
+                                    }
+                                    break;
+                                case 48:
+                                    {
+                                        // abstraction
+                                        var data = modData as JMXVRES_0109.SystemModSet.IDataParticle;
+                                        // Copy
+                                        var nc4 = ((JMXAbstract)nc3[9]).Childs;
+                                        data.IsEnabled = (uint)((JMXAttribute)nc4[0]).Value;
+                                        data.UnkUInt01 = (uint)((JMXAttribute)nc4[1]).Value;
+                                        data.Path = (string)((JMXAttribute)nc4[2]).Value;
+                                        data.UnkUInt02 = (uint)((JMXAttribute)nc4[3]).Value;
+                                        data.UnkUInt03 = (uint)((JMXAttribute)nc4[4]).Value;
+                                        data.UnkUInt04 = (uint)((JMXAttribute)nc4[5]).Value;
+                                        data.UnkUInt05 = (uint)((JMXAttribute)nc4[6]).Value;
+                                        data.UnkUInt06 = (uint)((JMXAttribute)nc4[7]).Value;
+                                        data.UnkUInt07 = (uint)((JMXAttribute)nc4[8]).Value;
+                                    }
+                                    break;
+                                case 256:
+                                    {
+                                        // abstraction
+                                        var data = modData as JMXVRES_0109.SystemModSet.IData256;
+                                        // Copy
+                                        var nc4 = ((JMXAbstract)nc3[9]).Childs;
+                                        data.IsEnabled = (uint)((JMXAttribute)nc4[0]).Value;
+                                        data.UnkUShort01 = (ushort)((JMXAttribute)nc4[1]).Value;
+                                        data.UnkUShort02 = (ushort)((JMXAttribute)nc4[2]).Value;
+                                        data.UnkUInt01 = (uint)((JMXAttribute)nc4[3]).Value;
+                                        data.UnkUInt02 = (uint)((JMXAttribute)nc4[4]).Value;
+                                    }
+                                    break;
+                                case 272:
+                                    {
+                                        // abstraction
+                                        var data = modData as JMXVRES_0109.SystemModSet.IData272;
+                                        // Copy
+                                        var nc4 = ((JMXAbstract)nc3[9]).Childs;
+                                        data.UnkUInt01 = (uint)((JMXAttribute)nc4[0]).Value;
+                                        data.UnkUInt02 = (uint)((JMXAttribute)nc4[1]).Value;
+                                        data.UnkUInt03 = (uint)((JMXAttribute)nc4[2]).Value;
+                                        data.UnkUInt04 = (uint)((JMXAttribute)nc4[3]).Value;
+                                        data.UnkUInt05 = (uint)((JMXAttribute)nc4[4]).Value;
+                                        data.UnkFloat01 = (float)((JMXAttribute)nc4[5]).Value;
+                                        data.UnkFloat02 = (float)((JMXAttribute)nc4[6]).Value;
+                                        data.UnkFloat03 = (float)((JMXAttribute)nc4[7]).Value;
+                                        data.UnkFloat04 = (float)((JMXAttribute)nc4[8]).Value;
+                                        data.UnkUInt06 = (uint)((JMXAttribute)nc4[9]).Value;
+                                        data.UnkFloat05 = (float)((JMXAttribute)nc4[10]).Value;
+                                        data.UnkFloat06 = (float)((JMXAttribute)nc4[11]).Value;
+                                        data.UnkFloat07 = (float)((JMXAttribute)nc4[12]).Value;
+                                        data.UnkFloat08 = (float)((JMXAttribute)nc4[13]).Value;
+                                        data.UnkUInt07 = (uint)((JMXAttribute)nc4[14]).Value;
+                                        data.UnkUInt08 = (uint)((JMXAttribute)nc4[15]).Value;
+                                        data.UnkUInt09 = (uint)((JMXAttribute)nc4[16]).Value;
+                                        data.UnkUInt10 = (uint)((JMXAttribute)nc4[17]).Value;
+                                        data.UnkUShort01 = (ushort)((JMXAttribute)nc4[18]).Value;
+                                        data.UnkUShort02 = (ushort)((JMXAttribute)nc4[19]).Value;
+                                        data.UnkUShort03 = (ushort)((JMXAttribute)nc4[20]).Value;
+                                        data.UnkUShort04 = (ushort)((JMXAttribute)nc4[21]).Value;
+                                        data.UnkUShort05 = (ushort)((JMXAttribute)nc4[22]).Value;
+                                        data.UnkUShort06 = (ushort)((JMXAttribute)nc4[23]).Value;
+                                        data.UnkFloat09 = (float)((JMXAttribute)nc4[24]).Value;
+                                        data.UnkUInt11 = (uint)((JMXAttribute)nc4[25]).Value;
+                                    }
+                                    break;
+                                case 768:
+                                    {
+                                        // abstraction
+                                        var data = modData as JMXVRES_0109.SystemModSet.IData768;
+                                        // Copy
+                                        var nc4 = ((JMXAbstract)nc3[9]).Childs;
+                                        data.UnkUShort01 = (ushort)((JMXAttribute)nc4[0]).Value;
+                                        data.UnkUInt01 = (uint)((JMXAttribute)nc4[1]).Value;
+                                        data.UnkUInt02 = (uint)((JMXAttribute)nc4[2]).Value;
+                                        data.UnkUInt03 = (uint)((JMXAttribute)nc4[3]).Value;
+                                        data.UnkUShort02 = (ushort)((JMXAttribute)nc4[4]).Value;
+                                        data.UnkUInt04 = (uint)((JMXAttribute)nc4[5]).Value;
+                                        data.UnkUInt05 = (uint)((JMXAttribute)nc4[6]).Value;
+                                        data.UnkUInt06 = (uint)((JMXAttribute)nc4[7]).Value;
+                                        data.UnkUInt07 = (uint)((JMXAttribute)nc4[8]).Value;
+                                        data.UnkUInt08 = (uint)((JMXAttribute)nc4[9]).Value;
+                                        data.UnkUInt09 = (uint)((JMXAttribute)nc4[10]).Value;
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                // Bytes left
+                nodeChilds = ((JMXStructure)Childs[31]).Childs;
                 file.SystemModsNonDecodedBytes = new byte[nodeChilds.Count];
                 for (int i = 0; i < nodeChilds.Count; i++)
-                {
                     file.SystemModsNonDecodedBytes[i] = (byte)((JMXAttribute)nodeChilds[i]).Value;
-                }
 
                 // Return result
                 return file;
@@ -379,7 +549,8 @@ namespace JMXFileEditor.ViewModels
                 for (int i = 0; i < jmxvres_0109.BoundingBox02.Length; i++)
                     nodeLevel1.Childs.Add(new JMXAttribute("[" + i + "]", jmxvres_0109.BoundingBox02[i]));
                 root.Childs.Add(nodeLevel1);
-                nodeLevel1 = new JMXStructure("ExtraBoundingData", typeof(byte));
+                root.Childs.Add(new JMXAttribute("HasExtraBoundingData", jmxvres_0109.HasExtraBoundingData));
+                nodeLevel1 = new JMXStructure("ExtraBoundingData");
                 for (int i = 0; i < jmxvres_0109.ExtraBoundingData.Length; i++)
                     nodeLevel1.Childs.Add(new JMXAttribute("[" + i + "]", jmxvres_0109.ExtraBoundingData[i]));
                 root.Childs.Add(nodeLevel1);
@@ -485,6 +656,63 @@ namespace JMXFileEditor.ViewModels
                 }
                 root.Childs.Add(nodeLevel1);
                 // Pointer.SystemMods
+                var n1 = new JMXStructure("SystemModSet");
+                root.Childs.Add(n1);
+                for (int i = 0; i < jmxvres_0109.SystemMods.Count; i++)
+                {
+                    var nc1 = new JMXStructure("[" + i + "]");
+                    var n2 = new JMXStructure("Mods");
+                    nc1.Childs.Add(n2);
+                    for (int j = 0; j < jmxvres_0109.SystemMods[i].Count; j++)
+                    {
+                        var nc2 = new JMXStructure("[" + j + "]");
+                        nc2.Childs.Add(new JMXAttribute("UnkUInt01", jmxvres_0109.SystemMods[i][j].UnkUInt01));
+                        nc2.Childs.Add(new JMXAttribute("UnkUInt02", jmxvres_0109.SystemMods[i][j].UnkUInt02));
+                        nc2.Childs.Add(new JMXAttribute("GroupName", jmxvres_0109.SystemMods[i][j].GroupName));
+                        var n3 = new JMXStructure("ModsData",typeof(JMXVRES_0109.SystemModSet.ModData));
+                        nc2.Childs.Add(n3);
+                        for (int k = 0; k < jmxvres_0109.SystemMods[i][j].ModsData.Count; k++)
+                        {
+                            var nc3 = new JMXStructure("[" + k + "]");
+                            nc3.Childs.Add(new JMXAttribute("UnkUShort01", jmxvres_0109.SystemMods[i][j].ModsData[k].UnkUShort01));
+                            nc3.Childs.Add(new JMXAttribute("UnkUShort02", jmxvres_0109.SystemMods[i][j].ModsData[k].UnkUShort02));
+                            nc3.Childs.Add(new JMXAttribute("UnkFloat01", jmxvres_0109.SystemMods[i][j].ModsData[k].UnkFloat01));
+                            nc3.Childs.Add(new JMXAttribute("UnkUInt01", jmxvres_0109.SystemMods[i][j].ModsData[k].UnkUInt01));
+                            nc3.Childs.Add(new JMXAttribute("IDataFlags", jmxvres_0109.SystemMods[i][j].ModsData[k].IDataFlags));
+                            nc3.Childs.Add(new JMXAttribute("UnkUInt02", jmxvres_0109.SystemMods[i][j].ModsData[k].UnkUInt02));
+                            nc3.Childs.Add(new JMXAttribute("UnkUInt03", jmxvres_0109.SystemMods[i][j].ModsData[k].UnkUInt03));
+                            nc3.Childs.Add(new JMXAttribute("UnkUInt04", jmxvres_0109.SystemMods[i][j].ModsData[k].UnkUInt04));
+                            nc3.Childs.Add(new JMXAttribute("UnkUInt05", jmxvres_0109.SystemMods[i][j].ModsData[k].UnkUInt05));
+                            var nc4 = new JMXAbstract("Data",GetTypes(typeof(JMXVRES_0109.SystemModSet.IDataEmpty),typeof(JMXVRES_0109.SystemModSet.IDataEnvMap), typeof(JMXVRES_0109.SystemModSet.IDataParticle), typeof(JMXVRES_0109.SystemModSet.IData256), typeof(JMXVRES_0109.SystemModSet.IData272), typeof(JMXVRES_0109.SystemModSet.IData768)));
+                            nc3.Childs.Add(nc4);
+                            // set abstract value
+                            switch (jmxvres_0109.SystemMods[i][j].ModsData[k].IDataFlags)
+                            {
+                                case 0:
+                                    nc4.SetCurrentType(typeof(JMXVRES_0109.SystemModSet.IDataEmpty));
+                                    break;
+                                case 16:
+                                    nc4.SetCurrentType(typeof(JMXVRES_0109.SystemModSet.IDataEnvMap), jmxvres_0109.SystemMods[i][j].ModsData[k]);
+                                    break;
+                                case 48:
+                                    nc4.SetCurrentType(typeof(JMXVRES_0109.SystemModSet.IDataParticle), jmxvres_0109.SystemMods[i][j].ModsData[k]);
+                                    break;
+                                case 256:
+                                    nc4.SetCurrentType(typeof(JMXVRES_0109.SystemModSet.IData256), jmxvres_0109.SystemMods[i][j].ModsData[k]);
+                                    break;
+                                case 272:
+                                    nc4.SetCurrentType(typeof(JMXVRES_0109.SystemModSet.IData272), jmxvres_0109.SystemMods[i][j].ModsData[k]);
+                                    break;
+                                case 768:
+                                    nc4.SetCurrentType(typeof(JMXVRES_0109.SystemModSet.IData768), jmxvres_0109.SystemMods[i][j].ModsData[k]);
+                                    break;
+                            }
+                            n3.Childs.Add(nc3);
+                        }
+                        n2.Childs.Add(nc2);
+                    }
+                    n1.Childs.Add(nc1);
+                }
 
                 // Remaining bytes
                 nodeLevel1 = new JMXStructure("SystemMods.NonDecodedBytes");
@@ -507,6 +735,13 @@ namespace JMXFileEditor.ViewModels
         {
             return Enum.GetValues(EnumType).Cast<T>().ToList();
         }
+        /// <summary>
+        /// Converts quickly all types to array
+        /// </summary>
+        public static Type[] GetTypes(params Type[] types)
+		{
+            return types;
+		}
         #endregion
     }
 }

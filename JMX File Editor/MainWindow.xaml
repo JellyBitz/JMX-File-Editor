@@ -160,6 +160,22 @@
                                       IsEnabled="{Binding IsEditable}"/>
                         </StackPanel>
                     </DataTemplate>
+                    <!-- Binding JMXAbstract type -->
+                    <HierarchicalDataTemplate DataType="{x:Type VM:JMXAbstract}"
+                                              ItemsSource="{Binding Childs}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="  as   "
+                                       Foreground="#0000FF"
+                                       VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding AvailableTypes}"
+                                      SelectedValue="{Binding CurrentType}"
+                                      DisplayMemberPath="Name"
+                                      MinWidth="100"
+                                      IsEnabled="{Binding IsEditable}"/>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>
         </Grid>

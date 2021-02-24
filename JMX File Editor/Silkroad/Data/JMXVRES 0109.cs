@@ -30,6 +30,7 @@ namespace JMXFileEditor.Silkroad.Data
         public string RootMesh { get; set; }
         public float[] BoundingBox01 { get; set; }
         public float[] BoundingBox02 { get; set; }
+        public bool HasExtraBoundingData { get; set; }
         public byte[] ExtraBoundingData { get; set; }
         public List<Material> Materials { get; set; }
         public List<Mesh> Meshes { get; set; }
@@ -39,7 +40,7 @@ namespace JMXFileEditor.Silkroad.Data
         public List<Skeleton> Skeletons { get; set; }
         public List<MeshGroup> MeshGroups { get; set; }
         public List<AnimationGroup> AnimationGroups { get; set; }
-        public List<List<SystemModSet.Mod>> SystemMods { get; private set; }
+        public List<List<SystemModSet.Mod>> SystemMods { get; set; }
         public byte[] SystemModsNonDecodedBytes { get; set; }
         #endregion
 
@@ -122,7 +123,8 @@ namespace JMXFileEditor.Silkroad.Data
                 RootMesh = br.ReadString32();
                 BoundingBox01 = br.ReadSingleArray(6);
                 BoundingBox02 = br.ReadSingleArray(6);
-                if (br.ReadUInt32() == 1)
+                HasExtraBoundingData = br.ReadUInt32() != 0;
+                if (HasExtraBoundingData)
                     ExtraBoundingData = br.ReadBytes(64);
                 else
                     ExtraBoundingData = new byte[0];
@@ -148,7 +150,7 @@ namespace JMXFileEditor.Silkroad.Data
                     Meshes.Add(new Mesh()
                     {
                         Path = br.ReadString32(),
-                        UnkUInt01 = FlagUInt01 == 1 ? br.ReadUInt32() : 0
+                        UnkUInt01 = FlagUInt01 != 0 ? br.ReadUInt32() : 0
                     });
                 }
 
@@ -273,12 +275,12 @@ namespace JMXFileEditor.Silkroad.Data
                                 modData.UnkUShort02 = br.ReadUInt16(); // 0, 4, 5, 6
                                 modData.UnkFloat01 = br.ReadSingle(); // 0.5
                                 modData.UnkUInt01 = br.ReadUInt32(); // 1
-                                modData.UnkFlags = br.ReadUInt32(); // 0, 16, 48, 256 (avatar), 272, 768 (Weapon)
+                                modData.IDataFlags = br.ReadUInt32(); // 0, 16, 48, 256 (avatar), 272, 768 (Weapon)
                                 modData.UnkUInt02 = br.ReadUInt32(); // 4294967295
                                 modData.UnkUInt03 = br.ReadUInt32(); // 0
                                 modData.UnkUInt04 = br.ReadUInt32(); // 0, 1 (Weapon), 3 (avatar)
                                 modData.UnkUInt05 = br.ReadUInt32(); // 0
-                                switch (modData.UnkFlags)
+                                switch (modData.IDataFlags)
                                 {
                                     case 0:
                                         // Has no more data
@@ -296,12 +298,12 @@ namespace JMXFileEditor.Silkroad.Data
                                             data.UnkUInt03 = br.ReadUInt32(); // 0
                                             data.UnkFloat02 = br.ReadSingle(); // 10
                                             data.UnkFloat03 = br.ReadSingle(); // 100
-                                            data.UnkUInt02 = br.ReadUInt32(); // 0
-                                            data.UnkUInt03 = br.ReadUInt32(); // 0
                                             data.UnkUInt04 = br.ReadUInt32(); // 0
                                             data.UnkUInt05 = br.ReadUInt32(); // 0
                                             data.UnkUInt06 = br.ReadUInt32(); // 0
                                             data.UnkUInt07 = br.ReadUInt32(); // 0
+                                            data.UnkUInt08 = br.ReadUInt32(); // 0
+                                            data.UnkUInt09 = br.ReadUInt32(); // 0
                                             data.Name = br.ReadString32(); // default
                                             var eventCount = br.ReadInt32();
                                             data.Events = new List<SystemModSet.IDataEnvMapEvent>(eventCount);
@@ -413,43 +415,45 @@ namespace JMXFileEditor.Silkroad.Data
                         // add
                         SystemMods.Add(mods);
                     }
-                    // Stuffs about hidden mesh if some equipment is putting on
-                    //if (this.ResourceType == ResourceType.Character || this.ResourceType == ResourceType.NPC)
-                    //{
-                    //    uint unkUInt01 = br.ReadUInt32(); // 0, 4294967295
-                    //    if (this.ResourceType == ResourceType.Character || this.ResourceType == ResourceType.NPC && unkUInt01 == uint.MaxValue)
-                    //    {
-                    //        ushort unkFlag01 = br.ReadUInt16(); // 13
-                    //        if (unkFlag01 != 0)
-                    //        {
-                    //            var unkUShort01 = br.ReadUInt16(); // 0
-                    //            uint unkUInt03 = br.ReadUInt32(); // 0
-                    //            count = br.ReadInt32();
-                    //            for (int i = 0; i < count; i++)
-                    //            {
-                    //                uint index = br.ReadUInt32();
-                    //                uint value = br.ReadUInt32();
-                    //            }
-                    //            uint unkUInt23 = br.ReadUInt32(); // 0
-                    //        }
-                    //    }
-                    //}
                 }
                 catch
                 {
-                    // Section not yet, reset and show it as non decoded
+                    // Section not correctly parsed, reset and show it as non decoded
                     br.BaseStream.Seek(lastSystemModPosition, SeekOrigin.Begin);
+
+                    // TO DO: Parse it
+                    System.Diagnostics.Debugger.Break();
                 }
+
+
+                // Stuffs about hidden mesh if some equipment is putting on
+                //if (this.ResourceType == ResourceType.Character || this.ResourceType == ResourceType.NPC)
+                //{
+                //    uint unkUInt01 = br.ReadUInt32(); // 0, 4294967295
+                //    if (this.ResourceType == ResourceType.Character || this.ResourceType == ResourceType.NPC && unkUInt01 == uint.MaxValue)
+                //    {
+                //        ushort unkFlag01 = br.ReadUInt16(); // 13
+                //        if (unkFlag01 != 0)
+                //        {
+                //            var unkUShort01 = br.ReadUInt16(); // 0
+                //            uint unkUInt03 = br.ReadUInt32(); // 0
+                //            count = br.ReadInt32();
+                //            for (int i = 0; i < count; i++)
+                //            {
+                //                uint index = br.ReadUInt32();
+                //                uint value = br.ReadUInt32();
+                //            }
+                //            uint unkUInt23 = br.ReadUInt32(); // 0
+                //        }
+                //    }
+                //}
 
                 // End reading non decoded bytes
                 long nonDecodedBytesCount = br.BaseStream.Length - br.BaseStream.Position;
-                SystemModsNonDecodedBytes = new byte[0];
-                if (nonDecodedBytesCount > 0)
-                {
-                    SystemModsNonDecodedBytes = br.ReadBytes((int)nonDecodedBytesCount);
-                    // print for checking it eventually
-                    System.Diagnostics.Debug.WriteLine(SystemModsNonDecodedBytes.ToHexDump());
-                }
+                SystemModsNonDecodedBytes = br.ReadBytes((int)nonDecodedBytesCount);
+
+                // print for checking it later
+                System.Diagnostics.Debug.WriteLineIf(nonDecodedBytesCount > 0, SystemModsNonDecodedBytes.ToHexDump());
             }
         }
         public void Save(string Path)
@@ -483,9 +487,10 @@ namespace JMXFileEditor.Silkroad.Data
                 bw.WriteString32(RootMesh);
                 bw.Write(BoundingBox01);
                 bw.Write(BoundingBox02);
-                bw.Write(ExtraBoundingData.Length > 0);
-                if (ExtraBoundingData.Length > 0)
-                    bw.Write(ExtraBoundingData);
+                bw.Write(HasExtraBoundingData ? 1 : 0);
+                if(HasExtraBoundingData && ExtraBoundingData.Length == 0)
+                	ExtraBoundingData = new byte[64];
+                bw.Write(ExtraBoundingData);
 
                 // Pointer.Material
                 bw.Write(Materials.Count);
@@ -500,7 +505,8 @@ namespace JMXFileEditor.Silkroad.Data
                 for (int i = 0; i < Meshes.Count; i++)
                 {
                     bw.WriteString32(Meshes[i].Path);
-                    bw.Write(Meshes[i].UnkUInt01);
+                    if(FlagUInt01 != 0)
+                        bw.Write(Meshes[i].UnkUInt01);
                 }
 
                 // Pointer.Animation
@@ -559,13 +565,140 @@ namespace JMXFileEditor.Silkroad.Data
                 }
 
                 // Pointer.SystemModSet
-
+                foreach (var systemMod in SystemMods)
+                {
+					bw.Write(systemMod.Count);
+					foreach (var mod in systemMod)
+					{
+						bw.Write(mod.UnkUInt01);
+                        bw.Write(mod.UnkUInt02);
+						bw.WriteString32(mod.GroupName);
+						bw.Write(mod.ModsData.Count);
+						foreach (var modData in mod.ModsData)
+                        {
+                            bw.Write(modData.UnkUShort01);
+                            bw.Write(modData.UnkUShort02);
+                            bw.Write(modData.UnkFloat01);
+                            bw.Write(modData.UnkUInt01);
+                            bw.Write(modData.IDataFlags);
+                            bw.Write(modData.UnkUInt02);
+                            bw.Write(modData.UnkUInt03);
+                            bw.Write(modData.UnkUInt04);
+                            bw.Write(modData.UnkUInt05);
+                            switch (modData.IDataFlags)
+                            {
+                                case 16:
+                                    {
+                                        var data = modData as JMXVRES_0109.SystemModSet.IDataEnvMap;
+                                        bw.Write(data.IsEnabled);
+                                        if (data.IsEnabled == 0)
+                                            break;
+                                        bw.Write(data.UnkUInt01);
+                                        bw.Write(data.UnkUInt02);
+                                        bw.Write(data.UnkUInt03);
+                                        bw.Write(data.UnkFloat02);
+                                        bw.Write(data.UnkFloat03);
+                                        bw.Write(data.UnkUInt04);
+                                        bw.Write(data.UnkUInt05);
+                                        bw.Write(data.UnkUInt06);
+                                        bw.Write(data.UnkUInt07);
+                                        bw.Write(data.UnkUInt08);
+                                        bw.Write(data.UnkUInt09);
+                                        bw.WriteString32(data.Name);
+                                        bw.Write(data.Events.Count);
+										foreach(var e in data.Events)
+										{
+                                            bw.Write(e.IsEnabled);
+                                            if(e.IsEnabled == 0)
+                                                continue;
+                                            bw.WriteString32(e.Path);
+                                            bw.Write(e.Time);
+                                            bw.WriteString32(e.Keyword);
+										}
+                                    }
+                                    break;
+                                case 48:
+                                    {
+                                        var data = modData as JMXVRES_0109.SystemModSet.IDataParticle;
+                                        bw.Write(data.IsEnabled);
+                                        if (data.IsEnabled == 0)
+                                            break;
+                                        bw.Write(data.UnkUInt01);
+                                        bw.WriteString32(data.Path);
+                                        bw.Write(data.UnkUInt02);
+                                        bw.Write(data.UnkUInt03);
+                                        bw.Write(data.UnkUInt04);
+                                        bw.Write(data.UnkUInt05);
+                                        bw.Write(data.UnkUInt06);
+                                        bw.Write(data.UnkUInt07);
+                                    }
+                                    break;
+                                case 256:
+                                    {
+                                        var data = modData as JMXVRES_0109.SystemModSet.IData256;
+                                        bw.Write(data.IsEnabled);
+                                        if (data.IsEnabled == 0)
+                                            break;
+                                        bw.Write(data.UnkUShort01);
+                                        bw.Write(data.UnkUShort02);
+                                        bw.Write(data.UnkUInt01);
+                                        bw.Write(data.UnkUInt02);
+                                    }
+                                    break;
+                                case 272:
+                                    {
+                                        var data = modData as JMXVRES_0109.SystemModSet.IData272;
+                                        bw.Write(data.UnkUInt01);
+                                        bw.Write(data.UnkUInt02);
+                                        bw.Write(data.UnkUInt03);
+                                        bw.Write(data.UnkUInt04);
+                                        bw.Write(data.UnkUInt05);
+                                        bw.Write(data.UnkFloat01);
+                                        bw.Write(data.UnkFloat02);
+                                        bw.Write(data.UnkFloat03);
+                                        bw.Write(data.UnkFloat04);
+                                        bw.Write(data.UnkUInt06);
+                                        bw.Write(data.UnkFloat05);
+                                        bw.Write(data.UnkFloat06);
+                                        bw.Write(data.UnkFloat07);
+                                        bw.Write(data.UnkFloat08);
+                                        bw.Write(data.UnkUInt07);
+                                        bw.Write(data.UnkUInt08);
+                                        bw.Write(data.UnkUInt09);
+                                        bw.Write(data.UnkUInt10);
+                                        bw.Write(data.UnkUShort01);
+                                        bw.Write(data.UnkUShort02);
+                                        bw.Write(data.UnkUShort03);
+                                        bw.Write(data.UnkUShort04);
+                                        bw.Write(data.UnkUShort05);
+                                        bw.Write(data.UnkUShort06);
+                                        bw.Write(data.UnkFloat09);
+                                        bw.Write(data.UnkUInt11);
+                                    }
+                                    break;
+                                case 768:
+                                    {
+                                        var data = modData as JMXVRES_0109.SystemModSet.IData768;
+                                        bw.Write(data.UnkUShort01);
+                                        bw.Write(data.UnkUInt01);
+                                        bw.Write(data.UnkUInt02);
+                                        bw.Write(data.UnkUInt03);
+                                        bw.Write(data.UnkUShort02);
+                                        bw.Write(data.UnkUInt04);
+                                        bw.Write(data.UnkUInt05);
+                                        bw.Write(data.UnkUInt06);
+                                        bw.Write(data.UnkUInt07);
+                                        bw.Write(data.UnkUInt08);
+                                        bw.Write(data.UnkUInt09);
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
 
                 // Write remaining bytes
-                if (SystemModsNonDecodedBytes.Length != 0)
-                {
-                    bw.Write(SystemModsNonDecodedBytes);
-                }
+                bw.Write(SystemModsNonDecodedBytes);
             }
         }
         #endregion
@@ -633,13 +766,13 @@ namespace JMXFileEditor.Silkroad.Data
                 public string GroupName { get; set; }
                 public List<ModData> ModsData { get; set; }
             }
-            public class ModData : IDataEnvMap, IDataParticle, IData256, IData272, IData768
+            public class ModData : IDataEmpty, IDataEnvMap, IDataParticle, IData256, IData272, IData768
             {
                 public ushort UnkUShort01 { get; set; }
                 public ushort UnkUShort02 { get; set; }
                 public float UnkFloat01 { get; set; }
                 public uint UnkUInt01 { get; set; }
-                public uint UnkFlags { get; set; }
+                public uint IDataFlags { get; set; }
                 public uint UnkUInt02 { get; set; }
                 public uint UnkUInt03 { get; set; }
                 public uint UnkUInt04 { get; set; }
@@ -658,14 +791,16 @@ namespace JMXFileEditor.Silkroad.Data
                 uint IDataEnvMap.UnkUInt05 { get; set; }
                 uint IDataEnvMap.UnkUInt06 { get; set; }
                 uint IDataEnvMap.UnkUInt07 { get; set; }
-                string IDataEnvMap.Name { get; set; }
-                List<IDataEnvMapEvent> IDataEnvMap.Events { get; set; }
+                uint IDataEnvMap.UnkUInt08 { get; set; }
+                uint IDataEnvMap.UnkUInt09 { get; set; }
+                string IDataEnvMap.Name { get; set; } = string.Empty;
+                List<IDataEnvMapEvent> IDataEnvMap.Events { get; set; } = new List<IDataEnvMapEvent>();
                 #endregion
 
                 #region IDataPartricle
                 uint IDataParticle.IsEnabled { get; set; }
                 uint IDataParticle.UnkUInt01 { get; set; }
-                string IDataParticle.Path { get; set; }
+                string IDataParticle.Path { get; set; } = string.Empty;
                 uint IDataParticle.UnkUInt02 { get; set; }
                 uint IDataParticle.UnkUInt03 { get; set; }
                 uint IDataParticle.UnkUInt04 { get; set; }
@@ -727,6 +862,10 @@ namespace JMXFileEditor.Silkroad.Data
 
                 #endregion
             }
+            public interface IDataEmpty
+			{
+
+			}
             public interface IDataEnvMap
             {
                 uint IsEnabled { get; set; }
@@ -739,15 +878,17 @@ namespace JMXFileEditor.Silkroad.Data
                 uint UnkUInt05 { get; set; }
                 uint UnkUInt06 { get; set; }
                 uint UnkUInt07 { get; set; }
+                uint UnkUInt08 { get; set; }
+                uint UnkUInt09 { get; set; }
                 string Name { get; set; }
                 List<IDataEnvMapEvent> Events { get; set; }
             }
             public class IDataEnvMapEvent
             {
                 public uint IsEnabled { get; set; }
-                public string Path { get; set; }
+                public string Path { get; set; } = string.Empty;
                 public uint Time { get; set; }
-                public string Keyword { get; set; }
+                public string Keyword { get; set; } = string.Empty;
             }
             public interface IDataParticle
             {
