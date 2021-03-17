@@ -200,10 +200,7 @@ namespace JMXFileEditor.ViewModels
                 {
                     var skeleton = Object is JMXVRES_0109.Skeleton ? Object as JMXVRES_0109.Skeleton : new JMXVRES_0109.Skeleton();
                     nc1.Childs.Add(new JMXAttribute("Path", skeleton.Path));
-                    var nc2 = new JMXStructure("ExtraData", typeof(byte));
-                    nc1.Childs.Add(nc2);
-                    foreach (var extraData in skeleton.ExtraData)
-                        nc2.AddChild(extraData);
+                    nc1.Childs.Add(new JMXAttribute("ExtraBone", skeleton.ExtraBone));
                 }
                 else if (ChildType == typeof(JMXVRES_0109.MeshGroup))
                 {
@@ -437,12 +434,7 @@ namespace JMXFileEditor.ViewModels
                     // Copy
                     var nodeClass = ((JMXStructure)nodeChilds[i]).Childs;
                     skeleton.Path = (string)((JMXAttribute)nodeClass[0]).Value;
-                    var _nodeChilds = ((JMXStructure)nodeClass[1]).Childs;
-                    skeleton.ExtraData = new List<byte>(_nodeChilds.Count);
-                    for (int j = 0; j < _nodeChilds.Count; j++)
-                    {
-                        skeleton.ExtraData.Add((byte)((JMXAttribute)_nodeChilds[i]).Value);
-                    }
+                    skeleton.ExtraBone = (string)((JMXAttribute)nodeClass[1]).Value;
                 }
 
                 // Pointer.MeshGroup
