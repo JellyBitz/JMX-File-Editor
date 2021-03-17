@@ -70,12 +70,12 @@ namespace JMXFileEditor.Silkroad.Data
             PointerMeshGroup = PointerSkeleton + 4;
             for (int i = 0; i < Skeletons.Count; i++)
             {
-                PointerMeshGroup += (uint)((4 + Skeletons[i].Path.Length) + (4 + Skeletons[i].ExtraData.Length));
+                PointerMeshGroup += (uint)((4 + Skeletons[i].Path.Length) + (4 + Skeletons[i].ExtraData.Count));
             }
             PointerAnimationGroup = PointerMeshGroup + 4;
             for (int i = 0; i < MeshGroups.Count; i++)
             {
-                PointerAnimationGroup += (uint)((4 + MeshGroups[i].Name.Length) + (4 + MeshGroups[i].FileIndexes.Length * 4));
+                PointerAnimationGroup += (uint)((4 + MeshGroups[i].Name.Length) + (4 + MeshGroups[i].FileIndexes.Count * 4));
             }
             PointerSystemMods = PointerAnimationGroup + 4;
             for (int i = 0; i < AnimationGroups.Count; i++)
@@ -177,7 +177,7 @@ namespace JMXFileEditor.Silkroad.Data
                     Skeletons.Add(new Skeleton()
                     {
                         Path = br.ReadString32(),
-                        ExtraData = br.ReadBytes(br.ReadInt32())
+                        ExtraData = new List<byte>(br.ReadBytes(br.ReadInt32()))
                     });
                 }
 
@@ -189,7 +189,7 @@ namespace JMXFileEditor.Silkroad.Data
                     // create
                     MeshGroups.Add(new MeshGroup() {
                         Name = br.ReadString32(),
-                        FileIndexes = br.ReadUInt32Array(br.ReadInt32())
+                        FileIndexes = new List<uint>(br.ReadUInt32Array(br.ReadInt32()))
                     });
                 }
 
@@ -523,8 +523,8 @@ namespace JMXFileEditor.Silkroad.Data
                 for (int i = 0; i < Skeletons.Count; i++)
                 {
                     bw.WriteString32(Skeletons[i].Path);
-                    bw.Write(Skeletons[i].ExtraData.Length);
-                    bw.Write(Skeletons[i].ExtraData);
+                    bw.Write(Skeletons[i].ExtraData.Count);
+                    bw.Write(Skeletons[i].ExtraData.ToArray());
                 }
 
                 // Pointer.MeshGroup
@@ -532,8 +532,8 @@ namespace JMXFileEditor.Silkroad.Data
                 for (int i = 0; i < MeshGroups.Count; i++)
                 {
                     bw.WriteString32(MeshGroups[i].Name);
-                    bw.Write(MeshGroups[i].FileIndexes.Length);
-                    bw.Write(MeshGroups[i].FileIndexes);
+                    bw.Write(MeshGroups[i].FileIndexes.Count);
+                    bw.Write(MeshGroups[i].FileIndexes.ToArray());
                 }
 
                 // Pointer.AnimationGroup
@@ -721,23 +721,23 @@ namespace JMXFileEditor.Silkroad.Data
         public class Skeleton
         {
             public string Path { get; set; } = string.Empty;
-            public byte[] ExtraData { get; set; }
+            public List<byte> ExtraData { get; set; } = new List<byte>();
         }
         public class MeshGroup
         {
             public string Name { get; set; } = string.Empty;
-            public uint[] FileIndexes { get; set; }
+            public List<uint> FileIndexes { get; set;  } = new List<uint>();
         }
         public class AnimationGroup
         {
             public string Name { get; set; } = string.Empty;
-            public List<Entry> Entries { get; set; }
+            public List<Entry> Entries { get; set;  } = new List<Entry>();
             public class Entry
             {
                 public ResourceAnimationType Type { get; set; }
                 public uint FileIndex { get; set; }
-                public List<Event> Events { get; set; }
-                public List<Point> WalkPoints { get; set; }
+                public List<Event> Events { get; set;  } = new List<Event>();
+                public List<Point> WalkPoints { get; set;  } = new List<Point>();
                 public float WalkingLength { get; set; }
 
                 public class Event
