@@ -261,7 +261,7 @@ namespace JMXFileEditor.Silkroad.Data
                             mods.Add(mod);
                             // read
                             mod.UnkUInt01 = br.ReadUInt32(); // 1, 2
-                            mod.UnkUInt02 = br.ReadUInt32(); // 1, 2, 4, 9, 13, 15, 16, 17, 19, 22, 4294967295
+                            mod.Type = (ResourceAnimationType)br.ReadUInt32();
                             mod.GroupName = br.ReadString32(); // default, ambient
                             count = br.ReadInt32();
                             mod.ModsData = new List<SystemModSet.ModData>(count);
@@ -494,6 +494,11 @@ namespace JMXFileEditor.Silkroad.Data
                         ExtraBoundingData = new byte[64];
                     bw.Write(ExtraBoundingData);
                 }
+                else
+                {
+                    if (ExtraBoundingData.Length > 0)
+                        ExtraBoundingData = new byte[0];
+                }
 
                 // Pointer.Material
                 bw.Write(Materials.Count);
@@ -573,7 +578,7 @@ namespace JMXFileEditor.Silkroad.Data
 					foreach (var mod in systemMod)
 					{
 						bw.Write(mod.UnkUInt01);
-                        bw.Write(mod.UnkUInt02);
+                        bw.Write((uint)mod.Type);
 						bw.WriteString32(mod.GroupName);
 						bw.Write(mod.ModsData.Count);
 						foreach (var modData in mod.ModsData)
@@ -764,7 +769,7 @@ namespace JMXFileEditor.Silkroad.Data
             public class Mod
             {
                 public uint UnkUInt01 { get; set; }
-                public uint UnkUInt02 { get; set; }
+                public ResourceAnimationType Type { get; set; }
                 public string GroupName { get; set; }
                 public List<ModData> ModsData { get; set; }
             }

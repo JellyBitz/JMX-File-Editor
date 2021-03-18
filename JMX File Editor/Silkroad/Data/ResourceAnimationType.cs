@@ -199,5 +199,6 @@
         VENDOR01 = 0x50,
 
         SHOT = 0xBF,    //not implemented in vSRO?
+        NONE = 0xFFFFFFFF,
     }
 }

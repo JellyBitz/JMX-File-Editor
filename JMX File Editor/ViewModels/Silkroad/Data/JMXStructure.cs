@@ -141,11 +141,9 @@ namespace JMXFileEditor.ViewModels
                 }
 
                 // Remaining bytes
-                n1 = new JMXStructure("SystemMods.NonDecodedBytes");
+                n1 = new JMXStructure("SystemMods.NonDecodedBytes",typeof(byte));
                 for (int i = 0; i < jmxvres_0109.SystemModsNonDecodedBytes.Length; i++)
-                {
                     n1.Childs.Add(new JMXAttribute("[" + i + "]", jmxvres_0109.SystemModsNonDecodedBytes[i]));
-                }
                 root.Childs.Add(n1);
                 return root;
             }
@@ -253,7 +251,7 @@ namespace JMXFileEditor.ViewModels
                 {
                     var mod = Object is JMXVRES_0109.SystemModSet.Mod ? Object as JMXVRES_0109.SystemModSet.Mod : new JMXVRES_0109.SystemModSet.Mod();
                     nc1.Childs.Add(new JMXAttribute("UnkUInt01", mod.UnkUInt01));
-                    nc1.Childs.Add(new JMXAttribute("UnkUInt02", mod.UnkUInt02));
+                    nc1.Childs.Add(new JMXOption("Type", mod.Type, GetValues<object>(typeof(ResourceAnimationType))));
                     nc1.Childs.Add(new JMXAttribute("GroupName", mod.GroupName));
                     var nc2 = new JMXStructure("ModsData", typeof(JMXVRES_0109.SystemModSet.ModData));
                     nc1.Childs.Add(nc2);
@@ -526,7 +524,7 @@ namespace JMXFileEditor.ViewModels
                         // Copy
                         var nc2 = ((JMXStructure)n2[j]).Childs;
                         mod.UnkUInt01 = (uint)((JMXAttribute)nc2[0]).Value;
-                        mod.UnkUInt02 = (uint)((JMXAttribute)nc2[1]).Value;
+                        mod.Type = (ResourceAnimationType)((JMXOption)nc2[1]).Value;
                         mod.GroupName = (string)((JMXAttribute)nc2[2]).Value;
                         var n3 = ((JMXStructure)nc2[3]).Childs;
                         mod.ModsData = new List<JMXVRES_0109.SystemModSet.ModData>(n3.Count);
