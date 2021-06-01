@@ -150,7 +150,7 @@ namespace JMXFileEditor.Silkroad.Data
                     Meshes.Add(new Mesh()
                     {
                         Path = br.ReadString32(),
-                        UnkUInt01 = FlagUInt01 != 0 ? br.ReadUInt32() : 0
+                        UnkUInt01 = FlagUInt01 == 1 ? br.ReadUInt32() : 0
                     });
                 }
 
@@ -242,14 +242,12 @@ namespace JMXFileEditor.Silkroad.Data
 
                 // Pointer.SystemMod
                 SystemMods = new List<List<SystemModSet.Mod>>(2);
-                long lastSystemModPosition = default;
                 // Try to read it
                 try
                 {
                     // Both systems follow the same pattern but the first one is about enviroment stuffs only
                     for (int sysCount = 0; sysCount < 2; sysCount++)
                     {
-                        lastSystemModPosition = br.BaseStream.Position;
                         // create
                         var mods = new List<SystemModSet.Mod>();
                         // read
@@ -419,12 +417,12 @@ namespace JMXFileEditor.Silkroad.Data
                 catch
                 {
                     // Section not correctly parsed, reset and show it as non decoded
-                    br.BaseStream.Seek(lastSystemModPosition, SeekOrigin.Begin);
+                    br.BaseStream.Seek(PointerSystemMods, SeekOrigin.Begin);
+                    SystemMods.Clear();
 
                     // TO DO: Parse it
-                    System.Diagnostics.Debugger.Break();
+                    //System.Diagnostics.Debugger.Break();
                 }
-
 
                 // Stuffs about hidden mesh if some equipment is putting on
                 //if (this.ResourceType == ResourceType.Character || this.ResourceType == ResourceType.NPC)
