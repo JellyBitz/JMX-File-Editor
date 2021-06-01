@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JMXFileEditor.Silkroad.Data
+﻿namespace JMXFileEditor.Silkroad.Data
 {
     public enum ResourceAnimationType : uint
     {
@@ -205,5 +199,6 @@ namespace JMXFileEditor.Silkroad.Data
         VENDOR01 = 0x50,
 
         SHOT = 0xBF,    //not implemented in vSRO?
+        NONE = 0xFFFFFFFF,
     }
 }
