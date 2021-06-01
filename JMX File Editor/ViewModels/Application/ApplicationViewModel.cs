@@ -181,12 +181,19 @@ namespace JMXFileEditor.ViewModels
             {
                 using (BinaryReader br = new BinaryReader(fs))
                 {
+                    // Check the header exist at least
+                    if (br.BaseStream.Length < 12)
+                        return null;
+
                     // Read file type and create format
                     var header = new string(br.ReadChars(12));
                     switch (header)
                     {
-                        case "JMXVRES 0109":
+                        case JMXVRES_0109.FileHeader:
                             file = new JMXVRES_0109();
+                            break;
+                        case JMXVBMT_0102.FileHeader:
+                            file = new JMXVBMT_0102();
                             break;
                         default:
                             throw new FileFormatException("JMX Header not found! File not supported.");

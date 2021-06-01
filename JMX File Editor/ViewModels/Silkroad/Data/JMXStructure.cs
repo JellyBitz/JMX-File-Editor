@@ -147,6 +147,16 @@ namespace JMXFileEditor.ViewModels
                 root.Childs.Add(n1);
                 return root;
             }
+            else if (File is JMXVBMT_0102 jmxvmbt_0102)
+            {
+                root.Childs.Add(new JMXAttribute("Header", jmxvmbt_0102.Header, false));
+                // Entries
+                var n1 = new JMXStructure("Entries", typeof(JMXVBMT_0102.Entry));
+                foreach (var entry in jmxvmbt_0102.Entries)
+                    n1.AddChild(entry);
+                root.Childs.Add(n1);
+                return root;
+            }
             return null;
         }
         #endregion
@@ -177,6 +187,8 @@ namespace JMXFileEditor.ViewModels
             {
                 // default classes types
                 var nc1 = new JMXStructure(indexName);
+
+                // JMXVRES 0109
                 if (ChildType == typeof(JMXVRES_0109.Material))
                 {
                     var material = Object is JMXVRES_0109.Material ? Object as JMXVRES_0109.Material : new JMXVRES_0109.Material();
@@ -302,6 +314,23 @@ namespace JMXFileEditor.ViewModels
                     nc1.Childs.Add(new JMXAttribute("Path", envMapEvent.Path));
                     nc1.Childs.Add(new JMXAttribute("Time", envMapEvent.Time));
                     nc1.Childs.Add(new JMXAttribute("Keyword", envMapEvent.Keyword));
+                }
+                // JMXVBMT 0102
+                else if (ChildType == typeof(JMXVBMT_0102.Entry))
+                {
+                    var data = Object is JMXVBMT_0102.Entry ? Object as JMXVBMT_0102.Entry : new JMXVBMT_0102.Entry();
+                    nc1.Childs.Add(new JMXAttribute("Name", data.Name));
+                    nc1.Childs.Add(new JMXAbstract("Diffuse", GetTypes(typeof(JMXVBMT_0102.Color4)), typeof(JMXVBMT_0102.Color4), data.Diffuse));
+                    nc1.Childs.Add(new JMXAbstract("Ambient", GetTypes(typeof(JMXVBMT_0102.Color4)), typeof(JMXVBMT_0102.Color4), data.Ambient));
+                    nc1.Childs.Add(new JMXAbstract("Specular", GetTypes(typeof(JMXVBMT_0102.Color4)), typeof(JMXVBMT_0102.Color4), data.Specular));
+                    nc1.Childs.Add(new JMXAbstract("Emissive", GetTypes(typeof(JMXVBMT_0102.Color4)), typeof(JMXVBMT_0102.Color4), data.Emissive));
+                    nc1.Childs.Add(new JMXAttribute("UnkFloat01", data.UnkFloat01));
+                    nc1.Childs.Add(new JMXAttribute("UnkUInt01", data.UnkUInt01));
+                    nc1.Childs.Add(new JMXAttribute("DiffuseMap", data.DiffuseMap));
+                    nc1.Childs.Add(new JMXAttribute("UnkFloat02", data.UnkFloat02));
+                    nc1.Childs.Add(new JMXAttribute("UnkUShort01", data.UnkUShort01));
+                    nc1.Childs.Add(new JMXAttribute("IsAtOtherDirectory", data.IsAtOtherDirectory));
+                    nc1.Childs.Add(new JMXAttribute("NormalMap", data.NormalMap));
                 }
                 else
                 {
