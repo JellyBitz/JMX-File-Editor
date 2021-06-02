@@ -62,6 +62,7 @@
     <Compile Include="AttachedProperties\BaseAttachedProperty.cs" />
     <Compile Include="AttachedProperties\TreeviewSelectedItemProperty.cs" />
     <Compile Include="Silkroad\Data\IJMXFile.cs" />
+    <Compile Include="Silkroad\Data\JMXVBMT 0102.cs" />
     <Compile Include="Silkroad\Data\JMXVRES 0109.cs" />
     <Compile Include="Silkroad\Data\ResourceAnimationType.cs" />
     <Compile Include="Silkroad\Data\ResourceType.cs" />

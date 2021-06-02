@@ -9,7 +9,7 @@ namespace JMXFileEditor.Silkroad.Data
         /// <summary>
         /// Original header used by Joymax
         /// </summary>
-        public static string FileHeader { get; } = "JMXVRES 0109";
+        public const string FileHeader = "JMXVRES 0109";
         public string Header { get; set; }
         public uint PointerMaterial { get; private set; }
         public uint PointerMesh { get; private set; }
