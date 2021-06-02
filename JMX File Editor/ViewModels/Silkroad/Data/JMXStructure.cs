@@ -707,6 +707,66 @@ namespace JMXFileEditor.ViewModels
                 // Return result
                 return file;
             }
+            else if (header == JMXVBMT_0102.FileHeader)
+            {
+                JMXVBMT_0102 file = new JMXVBMT_0102();
+                file.Header = header;
+                // Entries
+                var nodeChilds = ((JMXStructure)Childs[1]).Childs;
+                file.Entries = new List<JMXVBMT_0102.Entry>();
+                foreach(var n1 in nodeChilds)
+                {
+                    // Create
+                    var entry = new JMXVBMT_0102.Entry();
+                    file.Entries.Add(entry);
+                    // Copy
+                    var nc1 = ((JMXStructure)n1).Childs;
+                    entry.Name = (string)((JMXAttribute)nc1[0]).Value;
+
+                    var nc2 = ((JMXAbstract)nc1[1]).Childs;
+                    entry.Diffuse = new JMXVBMT_0102.Color4()
+                    {
+                        Red = (float)((JMXAttribute)nc2[0]).Value,
+                        Green = (float)((JMXAttribute)nc2[1]).Value,
+                        Blue = (float)((JMXAttribute)nc2[2]).Value,
+                        Alpha = (float)((JMXAttribute)nc2[3]).Value,
+                    };
+                    nc2 = ((JMXAbstract)nc1[2]).Childs;
+                    entry.Ambient = new JMXVBMT_0102.Color4()
+                    {
+                        Red = (float)((JMXAttribute)nc2[0]).Value,
+                        Green = (float)((JMXAttribute)nc2[1]).Value,
+                        Blue = (float)((JMXAttribute)nc2[2]).Value,
+                        Alpha = (float)((JMXAttribute)nc2[3]).Value,
+                    };
+                    nc2 = ((JMXAbstract)nc1[3]).Childs;
+                    entry.Specular = new JMXVBMT_0102.Color4()
+                    {
+                        Red = (float)((JMXAttribute)nc2[0]).Value,
+                        Green = (float)((JMXAttribute)nc2[1]).Value,
+                        Blue = (float)((JMXAttribute)nc2[2]).Value,
+                        Alpha = (float)((JMXAttribute)nc2[3]).Value,
+                    };
+                    nc2 = ((JMXAbstract)nc1[4]).Childs;
+                    entry.Emissive = new JMXVBMT_0102.Color4()
+                    {
+                        Red = (float)((JMXAttribute)nc2[0]).Value,
+                        Green = (float)((JMXAttribute)nc2[1]).Value,
+                        Blue = (float)((JMXAttribute)nc2[2]).Value,
+                        Alpha = (float)((JMXAttribute)nc2[3]).Value,
+                    };
+                    entry.UnkFloat01 = (float)((JMXAttribute)nc1[5]).Value;
+                    entry.UnkUInt01 = (uint)((JMXAttribute)nc1[6]).Value;
+                    entry.DiffuseMap = (string)((JMXAttribute)nc1[7]).Value;
+                    entry.UnkFloat02 = (float)((JMXAttribute)nc1[8]).Value;
+                    entry.UnkUShort01 = (ushort)((JMXAttribute)nc1[9]).Value;
+                    entry.IsAtOtherDirectory = (bool)((JMXAttribute)nc1[10]).Value;
+                    entry.NormalMap = (string)((JMXAttribute)nc1[11]).Value;
+                }
+
+                // Return result
+                return file;
+            }
             return null;
         }
         #endregion

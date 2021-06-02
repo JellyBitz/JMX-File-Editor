@@ -27,7 +27,7 @@ namespace JMXFileEditor.Silkroad.Data
                 Header = new string(br.ReadChars(12));
                 // Entries
                 Entries = new List<Entry>();
-                var entryCount = br.ReadUInt32();
+                var entryCount = br.ReadInt32();
                 for (int i = 0; i < entryCount; i++)
                 {
                     // Create and add it
@@ -78,7 +78,47 @@ namespace JMXFileEditor.Silkroad.Data
         }
         public void Save(string Path)
         {
+            // Override file structure
+            using (BinaryWriter bw = new BinaryWriter(new FileStream(Path, FileMode.Create, FileAccess.Write)))
+            {
+                bw.Write(Header.ToCharArray());
+                // Entries
+                bw.Write(Entries.Count);
+                foreach (var entry in Entries)
+                {
+                    bw.WriteString32(entry.Name);
+                    // Diffuse
+                    bw.Write(entry.Diffuse.Red);
+                    bw.Write(entry.Diffuse.Green);
+                    bw.Write(entry.Diffuse.Blue);
+                    bw.Write(entry.Diffuse.Alpha);
+                    // Ambient
+                    bw.Write(entry.Ambient.Red);
+                    bw.Write(entry.Ambient.Green);
+                    bw.Write(entry.Ambient.Blue);
+                    bw.Write(entry.Ambient.Alpha);
+                    // Specular
+                    bw.Write(entry.Specular.Red);
+                    bw.Write(entry.Specular.Green);
+                    bw.Write(entry.Specular.Blue);
+                    bw.Write(entry.Specular.Alpha);
+                    // Emissive
+                    bw.Write(entry.Emissive.Red);
+                    bw.Write(entry.Emissive.Green);
+                    bw.Write(entry.Emissive.Blue);
+                    bw.Write(entry.Emissive.Alpha);
 
+                    bw.Write(entry.UnkFloat01);
+                    bw.Write(entry.UnkUInt01);
+                    bw.WriteString32(entry.DiffuseMap);
+                    bw.Write(entry.UnkFloat02);
+                    bw.Write(entry.UnkUShort01);
+                    bw.Write(entry.IsAtOtherDirectory);
+
+                    if ((entry.UnkUInt01 & 0x2000) != 0)
+                        bw.WriteString32(entry.NormalMap);
+                }
+            }
         }
         #endregion
 
