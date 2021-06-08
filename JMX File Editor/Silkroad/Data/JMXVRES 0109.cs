@@ -405,7 +405,7 @@ namespace JMXFileEditor.Silkroad.Data
                                         break;
                                     default:
                                         // Unknown flags
-                                        System.Diagnostics.Debugger.Break();
+                                        //System.Diagnostics.Debugger.Break();
                                         throw new System.NotImplementedException();
                                 }
                             }
