@@ -315,6 +315,18 @@ namespace JMXFileEditor.ViewModels
                     nc1.Childs.Add(new JMXAttribute("Time", envMapEvent.Time));
                     nc1.Childs.Add(new JMXAttribute("Keyword", envMapEvent.Keyword));
                 }
+                else if (ChildType == typeof(JMXVRES_0109.SystemModSet.IDataPatricleInfo))
+                {
+                    var particleInfo = Object is JMXVRES_0109.SystemModSet.IDataPatricleInfo ? Object as JMXVRES_0109.SystemModSet.IDataPatricleInfo : new JMXVRES_0109.SystemModSet.IDataPatricleInfo();
+                    nc1.Childs.Add(new JMXAttribute("UnkUInt01", particleInfo.UnkUInt01));
+                    nc1.Childs.Add(new JMXAttribute("Path", particleInfo.Path));
+                    nc1.Childs.Add(new JMXAttribute("Bone", particleInfo.Bone));
+                    nc1.Childs.Add(new JMXAttribute("UnkFloat01", particleInfo.UnkFloat01));
+                    nc1.Childs.Add(new JMXAttribute("UnkFloat02", particleInfo.UnkFloat02));
+                    nc1.Childs.Add(new JMXAttribute("UnkFloat03", particleInfo.UnkFloat03));
+                    nc1.Childs.Add(new JMXAttribute("UnkUInt02", particleInfo.UnkUInt02));
+                    nc1.Childs.Add(new JMXAttribute("UnkUInt03", particleInfo.UnkUInt03));
+                }
                 // JMXVBMT 0102
                 else if (ChildType == typeof(JMXVBMT_0102.Entry))
                 {
@@ -616,15 +628,24 @@ namespace JMXFileEditor.ViewModels
                                         var data = modData as JMXVRES_0109.SystemModSet.IDataParticle;
                                         // Copy
                                         var nc4 = ((JMXAbstract)nc3[9]).Childs;
-                                        data.IsEnabled = (uint)((JMXAttribute)nc4[0]).Value;
-                                        data.UnkUInt01 = (uint)((JMXAttribute)nc4[1]).Value;
-                                        data.Path = (string)((JMXAttribute)nc4[2]).Value;
-                                        data.UnkUInt02 = (uint)((JMXAttribute)nc4[3]).Value;
-                                        data.UnkUInt03 = (uint)((JMXAttribute)nc4[4]).Value;
-                                        data.UnkUInt04 = (uint)((JMXAttribute)nc4[5]).Value;
-                                        data.UnkUInt05 = (uint)((JMXAttribute)nc4[6]).Value;
-                                        data.UnkUInt06 = (uint)((JMXAttribute)nc4[7]).Value;
-                                        data.UnkUInt07 = (uint)((JMXAttribute)nc4[8]).Value;
+                                        var n5 = ((JMXStructure)nc4[0]).Childs;
+                                        data.Particles = new List<JMXVRES_0109.SystemModSet.IDataPatricleInfo>(n5.Count);
+                                        for (int x = 0; x < n5.Count; x++)
+                                        { 
+                                            // Create
+                                            var info = new JMXVRES_0109.SystemModSet.IDataPatricleInfo();
+                                            data.Particles.Add(info);
+                                            // Copy
+                                            var nc5 = ((JMXStructure)n5[x]).Childs;
+                                            info.UnkUInt01 = (uint)((JMXAttribute)nc5[0]).Value;
+                                            info.Path = (string)((JMXAttribute)nc5[1]).Value;
+                                            info.Bone = (string)((JMXAttribute)nc5[2]).Value;
+                                            info.UnkFloat01 = (float)((JMXAttribute)nc5[3]).Value;
+                                            info.UnkFloat02 = (float)((JMXAttribute)nc5[4]).Value;
+                                            info.UnkFloat03 = (float)((JMXAttribute)nc5[5]).Value;
+                                            info.UnkUInt02 = (uint)((JMXAttribute)nc5[6]).Value;
+                                            info.UnkUInt03 = (uint)((JMXAttribute)nc5[7]).Value;
+                                        }
                                     }
                                     break;
                                 case 256:

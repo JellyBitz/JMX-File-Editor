@@ -96,7 +96,7 @@ namespace JMXFileEditor.Silkroad.Data
         public void Load(FileStream FileStream)
         {
             // Read file structure
-            using (var br = new BinaryReader(FileStream))
+            using (var br = new BinaryReader(FileStream, System.Text.Encoding.ASCII))
             {
                 Header = new string(br.ReadChars(12));
                 // Pointers
@@ -263,14 +263,14 @@ namespace JMXFileEditor.Silkroad.Data
                             mod.GroupName = br.ReadString32(); // default, ambient
                             count = br.ReadInt32();
                             mod.ModsData = new List<SystemModSet.ModData>(count);
-                            for (int r = 0; r < count; r++)
+                            for (int j = 0; j < count; j++)
                             {
                                 // create
                                 var modData = new SystemModSet.ModData();
                                 mod.ModsData.Add(modData);
                                 // read
                                 modData.UnkUShort01 = br.ReadUInt16(); // 0
-                                modData.UnkUShort02 = br.ReadUInt16(); // 0, 4, 5, 6
+                                modData.UnkUShort02 = br.ReadUInt16(); // 0, 1, 3, 4, 5, 6
                                 modData.UnkFloat01 = br.ReadSingle(); // 0.5
                                 modData.UnkUInt01 = br.ReadUInt32(); // 1
                                 modData.IDataFlags = br.ReadUInt32(); // 0, 16, 48, 256 (avatar), 272, 768 (Weapon)
@@ -305,7 +305,7 @@ namespace JMXFileEditor.Silkroad.Data
                                             data.Name = br.ReadString32(); // default
                                             var eventCount = br.ReadInt32();
                                             data.Events = new List<SystemModSet.IDataEnvMapEvent>(eventCount);
-                                            for (int j = 0; j < eventCount; j++)
+                                            for (int k = 0; k < eventCount; k++)
                                             {
                                                 // create
                                                 var e = new SystemModSet.IDataEnvMapEvent();
@@ -325,17 +325,23 @@ namespace JMXFileEditor.Silkroad.Data
                                             // abstraction
                                             var data = modData as SystemModSet.IDataParticle;
                                             // read
-                                            data.IsEnabled = br.ReadUInt32();
-                                            if (data.IsEnabled == 0)
-                                                break;
-                                            data.UnkUInt01 = br.ReadUInt32(); // 1
-                                            data.Path = br.ReadString32(); // *.efp
-                                            data.UnkUInt02 = br.ReadUInt32(); // 0
-                                            data.UnkUInt03 = br.ReadUInt32(); // 0
-                                            data.UnkUInt04 = br.ReadUInt32(); // 0
-                                            data.UnkUInt05 = br.ReadUInt32(); // 0 
-                                            data.UnkUInt06 = br.ReadUInt32(); // 0
-                                            data.UnkUInt07 = br.ReadUInt32(); // 0
+                                            var particleCount = br.ReadInt32();
+                                            data.Particles = new List<SystemModSet.IDataPatricleInfo>(particleCount);
+                                            for (int k = 0; k < particleCount; k++)
+                                            {
+                                                // create
+                                                var info = new SystemModSet.IDataPatricleInfo();
+                                                data.Particles.Add(info);
+                                                // read
+                                                info.UnkUInt01 = br.ReadUInt32(); // 0, 1
+                                                info.Path = br.ReadString32(); // *.efp
+                                                info.Bone = br.ReadString32();
+                                                info.UnkFloat01 = br.ReadSingle();
+                                                info.UnkFloat02 = br.ReadSingle(); // 0
+                                                info.UnkFloat03 = br.ReadSingle(); // 0 
+                                                info.UnkUInt02 = br.ReadUInt32(); // 0
+                                                info.UnkUInt03 = br.ReadUInt32(); // 0
+                                            }
                                         }
                                         break;
                                     case 256:
@@ -366,7 +372,10 @@ namespace JMXFileEditor.Silkroad.Data
                                             data.UnkFloat02 = br.ReadSingle(); // 0.58
                                             data.UnkFloat03 = br.ReadSingle(); // 0.58
                                             data.UnkFloat04 = br.ReadSingle(); // 1
-                                            data.UnkUInt06 = br.ReadUInt32(); // 1000
+                                            if (modData.UnkUShort02 == 0)
+                                            {
+                                                data.UnkUInt06 = br.ReadUInt32(); // 1000
+                                            }
                                             data.UnkFloat05 = br.ReadSingle(); // 0.58
                                             data.UnkFloat06 = br.ReadSingle(); // 0.58
                                             data.UnkFloat07 = br.ReadSingle(); // 0.58
@@ -382,7 +391,10 @@ namespace JMXFileEditor.Silkroad.Data
                                             data.UnkUShort05 = br.ReadUInt16(); // 1920
                                             data.UnkUShort06 = br.ReadUInt16(); // 51300
                                             data.UnkFloat09 = br.ReadSingle(); // 1
-                                            data.UnkUInt11 = br.ReadUInt32(); // 0
+                                            if (modData.UnkUShort02 == 0)
+                                            {
+                                                data.UnkUInt11 = br.ReadUInt32(); // 0
+                                            }
                                         }
                                         break;
                                     case 768:
@@ -416,12 +428,12 @@ namespace JMXFileEditor.Silkroad.Data
                 }
                 catch
                 {
+                    // TO DO: Parse it
+                    //System.Diagnostics.Debugger.Break();
+
                     // Section not correctly parsed, reset and show it as non decoded
                     br.BaseStream.Seek(PointerSystemMods, SeekOrigin.Begin);
                     SystemMods.Clear();
-
-                    // TO DO: Parse it
-                    //System.Diagnostics.Debugger.Break();
                 }
 
                 // Stuffs about hidden mesh if some equipment is putting on
@@ -457,7 +469,7 @@ namespace JMXFileEditor.Silkroad.Data
         public void Save(string Path)
         {
             // Override file structure
-            using (BinaryWriter bw = new BinaryWriter(new FileStream(Path, FileMode.Create, FileAccess.Write)))
+            using (BinaryWriter bw = new BinaryWriter(new FileStream(Path, FileMode.Create, FileAccess.Write), System.Text.Encoding.ASCII))
             {
                 bw.Write(Header.ToCharArray());
                 // Pointers are calculated always before saving for safety
@@ -625,17 +637,18 @@ namespace JMXFileEditor.Silkroad.Data
                                 case 48:
                                     {
                                         var data = modData as JMXVRES_0109.SystemModSet.IDataParticle;
-                                        bw.Write(data.IsEnabled);
-                                        if (data.IsEnabled == 0)
-                                            break;
-                                        bw.Write(data.UnkUInt01);
-                                        bw.WriteString32(data.Path);
-                                        bw.Write(data.UnkUInt02);
-                                        bw.Write(data.UnkUInt03);
-                                        bw.Write(data.UnkUInt04);
-                                        bw.Write(data.UnkUInt05);
-                                        bw.Write(data.UnkUInt06);
-                                        bw.Write(data.UnkUInt07);
+                                        bw.Write(data.Particles.Count);
+                                        foreach (var info in data.Particles)
+                                        {
+                                            bw.Write(info.UnkUInt01);
+                                            bw.WriteString32(info.Path);
+                                            bw.WriteString32(info.Bone);
+                                            bw.Write(info.UnkFloat01);
+                                            bw.Write(info.UnkFloat02);
+                                            bw.Write(info.UnkFloat03);
+                                            bw.Write(info.UnkUInt02);
+                                            bw.Write(info.UnkUInt03);
+                                        }
                                     }
                                     break;
                                 case 256:
@@ -802,16 +815,8 @@ namespace JMXFileEditor.Silkroad.Data
                 List<IDataEnvMapEvent> IDataEnvMap.Events { get; set; } = new List<IDataEnvMapEvent>();
                 #endregion
 
-                #region IDataPartricle
-                uint IDataParticle.IsEnabled { get; set; }
-                uint IDataParticle.UnkUInt01 { get; set; }
-                string IDataParticle.Path { get; set; } = string.Empty;
-                uint IDataParticle.UnkUInt02 { get; set; }
-                uint IDataParticle.UnkUInt03 { get; set; }
-                uint IDataParticle.UnkUInt04 { get; set; }
-                uint IDataParticle.UnkUInt05 { get; set; }
-                uint IDataParticle.UnkUInt06 { get; set; }
-                uint IDataParticle.UnkUInt07 { get; set; }
+                #region IDataParticle
+                List<IDataPatricleInfo> IDataParticle.Particles { get; set; } = new List<IDataPatricleInfo>();
                 #endregion
 
                 #region IData256
@@ -895,17 +900,20 @@ namespace JMXFileEditor.Silkroad.Data
                 public uint Time { get; set; }
                 public string Keyword { get; set; } = string.Empty;
             }
+            public class IDataPatricleInfo
+            {
+                public uint UnkUInt01 { get; set; }
+                public string Path { get; set; }
+                public string Bone { get; set; }
+                public float UnkFloat01 { get; set; }
+                public float UnkFloat02 { get; set; }
+                public float UnkFloat03 { get; set; }
+                public uint UnkUInt02 { get; set; }
+                public uint UnkUInt03 { get; set; }
+            }
             public interface IDataParticle
             {
-                uint IsEnabled { get; set; }
-                uint UnkUInt01 { get; set; }
-                string Path { get; set; }
-                uint UnkUInt02 { get; set; }
-                uint UnkUInt03 { get; set; }
-                uint UnkUInt04 { get; set; }
-                uint UnkUInt05 { get; set; }
-                uint UnkUInt06 { get; set; }
-                uint UnkUInt07 { get; set; }
+                List<IDataPatricleInfo> Particles { get; set; }
             }
             public interface IData256
             {

@@ -1,8 +1,6 @@
 ﻿using JMXFileEditor.Utility;
-using System;
 using System.Collections.Generic;
 using System.IO;
-
 namespace JMXFileEditor.Silkroad.Data
 {
     class JMXVBMT_0102 : IJMXFile
@@ -22,7 +20,7 @@ namespace JMXFileEditor.Silkroad.Data
         public void Load(FileStream FileStream)
         {
             // Read file structure
-            using (var br = new BinaryReader(FileStream))
+            using (var br = new BinaryReader(FileStream, System.Text.Encoding.ASCII))
             {
                 Header = new string(br.ReadChars(12));
                 // Entries
@@ -79,7 +77,7 @@ namespace JMXFileEditor.Silkroad.Data
         public void Save(string Path)
         {
             // Override file structure
-            using (BinaryWriter bw = new BinaryWriter(new FileStream(Path, FileMode.Create, FileAccess.Write)))
+            using (BinaryWriter bw = new BinaryWriter(new FileStream(Path, FileMode.Create, FileAccess.Write), System.Text.Encoding.ASCII))
             {
                 bw.Write(Header.ToCharArray());
                 // Entries

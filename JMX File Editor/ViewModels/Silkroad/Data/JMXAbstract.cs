@@ -105,15 +105,10 @@ namespace JMXFileEditor.ViewModels
 			else if (Type == typeof(JMXVRES_0109.SystemModSet.IDataParticle))
 			{
 				var data = Object is JMXVRES_0109.SystemModSet.IDataParticle ? Object as JMXVRES_0109.SystemModSet.IDataParticle : new JMXVRES_0109.SystemModSet.ModData();
-				Childs.Add(new JMXAttribute("IsEnabled", data.IsEnabled));
-				Childs.Add(new JMXAttribute("UnkUInt01", data.UnkUInt01));
-				Childs.Add(new JMXAttribute("Path", data.Path));
-				Childs.Add(new JMXAttribute("UnkUInt02", data.UnkUInt02));
-				Childs.Add(new JMXAttribute("UnkUInt03", data.UnkUInt03));
-				Childs.Add(new JMXAttribute("UnkUInt04", data.UnkUInt04));
-				Childs.Add(new JMXAttribute("UnkUInt05", data.UnkUInt05));
-				Childs.Add(new JMXAttribute("UnkUInt06", data.UnkUInt06));
-				Childs.Add(new JMXAttribute("UnkUInt07", data.UnkUInt07));
+				var n5 = new JMXStructure("Particles", typeof(JMXVRES_0109.SystemModSet.IDataPatricleInfo));
+				Childs.Add(n5);
+				foreach (var particleInfo in data.Particles)
+					n5.AddChild(particleInfo);
 			}
 			else if (Type == typeof(JMXVRES_0109.SystemModSet.IData256))
 			{
