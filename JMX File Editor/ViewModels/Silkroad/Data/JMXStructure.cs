@@ -321,11 +321,11 @@ namespace JMXFileEditor.ViewModels
                     nc1.Childs.Add(new JMXAttribute("UnkUInt01", particleInfo.UnkUInt01));
                     nc1.Childs.Add(new JMXAttribute("Path", particleInfo.Path));
                     nc1.Childs.Add(new JMXAttribute("Bone", particleInfo.Bone));
-                    nc1.Childs.Add(new JMXAttribute("UnkUInt03", particleInfo.UnkUInt03));
                     nc1.Childs.Add(new JMXAttribute("UnkFloat01", particleInfo.UnkFloat01));
                     nc1.Childs.Add(new JMXAttribute("UnkFloat02", particleInfo.UnkFloat02));
-                    nc1.Childs.Add(new JMXAttribute("UnkUInt04", particleInfo.UnkUInt04));
-                    nc1.Childs.Add(new JMXAttribute("UnkUInt05", particleInfo.UnkUInt05));
+                    nc1.Childs.Add(new JMXAttribute("UnkFloat03", particleInfo.UnkFloat03));
+                    nc1.Childs.Add(new JMXAttribute("UnkUInt02", particleInfo.UnkUInt02));
+                    nc1.Childs.Add(new JMXAttribute("UnkUInt03", particleInfo.UnkUInt03));
                 }
                 // JMXVBMT 0102
                 else if (ChildType == typeof(JMXVBMT_0102.Entry))
@@ -640,11 +640,11 @@ namespace JMXFileEditor.ViewModels
                                             info.UnkUInt01 = (uint)((JMXAttribute)nc5[0]).Value;
                                             info.Path = (string)((JMXAttribute)nc5[1]).Value;
                                             info.Bone = (string)((JMXAttribute)nc5[2]).Value;
-                                            info.UnkUInt03 = (uint)((JMXAttribute)nc5[3]).Value;
-                                            info.UnkFloat01 = (float)((JMXAttribute)nc5[4]).Value;
-                                            info.UnkFloat02 = (float)((JMXAttribute)nc5[5]).Value;
-                                            info.UnkUInt04 = (uint)((JMXAttribute)nc5[6]).Value;
-                                            info.UnkUInt05 = (uint)((JMXAttribute)nc5[7]).Value;
+                                            info.UnkFloat01 = (float)((JMXAttribute)nc5[3]).Value;
+                                            info.UnkFloat02 = (float)((JMXAttribute)nc5[4]).Value;
+                                            info.UnkFloat03 = (float)((JMXAttribute)nc5[5]).Value;
+                                            info.UnkUInt02 = (uint)((JMXAttribute)nc5[6]).Value;
+                                            info.UnkUInt03 = (uint)((JMXAttribute)nc5[7]).Value;
                                         }
                                     }
                                     break;

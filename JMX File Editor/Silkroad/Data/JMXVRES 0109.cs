@@ -96,7 +96,7 @@ namespace JMXFileEditor.Silkroad.Data
         public void Load(FileStream FileStream)
         {
             // Read file structure
-            using (var br = new BinaryReader(FileStream))
+            using (var br = new BinaryReader(FileStream, System.Text.Encoding.ASCII))
             {
                 Header = new string(br.ReadChars(12));
                 // Pointers
@@ -333,14 +333,14 @@ namespace JMXFileEditor.Silkroad.Data
                                                 var info = new SystemModSet.IDataPatricleInfo();
                                                 data.Particles.Add(info);
                                                 // read
-                                                info.UnkUInt01 = br.ReadUInt32(); // 1
+                                                info.UnkUInt01 = br.ReadUInt32(); // 0, 1
                                                 info.Path = br.ReadString32(); // *.efp
                                                 info.Bone = br.ReadString32();
+                                                info.UnkFloat01 = br.ReadSingle();
+                                                info.UnkFloat02 = br.ReadSingle(); // 0
+                                                info.UnkFloat03 = br.ReadSingle(); // 0 
+                                                info.UnkUInt02 = br.ReadUInt32(); // 0
                                                 info.UnkUInt03 = br.ReadUInt32(); // 0
-                                                info.UnkFloat01 = br.ReadSingle(); // 0
-                                                info.UnkFloat02 = br.ReadSingle(); // 0 
-                                                info.UnkUInt04 = br.ReadUInt32(); // 0
-                                                info.UnkUInt05 = br.ReadUInt32(); // 0
                                             }
                                         }
                                         break;
@@ -417,7 +417,7 @@ namespace JMXFileEditor.Silkroad.Data
                                         break;
                                     default:
                                         // Unknown flags
-                                        System.Diagnostics.Debugger.Break();
+                                        //System.Diagnostics.Debugger.Break();
                                         throw new System.NotImplementedException();
                                 }
                             }
@@ -429,7 +429,7 @@ namespace JMXFileEditor.Silkroad.Data
                 catch
                 {
                     // TO DO: Parse it
-                    System.Diagnostics.Debugger.Break();
+                    //System.Diagnostics.Debugger.Break();
 
                     // Section not correctly parsed, reset and show it as non decoded
                     br.BaseStream.Seek(PointerSystemMods, SeekOrigin.Begin);
@@ -469,7 +469,7 @@ namespace JMXFileEditor.Silkroad.Data
         public void Save(string Path)
         {
             // Override file structure
-            using (BinaryWriter bw = new BinaryWriter(new FileStream(Path, FileMode.Create, FileAccess.Write)))
+            using (BinaryWriter bw = new BinaryWriter(new FileStream(Path, FileMode.Create, FileAccess.Write), System.Text.Encoding.ASCII))
             {
                 bw.Write(Header.ToCharArray());
                 // Pointers are calculated always before saving for safety
@@ -643,11 +643,11 @@ namespace JMXFileEditor.Silkroad.Data
                                             bw.Write(info.UnkUInt01);
                                             bw.WriteString32(info.Path);
                                             bw.WriteString32(info.Bone);
-                                            bw.Write(info.UnkUInt03);
                                             bw.Write(info.UnkFloat01);
                                             bw.Write(info.UnkFloat02);
-                                            bw.Write(info.UnkUInt04);
-                                            bw.Write(info.UnkUInt05);
+                                            bw.Write(info.UnkFloat03);
+                                            bw.Write(info.UnkUInt02);
+                                            bw.Write(info.UnkUInt03);
                                         }
                                     }
                                     break;
@@ -905,11 +905,11 @@ namespace JMXFileEditor.Silkroad.Data
                 public uint UnkUInt01 { get; set; }
                 public string Path { get; set; }
                 public string Bone { get; set; }
-                public uint UnkUInt03 { get; set; }
                 public float UnkFloat01 { get; set; }
                 public float UnkFloat02 { get; set; }
-                public uint UnkUInt04 { get; set; }
-                public uint UnkUInt05 { get; set; }
+                public float UnkFloat03 { get; set; }
+                public uint UnkUInt02 { get; set; }
+                public uint UnkUInt03 { get; set; }
             }
             public interface IDataParticle
             {
