@@ -169,6 +169,15 @@ namespace JMXFileEditor.ViewModels
 				Childs.Add(new JMXAttribute("UnkUInt08", data.UnkUInt08));
 				Childs.Add(new JMXAttribute("UnkUInt09", data.UnkUInt09));
 			}
+			// JMXVBMT 
+			else if (Type == typeof(JMXVBMT_0102.Color4))
+			{
+				var data = Object is JMXVBMT_0102.Color4 ? Object as JMXVBMT_0102.Color4 : new JMXVBMT_0102.Color4();
+				Childs.Add(new JMXAttribute("Red", data.Red));
+				Childs.Add(new JMXAttribute("Green", data.Green));
+				Childs.Add(new JMXAttribute("Blue", data.Blue));
+				Childs.Add(new JMXAttribute("Alpha", data.Alpha));
+			}
 		}
 		#endregion
 	}

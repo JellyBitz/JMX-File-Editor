@@ -4,7 +4,7 @@ Easy edition for JMX files
 
 ### Supported formats
 - JMXVRES 0109 (.bsr)
-
+- JMXVBMT 0102 (.bmt)
 
 ---
 > ### Do you like this project ? 
