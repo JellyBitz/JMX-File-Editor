@@ -781,7 +781,7 @@ namespace JMXFileEditor.Silkroad.Data
             {
                 public uint UnkUInt01 { get; set; }
                 public ResourceAnimationType Type { get; set; }
-                public string GroupName { get; set; }
+                public string GroupName { get; set; } = string.Empty;
                 public List<ModData> ModsData { get; set; } = new List<ModData>();
             }
             public class ModData : IDataEmpty, IDataEnvMap, IDataParticle, IData256, IData272, IData768
