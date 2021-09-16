@@ -315,9 +315,9 @@ namespace JMXFileEditor.ViewModels
                     nc1.Childs.Add(new JMXAttribute("Time", envMapEvent.Time));
                     nc1.Childs.Add(new JMXAttribute("Keyword", envMapEvent.Keyword));
                 }
-                else if (ChildType == typeof(JMXVRES_0109.SystemModSet.IDataPatricleInfo))
+                else if (ChildType == typeof(JMXVRES_0109.SystemModSet.IDataParticleInfo))
                 {
-                    var particleInfo = Object is JMXVRES_0109.SystemModSet.IDataPatricleInfo ? Object as JMXVRES_0109.SystemModSet.IDataPatricleInfo : new JMXVRES_0109.SystemModSet.IDataPatricleInfo();
+                    var particleInfo = Object is JMXVRES_0109.SystemModSet.IDataParticleInfo ? Object as JMXVRES_0109.SystemModSet.IDataParticleInfo : new JMXVRES_0109.SystemModSet.IDataParticleInfo();
                     nc1.Childs.Add(new JMXAttribute("UnkUInt01", particleInfo.UnkUInt01));
                     nc1.Childs.Add(new JMXAttribute("Path", particleInfo.Path));
                     nc1.Childs.Add(new JMXAttribute("Bone", particleInfo.Bone));
@@ -629,11 +629,11 @@ namespace JMXFileEditor.ViewModels
                                         // Copy
                                         var nc4 = ((JMXAbstract)nc3[9]).Childs;
                                         var n5 = ((JMXStructure)nc4[0]).Childs;
-                                        data.Particles = new List<JMXVRES_0109.SystemModSet.IDataPatricleInfo>(n5.Count);
+                                        data.Particles = new List<JMXVRES_0109.SystemModSet.IDataParticleInfo>(n5.Count);
                                         for (int x = 0; x < n5.Count; x++)
                                         { 
                                             // Create
-                                            var info = new JMXVRES_0109.SystemModSet.IDataPatricleInfo();
+                                            var info = new JMXVRES_0109.SystemModSet.IDataParticleInfo();
                                             data.Particles.Add(info);
                                             // Copy
                                             var nc5 = ((JMXStructure)n5[x]).Childs;

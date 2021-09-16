@@ -326,11 +326,11 @@ namespace JMXFileEditor.Silkroad.Data
                                             var data = modData as SystemModSet.IDataParticle;
                                             // read
                                             var particleCount = br.ReadInt32();
-                                            data.Particles = new List<SystemModSet.IDataPatricleInfo>(particleCount);
+                                            data.Particles = new List<SystemModSet.IDataParticleInfo>(particleCount);
                                             for (int k = 0; k < particleCount; k++)
                                             {
                                                 // create
-                                                var info = new SystemModSet.IDataPatricleInfo();
+                                                var info = new SystemModSet.IDataParticleInfo();
                                                 data.Particles.Add(info);
                                                 // read
                                                 info.UnkUInt01 = br.ReadUInt32(); // 0, 1
@@ -816,7 +816,7 @@ namespace JMXFileEditor.Silkroad.Data
                 #endregion
 
                 #region IDataParticle
-                List<IDataPatricleInfo> IDataParticle.Particles { get; set; } = new List<IDataPatricleInfo>();
+                List<IDataParticleInfo> IDataParticle.Particles { get; set; } = new List<IDataParticleInfo>();
                 #endregion
 
                 #region IData256
@@ -900,11 +900,11 @@ namespace JMXFileEditor.Silkroad.Data
                 public uint Time { get; set; }
                 public string Keyword { get; set; } = string.Empty;
             }
-            public class IDataPatricleInfo
+            public class IDataParticleInfo
             {
                 public uint UnkUInt01 { get; set; }
-                public string Path { get; set; }
-                public string Bone { get; set; }
+                public string Path { get; set; } = string.Empty;
+                public string Bone { get; set; } = string.Empty;
                 public float UnkFloat01 { get; set; }
                 public float UnkFloat02 { get; set; }
                 public float UnkFloat03 { get; set; }
@@ -913,7 +913,7 @@ namespace JMXFileEditor.Silkroad.Data
             }
             public interface IDataParticle
             {
-                List<IDataPatricleInfo> Particles { get; set; }
+                List<IDataParticleInfo> Particles { get; set; }
             }
             public interface IData256
             {

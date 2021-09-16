@@ -105,7 +105,7 @@ namespace JMXFileEditor.ViewModels
 			else if (Type == typeof(JMXVRES_0109.SystemModSet.IDataParticle))
 			{
 				var data = Object is JMXVRES_0109.SystemModSet.IDataParticle ? Object as JMXVRES_0109.SystemModSet.IDataParticle : new JMXVRES_0109.SystemModSet.ModData();
-				var n5 = new JMXStructure("Particles", typeof(JMXVRES_0109.SystemModSet.IDataPatricleInfo));
+				var n5 = new JMXStructure("Particles", typeof(JMXVRES_0109.SystemModSet.IDataParticleInfo));
 				Childs.Add(n5);
 				foreach (var particleInfo in data.Particles)
 					n5.AddChild(particleInfo);
