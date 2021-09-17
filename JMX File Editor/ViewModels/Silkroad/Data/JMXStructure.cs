@@ -491,7 +491,7 @@ namespace JMXFileEditor.ViewModels
                     meshGroup.FileIndexes = new List<uint>(_nodeChilds.Count);
                     for (int j = 0; j < _nodeChilds.Count; j++)
                     {
-                        meshGroup.FileIndexes.Add((uint)((JMXAttribute)_nodeChilds[i]).Value);
+                        meshGroup.FileIndexes.Add((uint)((JMXAttribute)_nodeChilds[j]).Value);
                     }
                 }
 
