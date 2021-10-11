@@ -216,9 +216,9 @@ namespace JMXFileEditor.ViewModels
                 {
                     var meshGroup = Object is JMXVRES_0109.MeshGroup ? Object as JMXVRES_0109.MeshGroup : new JMXVRES_0109.MeshGroup();
                     nc1.Childs.Add(new JMXAttribute("Name", meshGroup.Name));
-                    var nc2 = new JMXStructure("FileIndexes", typeof(uint));
+                    var nc2 = new JMXStructure("MeshFileIndexes", typeof(uint));
                     nc1.Childs.Add(nc2);
-                    foreach (var fileIndex in meshGroup.FileIndexes)
+                    foreach (var fileIndex in meshGroup.MeshFileIndexes)
                         nc2.AddChild(fileIndex);
                 }
                 else if (ChildType == typeof(JMXVRES_0109.AnimationGroup))
@@ -234,7 +234,7 @@ namespace JMXFileEditor.ViewModels
                 {
                     var animationGroupEntry = Object is JMXVRES_0109.AnimationGroup.Entry ? Object as JMXVRES_0109.AnimationGroup.Entry : new JMXVRES_0109.AnimationGroup.Entry();
                     nc1.Childs.Add(new JMXOption("Type", animationGroupEntry.Type, GetValues<object>(typeof(ResourceAnimationType))));
-                    nc1.Childs.Add(new JMXAttribute("FileIndex", animationGroupEntry.FileIndex));
+                    nc1.Childs.Add(new JMXAttribute("AnimationFileIndex", animationGroupEntry.AnimationFileIndex));
                     var nc2 = new JMXStructure("Events", typeof(JMXVRES_0109.AnimationGroup.Entry.Event));
                     nc1.Childs.Add(nc2);
                     foreach (var e in animationGroupEntry.Events)
@@ -262,8 +262,8 @@ namespace JMXFileEditor.ViewModels
                 else if (ChildType == typeof(JMXVRES_0109.SystemModSet.Mod))
                 {
                     var mod = Object is JMXVRES_0109.SystemModSet.Mod ? Object as JMXVRES_0109.SystemModSet.Mod : new JMXVRES_0109.SystemModSet.Mod();
-                    nc1.Childs.Add(new JMXAttribute("UnkUInt01", mod.UnkUInt01));
-                    nc1.Childs.Add(new JMXOption("Type", mod.Type, GetValues<object>(typeof(ResourceAnimationType))));
+                    nc1.Childs.Add(new JMXAttribute("Type", mod.Type));
+                    nc1.Childs.Add(new JMXOption("AnimationType", mod.AnimationType, GetValues<object>(typeof(ResourceAnimationType))));
                     nc1.Childs.Add(new JMXAttribute("GroupName", mod.GroupName));
                     var nc2 = new JMXStructure("ModsData", typeof(JMXVRES_0109.SystemModSet.ModData));
                     nc1.Childs.Add(nc2);
@@ -273,8 +273,7 @@ namespace JMXFileEditor.ViewModels
                 else if (ChildType == typeof(JMXVRES_0109.SystemModSet.ModData))
                 {
                     var data = Object is JMXVRES_0109.SystemModSet.ModData ? Object as JMXVRES_0109.SystemModSet.ModData : new JMXVRES_0109.SystemModSet.ModData();
-                    nc1.Childs.Add(new JMXAttribute("UnkUShort01", data.UnkUShort01));
-                    nc1.Childs.Add(new JMXAttribute("UnkUShort02", data.UnkUShort02));
+                    nc1.Childs.Add(new JMXOption("Type", data.Type, GetValues<object>(typeof(JMXVRES_0109.SystemModSet.ModDataType))));
                     nc1.Childs.Add(new JMXAttribute("UnkFloat01", data.UnkFloat01));
                     nc1.Childs.Add(new JMXAttribute("UnkUInt01", data.UnkUInt01));
                     nc1.Childs.Add(new JMXAttribute("IDataFlags", data.IDataFlags));
@@ -318,12 +317,12 @@ namespace JMXFileEditor.ViewModels
                 else if (ChildType == typeof(JMXVRES_0109.SystemModSet.IDataParticleInfo))
                 {
                     var particleInfo = Object is JMXVRES_0109.SystemModSet.IDataParticleInfo ? Object as JMXVRES_0109.SystemModSet.IDataParticleInfo : new JMXVRES_0109.SystemModSet.IDataParticleInfo();
-                    nc1.Childs.Add(new JMXAttribute("UnkUInt01", particleInfo.UnkUInt01));
+                    nc1.Childs.Add(new JMXAttribute("IsEnabled", particleInfo.IsEnabled));
                     nc1.Childs.Add(new JMXAttribute("Path", particleInfo.Path));
-                    nc1.Childs.Add(new JMXAttribute("Bone", particleInfo.Bone));
-                    nc1.Childs.Add(new JMXAttribute("UnkFloat01", particleInfo.UnkFloat01));
-                    nc1.Childs.Add(new JMXAttribute("UnkFloat02", particleInfo.UnkFloat02));
-                    nc1.Childs.Add(new JMXAttribute("UnkFloat03", particleInfo.UnkFloat03));
+                    nc1.Childs.Add(new JMXAttribute("Bone", particleInfo.BoneRelative));
+                    nc1.Childs.Add(new JMXAttribute("OffsetPosX", particleInfo.OffsetPosX));
+                    nc1.Childs.Add(new JMXAttribute("OffsetPosY", particleInfo.OffsetPosY));
+                    nc1.Childs.Add(new JMXAttribute("OffsetPosZ", particleInfo.OffsetPosZ));
                     nc1.Childs.Add(new JMXAttribute("UnkUInt02", particleInfo.UnkUInt02));
                     nc1.Childs.Add(new JMXAttribute("UnkUInt03", particleInfo.UnkUInt03));
                 }
@@ -488,10 +487,10 @@ namespace JMXFileEditor.ViewModels
                     var nodeClass = ((JMXStructure)nodeChilds[i]).Childs;
                     meshGroup.Name = (string)((JMXAttribute)nodeClass[0]).Value;
                     var _nodeChilds = ((JMXStructure)nodeClass[1]).Childs;
-                    meshGroup.FileIndexes = new List<uint>(_nodeChilds.Count);
+                    meshGroup.MeshFileIndexes = new List<uint>(_nodeChilds.Count);
                     for (int j = 0; j < _nodeChilds.Count; j++)
                     {
-                        meshGroup.FileIndexes.Add((uint)((JMXAttribute)_nodeChilds[j]).Value);
+                        meshGroup.MeshFileIndexes.Add((uint)((JMXAttribute)_nodeChilds[j]).Value);
                     }
                 }
 
@@ -516,7 +515,7 @@ namespace JMXFileEditor.ViewModels
                         // Copy
                         var _nodeClass = ((JMXStructure)_nodeChilds[j]).Childs;
                         entry.Type = (ResourceAnimationType)((JMXOption)_nodeClass[0]).Value;
-                        entry.FileIndex = (uint)((JMXAttribute)_nodeClass[1]).Value;
+                        entry.AnimationFileIndex = (uint)((JMXAttribute)_nodeClass[1]).Value;
                         var __nodeChilds = ((JMXStructure)_nodeClass[2]).Childs;
                         entry.Events = new List<JMXVRES_0109.AnimationGroup.Entry.Event>();
                         for (int k = 0; k < __nodeChilds.Count; k++)
@@ -564,8 +563,8 @@ namespace JMXFileEditor.ViewModels
                         systemMods.Add(mod);
                         // Copy
                         var nc2 = ((JMXStructure)n2[j]).Childs;
-                        mod.UnkUInt01 = (uint)((JMXAttribute)nc2[0]).Value;
-                        mod.Type = (ResourceAnimationType)((JMXOption)nc2[1]).Value;
+                        mod.Type = (uint)((JMXAttribute)nc2[0]).Value;
+                        mod.AnimationType = (ResourceAnimationType)((JMXOption)nc2[1]).Value;
                         mod.GroupName = (string)((JMXAttribute)nc2[2]).Value;
                         var n3 = ((JMXStructure)nc2[3]).Childs;
                         mod.ModsData = new List<JMXVRES_0109.SystemModSet.ModData>(n3.Count);
@@ -576,15 +575,14 @@ namespace JMXFileEditor.ViewModels
                             mod.ModsData.Add(modData);
                             // Copy
                             var nc3 = ((JMXStructure)n3[k]).Childs;
-                            modData.UnkUShort01 = (ushort)((JMXAttribute)nc3[0]).Value;
-                            modData.UnkUShort02 = (ushort)((JMXAttribute)nc3[1]).Value;
-                            modData.UnkFloat01 = (float)((JMXAttribute)nc3[2]).Value;
-                            modData.UnkUInt01 = (uint)((JMXAttribute)nc3[3]).Value;
-                            modData.IDataFlags = (uint)((JMXAttribute)nc3[4]).Value;
-                            modData.UnkUInt02 = (uint)((JMXAttribute)nc3[5]).Value;
-                            modData.UnkUInt03 = (uint)((JMXAttribute)nc3[6]).Value;
-                            modData.UnkUInt04 = (uint)((JMXAttribute)nc3[7]).Value;
-                            modData.UnkUInt05 = (uint)((JMXAttribute)nc3[8]).Value;
+                            modData.Type = (JMXVRES_0109.SystemModSet.ModDataType)((JMXOption)nc3[0]).Value;
+                            modData.UnkFloat01 = (float)((JMXAttribute)nc3[1]).Value;
+                            modData.UnkUInt01 = (uint)((JMXAttribute)nc3[2]).Value;
+                            modData.IDataFlags = (uint)((JMXAttribute)nc3[3]).Value;
+                            modData.UnkUInt02 = (uint)((JMXAttribute)nc3[4]).Value;
+                            modData.UnkUInt03 = (uint)((JMXAttribute)nc3[5]).Value;
+                            modData.UnkUInt04 = (uint)((JMXAttribute)nc3[6]).Value;
+                            modData.UnkUInt05 = (uint)((JMXAttribute)nc3[7]).Value;
                             switch (modData.IDataFlags)
                             {
                                 case 16:
@@ -592,7 +590,7 @@ namespace JMXFileEditor.ViewModels
                                         // abstraction
                                         var data = modData as JMXVRES_0109.SystemModSet.IDataEnvMap;
                                         // Copy
-                                        var nc4 = ((JMXAbstract)nc3[9]).Childs;
+                                        var nc4 = ((JMXAbstract)nc3[8]).Childs;
                                         data.IsEnabled = (uint)((JMXAttribute)nc4[0]).Value;
                                         data.UnkUInt01 = (uint)((JMXAttribute)nc4[1]).Value;
                                         data.UnkUInt02 = (uint)((JMXAttribute)nc4[2]).Value;
@@ -627,7 +625,7 @@ namespace JMXFileEditor.ViewModels
                                         // abstraction
                                         var data = modData as JMXVRES_0109.SystemModSet.IDataParticle;
                                         // Copy
-                                        var nc4 = ((JMXAbstract)nc3[9]).Childs;
+                                        var nc4 = ((JMXAbstract)nc3[8]).Childs;
                                         var n5 = ((JMXStructure)nc4[0]).Childs;
                                         data.Particles = new List<JMXVRES_0109.SystemModSet.IDataParticleInfo>(n5.Count);
                                         for (int x = 0; x < n5.Count; x++)
@@ -637,12 +635,12 @@ namespace JMXFileEditor.ViewModels
                                             data.Particles.Add(info);
                                             // Copy
                                             var nc5 = ((JMXStructure)n5[x]).Childs;
-                                            info.UnkUInt01 = (uint)((JMXAttribute)nc5[0]).Value;
+                                            info.IsEnabled = (uint)((JMXAttribute)nc5[0]).Value;
                                             info.Path = (string)((JMXAttribute)nc5[1]).Value;
-                                            info.Bone = (string)((JMXAttribute)nc5[2]).Value;
-                                            info.UnkFloat01 = (float)((JMXAttribute)nc5[3]).Value;
-                                            info.UnkFloat02 = (float)((JMXAttribute)nc5[4]).Value;
-                                            info.UnkFloat03 = (float)((JMXAttribute)nc5[5]).Value;
+                                            info.BoneRelative = (string)((JMXAttribute)nc5[2]).Value;
+                                            info.OffsetPosX = (float)((JMXAttribute)nc5[3]).Value;
+                                            info.OffsetPosY = (float)((JMXAttribute)nc5[4]).Value;
+                                            info.OffsetPosZ = (float)((JMXAttribute)nc5[5]).Value;
                                             info.UnkUInt02 = (uint)((JMXAttribute)nc5[6]).Value;
                                             info.UnkUInt03 = (uint)((JMXAttribute)nc5[7]).Value;
                                         }
@@ -653,7 +651,7 @@ namespace JMXFileEditor.ViewModels
                                         // abstraction
                                         var data = modData as JMXVRES_0109.SystemModSet.IData256;
                                         // Copy
-                                        var nc4 = ((JMXAbstract)nc3[9]).Childs;
+                                        var nc4 = ((JMXAbstract)nc3[8]).Childs;
                                         data.IsEnabled = (uint)((JMXAttribute)nc4[0]).Value;
                                         data.UnkUShort01 = (ushort)((JMXAttribute)nc4[1]).Value;
                                         data.UnkUShort02 = (ushort)((JMXAttribute)nc4[2]).Value;
@@ -666,7 +664,7 @@ namespace JMXFileEditor.ViewModels
                                         // abstraction
                                         var data = modData as JMXVRES_0109.SystemModSet.IData272;
                                         // Copy
-                                        var nc4 = ((JMXAbstract)nc3[9]).Childs;
+                                        var nc4 = ((JMXAbstract)nc3[8]).Childs;
                                         data.UnkUInt01 = (uint)((JMXAttribute)nc4[0]).Value;
                                         data.UnkUInt02 = (uint)((JMXAttribute)nc4[1]).Value;
                                         data.UnkUInt03 = (uint)((JMXAttribute)nc4[2]).Value;
@@ -700,7 +698,7 @@ namespace JMXFileEditor.ViewModels
                                         // abstraction
                                         var data = modData as JMXVRES_0109.SystemModSet.IData768;
                                         // Copy
-                                        var nc4 = ((JMXAbstract)nc3[9]).Childs;
+                                        var nc4 = ((JMXAbstract)nc3[8]).Childs;
                                         data.UnkUShort01 = (ushort)((JMXAttribute)nc4[0]).Value;
                                         data.UnkUInt01 = (uint)((JMXAttribute)nc4[1]).Value;
                                         data.UnkUInt02 = (uint)((JMXAttribute)nc4[2]).Value;

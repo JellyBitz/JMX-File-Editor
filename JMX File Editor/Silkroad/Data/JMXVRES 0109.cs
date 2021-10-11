@@ -75,7 +75,7 @@ namespace JMXFileEditor.Silkroad.Data
             PointerAnimationGroup = PointerMeshGroup + 4;
             for (int i = 0; i < MeshGroups.Count; i++)
             {
-                PointerAnimationGroup += (uint)((4 + MeshGroups[i].Name.Length) + (4 + MeshGroups[i].FileIndexes.Count * 4));
+                PointerAnimationGroup += (uint)((4 + MeshGroups[i].Name.Length) + (4 + MeshGroups[i].MeshFileIndexes.Count * 4));
             }
             PointerSystemMods = PointerAnimationGroup + 4;
             for (int i = 0; i < AnimationGroups.Count; i++)
@@ -189,7 +189,7 @@ namespace JMXFileEditor.Silkroad.Data
                     // create
                     MeshGroups.Add(new MeshGroup() {
                         Name = br.ReadString32(),
-                        FileIndexes = new List<uint>(br.ReadUInt32Array(br.ReadInt32()))
+                        MeshFileIndexes = new List<uint>(br.ReadUInt32Array(br.ReadInt32()))
                     });
                 }
 
@@ -212,7 +212,7 @@ namespace JMXFileEditor.Silkroad.Data
                         animationGroup.Entries.Add(entry);
                         // read
                         entry.Type = (ResourceAnimationType)br.ReadUInt32();
-                        entry.FileIndex = br.ReadUInt32();
+                        entry.AnimationFileIndex = br.ReadUInt32();
                         var eventCount = br.ReadInt32();
                         entry.Events = new List<AnimationGroup.Entry.Event>(eventCount);
                         for (int k = 0; k < eventCount; k++)
@@ -258,8 +258,8 @@ namespace JMXFileEditor.Silkroad.Data
                             var mod = new SystemModSet.Mod();
                             mods.Add(mod);
                             // read
-                            mod.UnkUInt01 = br.ReadUInt32(); // 1, 2
-                            mod.Type = (ResourceAnimationType)br.ReadUInt32();
+                            mod.Type = br.ReadUInt32(); // Locomotion = 0, Simple = 1, Ambient = 2,
+                            mod.AnimationType = (ResourceAnimationType)br.ReadUInt32();
                             mod.GroupName = br.ReadString32(); // default, ambient
                             count = br.ReadInt32();
                             mod.ModsData = new List<SystemModSet.ModData>(count);
@@ -269,8 +269,7 @@ namespace JMXFileEditor.Silkroad.Data
                                 var modData = new SystemModSet.ModData();
                                 mod.ModsData.Add(modData);
                                 // read
-                                modData.UnkUShort01 = br.ReadUInt16(); // 0
-                                modData.UnkUShort02 = br.ReadUInt16(); // 0, 1, 3, 4, 5, 6
+                                modData.Type = (SystemModSet.ModDataType)br.ReadUInt32();
                                 modData.UnkFloat01 = br.ReadSingle(); // 0.5
                                 modData.UnkUInt01 = br.ReadUInt32(); // 1
                                 modData.IDataFlags = br.ReadUInt32(); // 0, 16, 48, 256 (avatar), 272, 768 (Weapon)
@@ -333,12 +332,12 @@ namespace JMXFileEditor.Silkroad.Data
                                                 var info = new SystemModSet.IDataParticleInfo();
                                                 data.Particles.Add(info);
                                                 // read
-                                                info.UnkUInt01 = br.ReadUInt32(); // 0, 1
+                                                info.IsEnabled = br.ReadUInt32(); // 0, 1
                                                 info.Path = br.ReadString32(); // *.efp
-                                                info.Bone = br.ReadString32();
-                                                info.UnkFloat01 = br.ReadSingle();
-                                                info.UnkFloat02 = br.ReadSingle(); // 0
-                                                info.UnkFloat03 = br.ReadSingle(); // 0 
+                                                info.BoneRelative = br.ReadString32();
+                                                info.OffsetPosX = br.ReadSingle();
+                                                info.OffsetPosY = br.ReadSingle(); // 0
+                                                info.OffsetPosZ = br.ReadSingle(); // 0 
                                                 info.UnkUInt02 = br.ReadUInt32(); // 0
                                                 info.UnkUInt03 = br.ReadUInt32(); // 0
                                             }
@@ -372,7 +371,7 @@ namespace JMXFileEditor.Silkroad.Data
                                             data.UnkFloat02 = br.ReadSingle(); // 0.58
                                             data.UnkFloat03 = br.ReadSingle(); // 0.58
                                             data.UnkFloat04 = br.ReadSingle(); // 1
-                                            if (modData.UnkUShort02 == 0)
+                                            if (((uint)modData.Type >> 16) == 0)
                                             {
                                                 data.UnkUInt06 = br.ReadUInt32(); // 1000
                                             }
@@ -391,7 +390,7 @@ namespace JMXFileEditor.Silkroad.Data
                                             data.UnkUShort05 = br.ReadUInt16(); // 1920
                                             data.UnkUShort06 = br.ReadUInt16(); // 51300
                                             data.UnkFloat09 = br.ReadSingle(); // 1
-                                            if (modData.UnkUShort02 == 0)
+                                            if (((uint)modData.Type >> 16) == 0)
                                             {
                                                 data.UnkUInt11 = br.ReadUInt32(); // 0
                                             }
@@ -549,8 +548,8 @@ namespace JMXFileEditor.Silkroad.Data
                 for (int i = 0; i < MeshGroups.Count; i++)
                 {
                     bw.WriteString32(MeshGroups[i].Name);
-                    bw.Write(MeshGroups[i].FileIndexes.Count);
-                    bw.Write(MeshGroups[i].FileIndexes.ToArray());
+                    bw.Write(MeshGroups[i].MeshFileIndexes.Count);
+                    bw.Write(MeshGroups[i].MeshFileIndexes.ToArray());
                 }
 
                 // Pointer.AnimationGroup
@@ -562,7 +561,7 @@ namespace JMXFileEditor.Silkroad.Data
                     for (int j = 0; j < AnimationGroups[i].Entries.Count; j++)
                     {
                         bw.Write((uint)AnimationGroups[i].Entries[j].Type);
-                        bw.Write(AnimationGroups[i].Entries[j].FileIndex);
+                        bw.Write(AnimationGroups[i].Entries[j].AnimationFileIndex);
                         bw.Write(AnimationGroups[i].Entries[j].Events.Count);
                         for (int k = 0; k < AnimationGroups[i].Entries[j].Events.Count; k++)
                         {
@@ -587,14 +586,13 @@ namespace JMXFileEditor.Silkroad.Data
 					bw.Write(systemMod.Count);
 					foreach (var mod in systemMod)
 					{
-						bw.Write(mod.UnkUInt01);
-                        bw.Write((uint)mod.Type);
+						bw.Write(mod.Type);
+                        bw.Write((uint)mod.AnimationType);
 						bw.WriteString32(mod.GroupName);
 						bw.Write(mod.ModsData.Count);
 						foreach (var modData in mod.ModsData)
                         {
-                            bw.Write(modData.UnkUShort01);
-                            bw.Write(modData.UnkUShort02);
+                            bw.Write((int)modData.Type);
                             bw.Write(modData.UnkFloat01);
                             bw.Write(modData.UnkUInt01);
                             bw.Write(modData.IDataFlags);
@@ -640,12 +638,12 @@ namespace JMXFileEditor.Silkroad.Data
                                         bw.Write(data.Particles.Count);
                                         foreach (var info in data.Particles)
                                         {
-                                            bw.Write(info.UnkUInt01);
+                                            bw.Write(info.IsEnabled);
                                             bw.WriteString32(info.Path);
-                                            bw.WriteString32(info.Bone);
-                                            bw.Write(info.UnkFloat01);
-                                            bw.Write(info.UnkFloat02);
-                                            bw.Write(info.UnkFloat03);
+                                            bw.WriteString32(info.BoneRelative);
+                                            bw.Write(info.OffsetPosX);
+                                            bw.Write(info.OffsetPosY);
+                                            bw.Write(info.OffsetPosZ);
                                             bw.Write(info.UnkUInt02);
                                             bw.Write(info.UnkUInt03);
                                         }
@@ -736,7 +734,7 @@ namespace JMXFileEditor.Silkroad.Data
         {
             public string Path { get; set; } = string.Empty;
         }
-        public class Skeleton
+		public class Skeleton
         {
             public string Path { get; set; } = string.Empty;
             public string ExtraBone { get; set; } = string.Empty;
@@ -744,7 +742,7 @@ namespace JMXFileEditor.Silkroad.Data
         public class MeshGroup
         {
             public string Name { get; set; } = string.Empty;
-            public List<uint> FileIndexes { get; set;  } = new List<uint>();
+            public List<uint> MeshFileIndexes { get; set;  } = new List<uint>();
         }
         public class AnimationGroup
         {
@@ -753,7 +751,7 @@ namespace JMXFileEditor.Silkroad.Data
             public class Entry
             {
                 public ResourceAnimationType Type { get; set; }
-                public uint FileIndex { get; set; }
+                public uint AnimationFileIndex { get; set; }
                 public List<Event> Events { get; set;  } = new List<Event>();
                 public List<Point> WalkPoints { get; set;  } = new List<Point>();
                 public float WalkingLength { get; set; }
@@ -772,6 +770,9 @@ namespace JMXFileEditor.Silkroad.Data
                 }
             }
         }
+
+
+
         /// <summary>
         /// Wrapper class
         /// </summary>
@@ -779,15 +780,44 @@ namespace JMXFileEditor.Silkroad.Data
         {
             public class Mod
             {
-                public uint UnkUInt01 { get; set; }
-                public ResourceAnimationType Type { get; set; }
+                public uint Type { get; set; }
+                public ResourceAnimationType AnimationType { get; set; }
                 public string GroupName { get; set; } = string.Empty;
                 public List<ModData> ModsData { get; set; } = new List<ModData>();
             }
+            public enum ModDataType : int
+            {
+                /// <summary>
+                /// Advanced Material
+                /// </summary>
+                ModDataMtrl = 0x00000000,
+                ModDataTexAni = 0x00010000,
+                ModDataMultiTex = 0x00010001,
+                ModDataMultiTexRev = 0x00010002,
+                ModDataParticle = 0x00030000,
+                ModDataEnvMap = 0x00040000,
+                ModDataBumpEnv = 0x00040001,
+                /// <summary>
+                /// Sound Config
+                /// </summary>
+                ModDataSound = 0x00050000,
+                /// <summary>
+                /// Dynamic Vertex Config
+                /// </summary>
+                ModDataDyVertex = 0x00060000,
+                /// <summary>
+                /// Dynamic Joint Config
+                /// </summary>
+                ModDataDyJoint = 0x00060001,
+                /// <summary>
+                /// Dynamic Lattice Config
+                /// </summary>
+                ModDataDyLattice = 0x00060002,
+                ModDataProgEquipPow = 0x00070000,
+            }
             public class ModData : IDataEmpty, IDataEnvMap, IDataParticle, IData256, IData272, IData768
             {
-                public ushort UnkUShort01 { get; set; }
-                public ushort UnkUShort02 { get; set; }
+                public ModDataType Type { get; set; }
                 public float UnkFloat01 { get; set; }
                 public uint UnkUInt01 { get; set; }
                 public uint IDataFlags { get; set; }
@@ -902,12 +932,12 @@ namespace JMXFileEditor.Silkroad.Data
             }
             public class IDataParticleInfo
             {
-                public uint UnkUInt01 { get; set; }
+                public uint IsEnabled { get; set; }
                 public string Path { get; set; } = string.Empty;
-                public string Bone { get; set; } = string.Empty;
-                public float UnkFloat01 { get; set; }
-                public float UnkFloat02 { get; set; }
-                public float UnkFloat03 { get; set; }
+                public string BoneRelative { get; set; } = string.Empty;
+                public float OffsetPosX { get; set; }
+                public float OffsetPosY { get; set; }
+                public float OffsetPosZ { get; set; }
                 public uint UnkUInt02 { get; set; }
                 public uint UnkUInt03 { get; set; }
             }
