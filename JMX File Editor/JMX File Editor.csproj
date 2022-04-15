@@ -61,11 +61,27 @@
     </ApplicationDefinition>
     <Compile Include="AttachedProperties\BaseAttachedProperty.cs" />
     <Compile Include="AttachedProperties\TreeviewSelectedItemProperty.cs" />
+    <Compile Include="Silkroad\Data\Common\BoundingBox.cs" />
+    <Compile Include="Silkroad\Data\Common\Color4.cs" />
+    <Compile Include="Silkroad\Data\Common\Matrix3D.cs" />
+    <Compile Include="Silkroad\Data\Common\Vector2.cs" />
+    <Compile Include="Silkroad\Data\Common\Vector3.cs" />
     <Compile Include="Silkroad\Data\IJMXFile.cs" />
-    <Compile Include="Silkroad\Data\JMXVBMT 0102.cs" />
-    <Compile Include="Silkroad\Data\JMXVRES 0109.cs" />
-    <Compile Include="Silkroad\Data\ResourceAnimationType.cs" />
-    <Compile Include="Silkroad\Data\ResourceType.cs" />
+    <Compile Include="Silkroad\Data\JMXVBMT\CPrimMtrl.cs" />
+    <Compile Include="Silkroad\Data\JMXVBMT\JMXVBMT 0102.cs" />
+    <Compile Include="Silkroad\Data\JMXVBMT\PrimMtrlFlag.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\CModData.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\CResAttachable.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\CModDataType.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\CModDataSet.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\CPrimAni.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\CPrimAniGroup.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\CPrimMesh.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\CPrimMeshGroup.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\CPrimMtrlSet.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\JMXVRES 0109.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\ResourceType.cs" />
+    <Compile Include="Silkroad\Data\JMXVRES\CPrimAnimationType.cs" />
     <Compile Include="Utility\BinaryReaderHelpers.cs" />
     <Compile Include="Utility\BinaryWriterHelpers.cs" />
     <Compile Include="Utility\ByteArrayHelpers.cs" />
@@ -77,11 +93,27 @@
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="ViewModels\Base\RelayParameterizedCommand.cs" />
-    <Compile Include="ViewModels\Silkroad\Data\JMXAbstract.cs" />
-    <Compile Include="ViewModels\Silkroad\Data\JMXAttribute.cs" />
-    <Compile Include="ViewModels\Silkroad\Data\JMXOption.cs" />
-    <Compile Include="ViewModels\Silkroad\Data\JMXProperty.cs" />
-    <Compile Include="ViewModels\Silkroad\Data\JMXStructure.cs" />
+    <Compile Include="ViewModels\Nodes\JMXAbstract.cs" />
+    <Compile Include="ViewModels\Nodes\JMXAttribute.cs" />
+    <Compile Include="ViewModels\Nodes\JMXOption.cs" />
+    <Compile Include="ViewModels\Nodes\JMXProperty.cs" />
+    <Compile Include="ViewModels\Nodes\JMXStructure.cs" />
+    <Compile Include="ViewModels\Silkroad\Common\BoundingBoxVM.cs" />
+    <Compile Include="ViewModels\Silkroad\Common\Color4VM.cs" />
+    <Compile Include="ViewModels\Silkroad\Common\Matrix3DVM.cs" />
+    <Compile Include="ViewModels\Silkroad\Common\Vector2VM.cs" />
+    <Compile Include="ViewModels\Silkroad\Common\Vector3VM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVBMT\CPrimMtrlVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVBMT\JMXVBMTVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVRES\CModDataSetVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVRES\CModDataVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVRES\CPrimAniGroupVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVRES\CPrimAniVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVRES\CPrimMeshGroup.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVRES\CPrimMeshVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVRES\CPrimMtrlSetVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVRES\CResAttachableVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVRES\JMXVRESVM.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -140,5 +172,6 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Logo.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

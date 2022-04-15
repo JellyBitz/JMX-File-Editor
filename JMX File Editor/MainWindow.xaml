@@ -111,7 +111,7 @@
                             <!-- Show Menu if element size can be edited -->
                             <StackPanel.ContextMenu>
                                 <ContextMenu StaysOpen="True"
-                                             Visibility="{Binding IsEditable,Converter={local:ValueToVisibilityConverter}}">
+                                             Visibility="{Binding IsSizeable,Converter={local:ValueToVisibilityConverter}}">
                                     <MenuItem Header="Add"
                                               Command="{Binding CommandAddChild}"/>
                                     <MenuItem Header="Remove"
@@ -122,14 +122,17 @@
                             </StackPanel.ContextMenu>
                             <!-- Name -->
                             <TextBlock VerticalAlignment="Center"
-                                       Text="{Binding Name}" />
-                            <!-- Count -->
-                            <TextBlock Text=" ("
+                                       Text="{Binding Name}"/>
+                            <!-- Child Count -->
+                            <StackPanel Orientation="Horizontal"
+                                        Visibility="{Binding IsSizeable,Converter={local:ValueToVisibilityConverter}}">
+                                <TextBlock Text=" ("
                                        VerticalAlignment="Center" />
-                            <TextBlock Text="{Binding Childs.Count}"
+                                <TextBlock Text="{Binding Childs.Count}"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text=") : "
+                                <TextBlock Text=") : "
                                        VerticalAlignment="Center"/>
+                            </StackPanel>
                         </StackPanel>
                     </HierarchicalDataTemplate>
                     <!-- Binding JMXAttribute type -->
