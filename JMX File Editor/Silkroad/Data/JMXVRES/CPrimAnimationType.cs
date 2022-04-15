@@ -1,6 +1,6 @@
-﻿namespace JMXFileEditor.Silkroad.Data
+﻿namespace JMXFileEditor.Silkroad.Data.JMXVRES
 {
-    public enum ResourceAnimationType : uint
+    public enum CPrimAnimationType : uint
     {
         POSE = 0x3C,
 

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace JMXFileEditor.ViewModels
 {
     /// <summary>
@@ -52,6 +54,16 @@ namespace JMXFileEditor.ViewModels
             m_Value = Value;
             this.Options = Options;
         }
-        #endregion
-    }
+		#endregion
+
+		#region Public Static Helpers
+		/// <summary>
+		/// Get all the values from the enum type specified as array list
+		/// </summary>
+		public static List<T> GetValues<T>(Type EnumType)
+		{
+			return Enum.GetValues(EnumType).Cast<T>().ToList();
+		}
+		#endregion
+	}
 }

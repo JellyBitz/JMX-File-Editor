@@ -1,4 +1,8 @@
 ﻿using JMXFileEditor.Silkroad.Data;
+using JMXFileEditor.Silkroad.Data.JMXVBMT;
+using JMXFileEditor.Silkroad.Data.JMXVRES;
+using JMXFileEditor.ViewModels.Silkroad.JMXVBMT;
+using JMXFileEditor.ViewModels.Silkroad.JMXVRES;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -102,8 +106,8 @@ namespace JMXFileEditor.ViewModels
                 {
                     // Load file format
                     var jmxFile = LoadJMXFile(path);
-                    // Create and set nodes
-                    FileProperties = JMXStructure.Create(jmxFile);
+					// Create file UI
+					FileProperties = CreateJMXViewModel(jmxFile);
                     // Set current file path used
                     FilePath = path;
                 }
@@ -120,12 +124,12 @@ namespace JMXFileEditor.ViewModels
                     // Try to save the file
                     try
                     {
-                        // Converts to JMX File
-                        var jmxFile = FileProperties.ToJMXFile();
+						// Converts to JMX File
+						var jmxFile = LoadJMXFile(FileProperties);
                         // Save it
                         jmxFile.Save(FilePath);
-                        // Update values changed in the process
-                        FileProperties = JMXStructure.Create(jmxFile);
+						// Update values changed in the process
+						FileProperties = CreateJMXViewModel(jmxFile);
                     }
                     catch (Exception ex)
                     {
@@ -142,7 +146,7 @@ namespace JMXFileEditor.ViewModels
                     try
                     {
                         // Converts to JMX File
-                        var jmxFile = FileProperties.ToJMXFile();
+                        var jmxFile = LoadJMXFile(FileProperties);
 
                         // Ask for file path and avoid empty result / canceled operation
                         var filename = (FileProperties.Name != string.Empty ? FileProperties.Name : jmxFile.Format) + "." + jmxFile.Extension;
@@ -155,8 +159,8 @@ namespace JMXFileEditor.ViewModels
                         // Save it
                         jmxFile.Save(filePath);
                         // Update values changed in the process
-                        FileProperties = JMXStructure.Create(jmxFile);
-                        FilePath = filePath;
+                        FileProperties = CreateJMXViewModel(jmxFile);
+						FilePath = filePath;
                     }
                     catch (Exception ex)
                     {
@@ -204,7 +208,33 @@ namespace JMXFileEditor.ViewModels
                 }
             }
             return file;
-        }
-        #endregion
-    }
+		}
+		/// <summary>
+		/// Creates viewmodel from file
+		/// </summary>
+		private JMXStructure CreateJMXViewModel(IJMXFile JMXFile)
+		{
+			if (JMXFile is JMXVRES_0109 jmxvres_0109)
+				return new JMXVRESVM(jmxvres_0109);
+			if (JMXFile is JMXVBMT_0102 jmxvbmt_0102)
+				return new JMXVBMTVM(jmxvbmt_0102);
+
+			// format not implemented
+			throw new NotImplementedException();
+		}
+		/// <summary>
+		/// Create JMX file from ViewModel
+		/// </summary>
+		private IJMXFile LoadJMXFile(JMXStructure JMXViewModel)
+		{
+			if(JMXViewModel is JMXVRESVM jmxvres)
+				return (IJMXFile)jmxvres.GetClass();
+			if (JMXViewModel is JMXVBMTVM jmxvbmt)
+				return (IJMXFile)jmxvbmt.GetClass();
+
+			// format not implemented
+			throw new NotImplementedException();
+		}
+		#endregion
+	}
 }

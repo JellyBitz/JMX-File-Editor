@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -8,7 +7,7 @@ using System.Windows;
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada con un ensamblado.
 [assembly: AssemblyTitle("JMX File Editor")]
-[assembly: AssemblyDescription("Easy edition for JMX files")]
+[assembly: AssemblyDescription("Simple editor for joymax files")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("JMX File Editor")]
@@ -43,14 +42,14 @@ using System.Windows;
 
 // La información de versión de un ensamblado consta de los cuatro valores siguientes:
 //
-//      Versión principal
-//      Versión secundaria
-//      Número de compilación
-//      Revisión
+//      Versión principal : Cambios de diseño
+//      Versión secundaria : Grandes cambios y/o dando soporte a otros más
+//      Número de compilación : Cambios menores y/o nuevas características
+//      Revisión : Corrección de errores
 //
 // Puede especificar todos los valores o utilizar los números de compilación y de revisión predeterminados
 // mediante el carácter '*', como se muestra a continuación:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.2.3")]
-[assembly: AssemblyFileVersion("1.1.2.3")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
 [assembly: NeutralResourcesLanguage("en-US")]
