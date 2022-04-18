@@ -106,6 +106,7 @@
     <Compile Include="ViewModels\Silkroad\Common\Vector3VM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVBMT\CPrimMtrlVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVBMT\JMXVBMTVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVCPD\JMXVCPDVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVRES\CModDataSetVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVRES\CModDataVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVRES\CPrimAniGroupVM.cs" />

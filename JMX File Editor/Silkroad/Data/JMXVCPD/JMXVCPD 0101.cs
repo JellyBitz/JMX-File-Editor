@@ -8,7 +8,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVCPD
 	/// Joymax Compound File
 	/// <para>https://github.com/DummkopfOfHachtenduden/SilkroadDoc/wiki/JMXVCPD </para>
 	/// </summary>
-	public class JMXVRES_0109 : IJMXFile
+	public class JMXVCPD_0101 : IJMXFile
 	{
 		#region Public Properties
 		/// <summary>
@@ -18,11 +18,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVCPD
 		public string Header { get; set; }
 		public uint CollisionFileOffset { get; private set; }
 		public uint ResourceFileOffset { get; private set; }
-		public uint UnkUInt01 { get; private set; }
-		public uint UnkUInt02 { get; private set; }
-		public uint UnkUInt03 { get; private set; }
-		public uint UnkUInt04 { get; private set; }
-		public uint UnkUInt05 { get; private set; }
+		public uint UnkUInt01 { get; set; }
+		public uint UnkUInt02 { get; set; }
+		public uint UnkUInt03 { get; set; }
+		public uint UnkUInt04 { get; set; }
+		public uint UnkUInt05 { get; set; }
 		public uint Type { get; set; }
 		public string Name { get; set; } = string.Empty;
 		public uint UnkUInt06 { get; set; }
@@ -57,7 +57,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVCPD
 				// File Offsets
 				CollisionFileOffset = br.ReadUInt32();
 				ResourceFileOffset = br.ReadUInt32();
-				// More offsets? Flags? 
+				//Flags? 
 				UnkUInt01 = br.ReadUInt32();
 				UnkUInt02 = br.ReadUInt32();
 				UnkUInt03 = br.ReadUInt32();
