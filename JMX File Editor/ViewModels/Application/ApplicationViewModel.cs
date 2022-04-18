@@ -1,7 +1,9 @@
 ﻿using JMXFileEditor.Silkroad.Data;
 using JMXFileEditor.Silkroad.Data.JMXVBMT;
+using JMXFileEditor.Silkroad.Data.JMXVCPD;
 using JMXFileEditor.Silkroad.Data.JMXVRES;
 using JMXFileEditor.ViewModels.Silkroad.JMXVBMT;
+using JMXFileEditor.ViewModels.Silkroad.JMXVCPD;
 using JMXFileEditor.ViewModels.Silkroad.JMXVRES;
 using System;
 using System.Diagnostics;
@@ -199,6 +201,9 @@ namespace JMXFileEditor.ViewModels
                         case JMXVBMT_0102.FileHeader:
                             file = new JMXVBMT_0102();
                             break;
+						case JMXVCPD_0101.FileHeader:
+							file = new JMXVCPD_0101();
+							break;
                         default:
                             throw new FileFormatException("JMX Header not found! File not supported.");
                     }
@@ -218,7 +223,8 @@ namespace JMXFileEditor.ViewModels
 				return new JMXVRESVM(jmxvres_0109);
 			if (JMXFile is JMXVBMT_0102 jmxvbmt_0102)
 				return new JMXVBMTVM(jmxvbmt_0102);
-
+			if (JMXFile is JMXVCPD_0101 jmxvcpd_0101)
+				return new JMXVCPDVM(jmxvcpd_0101);
 			// format not implemented
 			throw new NotImplementedException();
 		}
@@ -231,6 +237,8 @@ namespace JMXFileEditor.ViewModels
 				return (IJMXFile)jmxvres.GetClass();
 			if (JMXViewModel is JMXVBMTVM jmxvbmt)
 				return (IJMXFile)jmxvbmt.GetClass();
+			if (JMXViewModel is JMXVCPDVM jmxvcpd)
+				return (IJMXFile)jmxvcpd.GetClass();
 
 			// format not implemented
 			throw new NotImplementedException();
