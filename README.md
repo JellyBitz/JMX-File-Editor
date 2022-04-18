@@ -1,10 +1,11 @@
 # JMX File Editor
 
-Easy edition for JMX files
+Open, edit and save JMX files!
 
 ### Supported formats
 - JMXVRES 0109 (.bsr)
 - JMXVBMT 0102 (.bmt)
+- JMXVCPD 0101 (.cpd)
 
 ---
 > ### Do you like this project ? 
@@ -14,4 +15,4 @@ Easy edition for JMX files
 
 ---
 > ##### Hey Thanks!
-> - DaxterSoul for his file structure documentation
+> - DummkopfOfHachtenduden with his [Silkroad formats](https://github.com/DummkopfOfHachtenduden/SilkroadDoc/wiki/Formats)
