@@ -70,6 +70,7 @@
     <Compile Include="Silkroad\Data\JMXVBMT\CPrimMtrl.cs" />
     <Compile Include="Silkroad\Data\JMXVBMT\JMXVBMT 0102.cs" />
     <Compile Include="Silkroad\Data\JMXVBMT\PrimMtrlFlag.cs" />
+    <Compile Include="Silkroad\Data\JMXVCPD\JMXVCPD 0101.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\CModData.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\CResAttachable.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\CModDataType.cs" />
