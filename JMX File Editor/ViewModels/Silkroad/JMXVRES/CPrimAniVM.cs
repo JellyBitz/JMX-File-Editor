@@ -5,7 +5,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 	public class CPrimAniVM : JMXStructure
 	{
 		#region Constructor
-		public CPrimAniVM(string Name, CPrimAni Animation) : base(Name, true)
+		public CPrimAniVM(string Name, PrimAnimation Animation) : base(Name, true)
 		{
 			Childs.Add(new JMXAttribute("Path", Animation.Path));
 		}
@@ -14,7 +14,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 		#region Public Methods
 		public override object GetClassFrom(JMXStructure Structure)
 		{
-			CPrimAni ani = new CPrimAni()
+			PrimAnimation ani = new PrimAnimation()
 			{
 				Path = (string)((JMXAttribute)Structure.Childs[0]).Value,
 			};

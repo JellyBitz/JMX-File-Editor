@@ -1,16 +1,16 @@
-﻿using JMXFileEditor.Silkroad.Data.Common;
-using JMXFileEditor.Silkroad.Data.JMXVRES;
+﻿using JMXFileEditor.Silkroad.Data.JMXVRES;
+using JMXFileEditor.Silkroad.Mathematics;
 using JMXFileEditor.ViewModels.Silkroad.Common;
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 {
-	public class CPrimAniGroupVM : JMXStructure
+    public class CPrimAniGroupVM : JMXStructure
 	{
 		#region Constructor
-		public CPrimAniGroupVM(string Name, CPrimAniGroup AniGroup) : base(Name, true)
+		public CPrimAniGroupVM(string Name, PrimAniGroup AniGroup) : base(Name, true)
 		{
 			// Add new format
-			m_SupportedFormats.Add(typeof(CPrimAniGroup.Entry), (s, e) => {
-				e.Childs.Add(new Entry("[" + e.Childs.Count + "]", e.Obj is CPrimAniGroup.Entry _obj ? _obj : new CPrimAniGroup.Entry()));
+			m_SupportedFormats.Add(typeof(PrimAniGroup.PrimAniTypeData), (s, e) => {
+				e.Childs.Add(new Entry("[" + e.Childs.Count + "]", e.Obj is PrimAniGroup.PrimAniTypeData _obj ? _obj : new PrimAniGroup.PrimAniTypeData()));
 			});
 			// Create viewmodel node
 			Childs.Add(new JMXAttribute("Name", AniGroup.Name));
@@ -21,10 +21,10 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 		#region Public Methods
 		public override object GetClassFrom(JMXStructure Structure)
 		{
-			CPrimAniGroup obj = new CPrimAniGroup()
+			PrimAniGroup obj = new PrimAniGroup()
 			{
 				Name = (string)((JMXAttribute)Structure.Childs[0]).Value,
-				Entries = ((JMXStructure)Structure.Childs[1]).GetChildList<CPrimAniGroup.Entry>()
+				Entries = ((JMXStructure)Structure.Childs[1]).GetChildList<PrimAniGroup.PrimAniTypeData>()
 			};
 			return obj;
 		}
@@ -34,18 +34,18 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 		public class Entry : JMXStructure
 		{
 			#region Constructor
-			public Entry(string Name, CPrimAniGroup.Entry Entry) : base(Name, true)
+			public Entry(string Name, PrimAniGroup.PrimAniTypeData Entry) : base(Name, true)
 			{
 				// Add new format
-				m_SupportedFormats.Add(typeof(CPrimAniGroup.Entry.Event), (s, e) => {
-					e.Childs.Add(new Event("[" + e.Childs.Count + "]", e.Obj is CPrimAniGroup.Entry.Event _obj ? _obj : new CPrimAniGroup.Entry.Event()));
+				m_SupportedFormats.Add(typeof(PrimAniGroup.PrimAniTypeData.Event), (s, e) => {
+					e.Childs.Add(new Event("[" + e.Childs.Count + "]", e.Obj is PrimAniGroup.PrimAniTypeData.Event _obj ? _obj : new PrimAniGroup.PrimAniTypeData.Event()));
 				});
 				m_SupportedFormats.Add(typeof(Vector2), (s, e) => {
 					e.Childs.Add(new Vector2VM("[" + e.Childs.Count + "]", e.Obj is Vector2 _obj ? _obj : new Vector2()));
 				});
 				// Create viewmodel node
-				Childs.Add(new JMXOption("Type", Entry.Type, JMXOption.GetValues<object>(typeof(CPrimAnimationType))));
-				Childs.Add(new JMXAttribute("AnimationSetIndex", Entry.AnimationSetIndex));
+				Childs.Add(new JMXOption("Type", Entry.Type, JMXOption.GetValues<object>(typeof(PrimAnimationType))));
+				Childs.Add(new JMXAttribute("AnimationSetIndex", Entry.PrimAnimationIndex));
 				AddChildArray("Events", Entry.Events.ToArray(), true, true);
 				Childs.Add(new JMXAttribute("WalkLength", Entry.WalkLength));
 				AddChildArray("WalkGraph", Entry.WalkGraph.ToArray(), true, true);
@@ -55,11 +55,11 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 			#region Public Methods
 			public override object GetClassFrom(JMXStructure Structure)
 			{
-				CPrimAniGroup.Entry obj = new CPrimAniGroup.Entry()
+				PrimAniGroup.PrimAniTypeData obj = new PrimAniGroup.PrimAniTypeData()
 				{
-					Type = (CPrimAnimationType)((JMXOption)Structure.Childs[0]).Value,
-					AnimationSetIndex = (uint)((JMXAttribute)Structure.Childs[1]).Value,
-					Events = ((JMXStructure)Structure.Childs[2]).GetChildList<CPrimAniGroup.Entry.Event>(),
+					Type = (PrimAnimationType)((JMXOption)Structure.Childs[0]).Value,
+					PrimAnimationIndex = (int)((JMXAttribute)Structure.Childs[1]).Value,
+					Events = ((JMXStructure)Structure.Childs[2]).GetChildList<PrimAniGroup.PrimAniTypeData.Event>(),
 					WalkLength = (float)((JMXAttribute)Structure.Childs[3]).Value,
 					WalkGraph = ((JMXStructure)Structure.Childs[4]).GetChildList<Vector2>()
 				};
@@ -71,7 +71,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 			public class Event : JMXStructure
 			{
 				#region Constructor
-				public Event(string Name, CPrimAniGroup.Entry.Event Event) : base(Name, true)
+				public Event(string Name, PrimAniGroup.PrimAniTypeData.Event Event) : base(Name, true)
 				{
 					Childs.Add(new JMXAttribute("Time", Event.Time));
 					Childs.Add(new JMXAttribute("Type", Event.Type));
@@ -83,7 +83,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 				#region Public Methods
 				public override object GetClassFrom(JMXStructure Structure)
 				{
-					CPrimAniGroup.Entry.Event obj = new CPrimAniGroup.Entry.Event()
+					PrimAniGroup.PrimAniTypeData.Event obj = new PrimAniGroup.PrimAniTypeData.Event()
 					{
 						Time = (uint)((JMXAttribute)Structure.Childs[0]).Value,
 						Type = (uint)((JMXAttribute)Structure.Childs[1]).Value,

@@ -1,7 +1,8 @@
 ﻿namespace JMXFileEditor.Silkroad.Data.JMXVRES
 {
-    public enum CPrimAnimationType : uint
+    public enum PrimAnimationType : int
     {
+        NONE = -1,
         POSE = 0x3C,
 
         STAND1 = 0x00,
@@ -199,6 +200,5 @@
         VENDOR01 = 0x50,
 
         SHOT = 0xBF,    //not implemented in vSRO?
-        NONE = 0xFFFFFFFF,
     }
 }

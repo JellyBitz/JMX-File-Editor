@@ -1,4 +1,6 @@
-﻿namespace JMXFileEditor.Silkroad.Data
+﻿using System.IO;
+
+namespace JMXFileEditor.Silkroad.Data
 {
     /// <summary>
     /// Represents any possible JMX file
@@ -16,10 +18,10 @@
         /// <summary>
         /// Loads the file from reading the stream
         /// </summary>
-        void Load(System.IO.FileStream FileStream);
+        void Load(Stream stream);
         /// <summary>
         /// Save the file data
         /// </summary>
-        void Save(string Path);
+        void Save(string path);
     }
 }

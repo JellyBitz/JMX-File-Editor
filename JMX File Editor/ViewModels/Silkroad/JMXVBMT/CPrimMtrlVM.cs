@@ -1,13 +1,13 @@
-﻿using JMXFileEditor.Silkroad.Data.Common;
-using JMXFileEditor.Silkroad.Data.JMXVBMT;
+﻿using JMXFileEditor.Silkroad.Data.JMXVBMT;
+using JMXFileEditor.Silkroad.Mathematics;
 using JMXFileEditor.ViewModels.Silkroad.Common;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVBMT
 {
-	public class CPrimMtrlVM : JMXStructure
+    public class CPrimMtrlVM : JMXStructure
 	{
 		#region Constructor
-		public CPrimMtrlVM(string Name, CPrimMtrl Mtrl) : base(Name, true)
+		public CPrimMtrlVM(string Name, PrimMtrl Mtrl) : base(Name, true)
 		{
 			// add formats
 			AddFormatHandler(typeof(Color4), (s, e) => {
@@ -34,7 +34,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVBMT
 		#region Public Methods
 		public override object GetClassFrom(JMXStructure Structure)
 		{
-			return new CPrimMtrl()
+			return new PrimMtrl()
 			{
 				Name = (string)((JMXAttribute)Structure.Childs[0]).Value,
 				Diffuse = (Color4)((Color4VM)Structure.Childs[1]).GetClass(),
