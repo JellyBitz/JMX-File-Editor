@@ -37,33 +37,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVBMT
 
                 // Materials
                 var mtrlCount = reader.ReadInt32();
-
                 Materials = new List<PrimMtrl>(mtrlCount);
                 for (int i = 0; i < mtrlCount; i++)
-                {
-                    // Create and add it
-                    PrimMtrl mtrl = new PrimMtrl();
-                    Materials.Add(mtrl);
-                    // Read
-                    mtrl.Name = reader.ReadString();
-                    mtrl.Diffuse = reader.ReadColor4();
-                    mtrl.Ambient = reader.ReadColor4();
-                    mtrl.Specular = reader.ReadColor4();
-                    mtrl.Emissive = reader.ReadColor4();
-                    mtrl.UnkFloat01 = reader.ReadSingle();
-                    mtrl.Flags = reader.ReadUInt32(); // MaterialEntryFlags (64 is default often used with 256 and/or 512 only a few exceptions have 1 2 4 8...)
-
-                    mtrl.DiffuseMapPath = reader.ReadString();
-                    mtrl.UnkFloat02 = reader.ReadSingle();
-                    mtrl.UnkByte01 = reader.ReadByte();
-                    mtrl.UnkByte02 = reader.ReadByte();
-                    mtrl.IsAbsolutePath = reader.ReadBoolean();
-                    if ((mtrl.Flags & (uint)PrimMtrlFlag.Bit14) != 0)
-                    {
-                        mtrl.NormalMapPath = reader.ReadString();
-                        mtrl.UnkUInt01 = reader.ReadUInt32();
-                    }
-                }
+                    this.Materials.Add(reader.Deserialize<PrimMtrl>());
             }
         }
 
@@ -76,26 +52,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVBMT
                 writer.Write(LatestSignature, 12);
                 writer.Write(Materials.Count);
                 foreach (var mtrl in Materials)
-                {
-                    writer.Write(mtrl.Name);
-                    writer.Write(mtrl.Diffuse);
-                    writer.Write(mtrl.Ambient);
-                    writer.Write(mtrl.Specular);
-                    writer.Write(mtrl.Emissive);
-                    writer.Write(mtrl.UnkFloat01);
-                    writer.Write(mtrl.Flags);
-                    writer.Write(mtrl.DiffuseMapPath);
-                    writer.Write(mtrl.UnkFloat02);
-                    writer.Write(mtrl.UnkByte01);
-                    writer.Write(mtrl.UnkByte02);
-                    writer.Write(mtrl.IsAbsolutePath);
-
-                    if ((mtrl.Flags & (uint)PrimMtrlFlag.Bit14) != 0)
-                    {
-                        writer.Write(mtrl.NormalMapPath);
-                        writer.Write(mtrl.UnkUInt01);
-                    }
-                }
+                    writer.Serialize(mtrl);
             }
         }
     }
