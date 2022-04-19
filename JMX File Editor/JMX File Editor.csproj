@@ -64,6 +64,7 @@
     <Compile Include="Silkroad\Data\Common\ObjectGeneralCategory.cs" />
     <Compile Include="Silkroad\Data\Common\ObjectGeneralInfo.cs" />
     <Compile Include="Silkroad\Data\Common\ObjectGeneralType.cs" />
+    <Compile Include="Silkroad\Data\JMXVBMT\PrimMtrl.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\ModData\ModDataBumpEnv.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\ModData\ModDataDyJoint.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\ModData\ModDataDyLattice.cs" />
@@ -91,7 +92,6 @@
     <Compile Include="Silkroad\Mathematics\Vector2.cs" />
     <Compile Include="Silkroad\Mathematics\Vector3.cs" />
     <Compile Include="Silkroad\Data\IJMXFile.cs" />
-    <Compile Include="Silkroad\Data\JMXVBMT\CPrimMtrl.cs" />
     <Compile Include="Silkroad\Data\JMXVBMT\JMXVBMT 0102.cs" />
     <Compile Include="Silkroad\Data\JMXVBMT\PrimMtrlFlag.cs" />
     <Compile Include="Silkroad\Data\JMXVCPD\JMXVCPD 0101.cs" />
