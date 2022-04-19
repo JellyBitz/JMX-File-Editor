@@ -7,7 +7,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 	public class CModDataVM : JMXAbstract
 	{
 		#region Constructor
-		public CModDataVM(string Name, Type[] AvailableTypes, Type CurrentType = null, object CurrentObject = null)
+		public CModDataVM(string Name, Type[] AvailableTypes, Type CurrentType, object CurrentObject)
 			: base(Name, AvailableTypes, CurrentType, CurrentObject)
 		{
 			// Add abstract formats
@@ -69,38 +69,62 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 		}
 		#endregion
 
-		#region Public Methods
+		#region Abstract Implementation
+		protected override void AddBaseNodes(object Obj)
+		{
+			CModData obj = (CModData)Obj;
+			Childs.Add(new JMXAttribute("UnkFloat01", obj.UnkFloat01));
+			Childs.Add(new JMXAttribute("UnkUInt01", obj.UnkUInt01));
+			Childs.Add(new JMXAttribute("UnkUInt02", obj.UnkUInt02));
+			Childs.Add(new JMXAttribute("UnkUInt03", obj.UnkUInt03));
+			Childs.Add(new JMXAttribute("UnkUInt04", obj.UnkUInt04));
+			Childs.Add(new JMXAttribute("UnkUInt05", obj.UnkUInt05));
+			Childs.Add(new JMXAttribute("UnkByte01", obj.UnkByte01));
+			Childs.Add(new JMXAttribute("UnkByte02", obj.UnkByte02));
+			Childs.Add(new JMXAttribute("UnkByte03", obj.UnkByte03));
+			Childs.Add(new JMXAttribute("UnkByte04", obj.UnkByte04));
+		}
 		public override object GetClassFrom(JMXStructure Structure)
 		{
-			if (CurrentType != null)
-			{
-				// Check abstract formats
-				if (CurrentType == typeof(CModDataMtrl))
-					return new CModDataMtrlVM(string.Empty, new CModDataMtrl()).GetClassFrom(this);
-				else if (CurrentType == typeof(CModDataTexAni))
-					return new CModDataTexAniVM(string.Empty, new CModDataTexAni()).GetClassFrom(this);
-				else if (CurrentType == typeof(CModDataMultiTex))
-					return new CModDataMultiTexVM(string.Empty, new CModDataMultiTex()).GetClassFrom(this);
-				else if (CurrentType == typeof(CModDataMultiTexRev))
-					return new CModDataMultiTexRevVM(string.Empty, new CModDataMultiTexRev()).GetClassFrom(this);
-				else if (CurrentType == typeof(CModDataParticle))
-					return new CModDataParticleVM(string.Empty, new CModDataParticle()).GetClassFrom(this);
-				else if (CurrentType == typeof(CModDataEnvMap))
-					return new CModDataEnvMapVM(string.Empty, new CModDataEnvMap()).GetClassFrom(this);
-				else if (CurrentType == typeof(CModDataBumpEnv))
-					return new CModDataBumpEnvVM(string.Empty, new CModDataBumpEnv()).GetClassFrom(this);
-				else if (CurrentType == typeof(CModDataSound))
-					return new CModDataSoundVM(string.Empty, new CModDataSound()).GetClassFrom(this);
-				else if (CurrentType == typeof(CModDataDyVertex))
-					return new CModDataDyVertex();
-				else if (CurrentType == typeof(CModDataDyJoint))
-					return new CModDataDyJoint();
-				else if (CurrentType == typeof(CModDataDyLattice))
-					return new CModDataDyLattice();
-				else if (CurrentType == typeof(CModDataProgEquipPow))
-					return new CModDataProgEquipPow();
-			}
-			return null;
+			CModData data = null;
+			// Check abstract formats
+			if (CurrentType == typeof(CModDataMtrl))
+				data = (CModDataMtrl)(new CModDataMtrlVM(string.Empty, new CModDataMtrl()).GetClassFrom(this,10));
+			else if (CurrentType == typeof(CModDataTexAni))
+				data = (CModDataTexAni)(new CModDataTexAniVM(string.Empty, new CModDataTexAni()).GetClassFrom(this,10));
+			else if (CurrentType == typeof(CModDataMultiTex))
+				data = (CModDataMultiTex)(new CModDataMultiTexVM(string.Empty, new CModDataMultiTex()).GetClassFrom(this,10));
+			else if (CurrentType == typeof(CModDataMultiTexRev))
+				data = (CModDataMultiTexRev)(new CModDataMultiTexRevVM(string.Empty, new CModDataMultiTexRev()).GetClassFrom(this,10));
+			else if (CurrentType == typeof(CModDataParticle))
+				data = (CModDataParticle)(new CModDataParticleVM(string.Empty, new CModDataParticle()).GetClassFrom(this,10));
+			else if (CurrentType == typeof(CModDataEnvMap))
+				data = (CModDataEnvMap)(new CModDataEnvMapVM(string.Empty, new CModDataEnvMap()).GetClassFrom(this,10));
+			else if (CurrentType == typeof(CModDataBumpEnv))
+				data = (CModDataBumpEnv)(new CModDataBumpEnvVM(string.Empty, new CModDataBumpEnv()).GetClassFrom(this,10));
+			else if (CurrentType == typeof(CModDataSound))
+				data = (CModDataSound)(new CModDataSoundVM(string.Empty, new CModDataSound()).GetClassFrom(this,10));
+			else if (CurrentType == typeof(CModDataDyVertex))
+				data = new CModDataDyVertex();
+			else if (CurrentType == typeof(CModDataDyJoint))
+				data = new CModDataDyJoint();
+			else if (CurrentType == typeof(CModDataDyLattice))
+				data = new CModDataDyLattice();
+			else if (CurrentType == typeof(CModDataProgEquipPow))
+				data = new CModDataProgEquipPow();
+			// Set base nodes
+			data.UnkFloat01 = (float)((JMXAttribute)Structure.Childs[0]).Value;
+			data.UnkUInt01 = (uint)((JMXAttribute)Structure.Childs[1]).Value;
+			data.UnkUInt02 = (uint)((JMXAttribute)Structure.Childs[2]).Value;
+			data.UnkUInt03 = (uint)((JMXAttribute)Structure.Childs[3]).Value;
+			data.UnkUInt04 = (uint)((JMXAttribute)Structure.Childs[4]).Value;
+			data.UnkUInt05 = (uint)((JMXAttribute)Structure.Childs[5]).Value;
+			data.UnkByte01 = (byte)((JMXAttribute)Structure.Childs[6]).Value;
+			data.UnkByte02 = (byte)((JMXAttribute)Structure.Childs[7]).Value;
+			data.UnkByte03 = (byte)((JMXAttribute)Structure.Childs[8]).Value;
+			data.UnkByte04 = (byte)((JMXAttribute)Structure.Childs[9]).Value;
+			// return abstract class
+			return data;
 		}
 		#endregion
 
@@ -136,24 +160,24 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 			#endregion
 
 			#region Public Methods
-			public override object GetClassFrom(JMXStructure Structure)
+			public override object GetClassFrom(JMXStructure Structure, int i)
 			{
 				CModDataMtrl obj = new CModDataMtrl
 				{
-					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[0]).Value,
-					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[1]).Value,
-					UnkUInt08 = (uint)((JMXAttribute)Structure.Childs[2]).Value,
-					GradientKeys = ((JMXStructure)Structure.Childs[3]).GetChildList<CModDataMtrl.GradientKey>(),
-					CurveKeys = ((JMXStructure)Structure.Childs[4]).GetChildList<CModDataMtrl.CurveKey>(),
-					UnkUInt09 = (uint)((JMXAttribute)Structure.Childs[5]).Value,
-					UnkUInt10 = (uint)((JMXAttribute)Structure.Childs[6]).Value,
-					UnkUInt11 = (uint)((JMXAttribute)Structure.Childs[7]).Value,
-					UnkUInt12 = (uint)((JMXAttribute)Structure.Childs[8]).Value,
-					UnkUInt13 = (uint)((JMXAttribute)Structure.Childs[9]).Value,
-					UnkUInt14 = (uint)((JMXAttribute)Structure.Childs[10]).Value,
-					UnkUInt15 = (uint)((JMXAttribute)Structure.Childs[11]).Value,
-					UnkUInt16 = (uint)((JMXAttribute)Structure.Childs[12]).Value,
-					UnkUInt17 = (uint)((JMXAttribute)Structure.Childs[13]).Value
+					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt08 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					GradientKeys = ((JMXStructure)Structure.Childs[i++]).GetChildList<CModDataMtrl.GradientKey>(),
+					CurveKeys = ((JMXStructure)Structure.Childs[i++]).GetChildList<CModDataMtrl.CurveKey>(),
+					UnkUInt09 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt10 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt11 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt12 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt13 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt14 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt15 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt16 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt17 = (uint)((JMXAttribute)Structure.Childs[i++]).Value
 				};
 				return obj;
 			}
@@ -217,16 +241,16 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 			#endregion
 
 			#region Public Methods
-			public override object GetClassFrom(JMXStructure Structure)
+			public override object GetClassFrom(JMXStructure Structure, int i)
 			{
 				CModDataTexAni obj = new CModDataTexAni()
 				{
-					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[0]).Value,
-					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[1]).Value,
-					UnkUInt08 = (uint)((JMXAttribute)Structure.Childs[2]).Value,
-					UnkUInt09 = (uint)((JMXAttribute)Structure.Childs[3]).Value,
-					UnkUInt10 = (uint)((JMXAttribute)Structure.Childs[4]).Value,
-					Matrix = (Matrix3D)((Matrix3DVM)Structure.Childs[5]).GetClass()
+					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt08 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt09 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt10 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					Matrix = (Matrix3D)((Matrix3DVM)Structure.Childs[i++]).GetClass()
 				};
 				return obj;
 			}
@@ -245,13 +269,13 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 			#endregion
 
 			#region Public Methods
-			public override object GetClassFrom(JMXStructure Structure)
+			public override object GetClassFrom(JMXStructure Structure, int i)
 			{
 				CModDataMultiTex obj = new CModDataMultiTex()
 				{
-					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[0]).Value,
-					Path = (string)((JMXAttribute)Structure.Childs[1]).Value,
-					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[2]).Value
+					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					Path = (string)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[i++]).Value
 				};
 				return obj;
 			}
@@ -270,13 +294,13 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 			#endregion
 
 			#region Public Methods
-			public override object GetClassFrom(JMXStructure Structure)
+			public override object GetClassFrom(JMXStructure Structure, int i)
 			{
 				CModDataMultiTex obj = new CModDataMultiTex()
 				{
-					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[0]).Value,
-					Path = (string)((JMXAttribute)Structure.Childs[1]).Value,
-					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[2]).Value
+					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					Path = (string)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[i++]).Value
 				};
 				return obj;
 			}
@@ -297,11 +321,11 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 			#endregion
 
 			#region Public Methods
-			public override object GetClassFrom(JMXStructure Structure)
+			public override object GetClassFrom(JMXStructure Structure, int i)
 			{
 				CModDataParticle obj = new CModDataParticle()
 				{
-					Particles = ((JMXStructure)Structure.Childs[0]).GetChildList<CModDataParticle.Particle>()
+					Particles = ((JMXStructure)Structure.Childs[i++]).GetChildList<CModDataParticle.Particle>()
 				};
 				return obj;
 			}
@@ -357,14 +381,14 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 			#endregion
 
 			#region Public Methods
-			public override object GetClassFrom(JMXStructure Structure)
+			public override object GetClassFrom(JMXStructure Structure, int i)
 			{
 				CModDataEnvMap obj = new CModDataEnvMap()
 				{
-					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[0]).Value,
-					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[1]).Value,
-					UnkUInt08 = (uint)((JMXAttribute)Structure.Childs[2]).Value,
-					UnkUInt09 = (uint)((JMXAttribute)Structure.Childs[3]).Value,
+					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt08 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt09 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
 				};
 				return obj;
 			}
@@ -387,17 +411,17 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 			#endregion
 
 			#region Public Methods
-			public override object GetClassFrom(JMXStructure Structure)
+			public override object GetClassFrom(JMXStructure Structure, int i)
 			{
 				CModDataBumpEnv obj = new CModDataBumpEnv()
 				{
-					UnkFloat02 = (float)((JMXAttribute)Structure.Childs[0]).Value,
-					UnkFloat03 = (float)((JMXAttribute)Structure.Childs[1]).Value,
-					UnkFloat04 = (float)((JMXAttribute)Structure.Childs[2]).Value,
-					UnkFloat05 = (float)((JMXAttribute)Structure.Childs[3]).Value,
-					UnkFloat06 = (float)((JMXAttribute)Structure.Childs[4]).Value,
-					UnkFloat07 = (float)((JMXAttribute)Structure.Childs[5]).Value,
-					Textures = ((JMXStructure)Structure.Childs[6]).GetChildList<string>()
+					UnkFloat02 = (float)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkFloat03 = (float)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkFloat04 = (float)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkFloat05 = (float)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkFloat06 = (float)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkFloat07 = (float)((JMXAttribute)Structure.Childs[i++]).Value,
+					Textures = ((JMXStructure)Structure.Childs[i++]).GetChildList<string>()
 				};
 				return obj;
 			}
@@ -429,22 +453,22 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 			#endregion
 
 			#region Public Methods
-			public override object GetClassFrom(JMXStructure Structure)
+			public override object GetClassFrom(JMXStructure Structure, int i)
 			{
 				CModDataSound obj = new CModDataSound()
 				{
-					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[0]).Value,
-					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[1]).Value,
-					UnkUInt08 = (uint)((JMXAttribute)Structure.Childs[2]).Value,
-					UnkFloat02 = (float)((JMXAttribute)Structure.Childs[3]).Value,
-					UnkFloat03 = (float)((JMXAttribute)Structure.Childs[4]).Value,
-					UnkUInt09 = (uint)((JMXAttribute)Structure.Childs[5]).Value,
-					UnkUInt10 = (uint)((JMXAttribute)Structure.Childs[6]).Value,
-					UnkUInt11 = (uint)((JMXAttribute)Structure.Childs[7]).Value,
-					UnkUInt12 = (uint)((JMXAttribute)Structure.Childs[8]).Value,
-					UnkUInt13 = (uint)((JMXAttribute)Structure.Childs[9]).Value,
-					UnkUInt14 = (uint)((JMXAttribute)Structure.Childs[10]).Value,
-					SoundSet = ((JMXStructure)Structure.Childs[11]).GetChildList<CModDataSound.SndSet>()
+					UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt07 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt08 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkFloat02 = (float)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkFloat03 = (float)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt09 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt10 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt11 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt12 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt13 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					UnkUInt14 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
+					SoundSet = ((JMXStructure)Structure.Childs[i++]).GetChildList<CModDataSound.SndSet>()
 				};
 				return obj;
 			}

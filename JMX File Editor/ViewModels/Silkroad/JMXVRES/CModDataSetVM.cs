@@ -8,6 +8,8 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 		{
 			// Add new format
 			m_SupportedFormats.Add(typeof(CModData), (s, e) => {
+				// set default case
+				CModData obj = e.Obj == null ? new CModDataMtrl() : (CModData)e.Obj;
 				e.Childs.Add(new CModDataVM("[" + e.Childs.Count + "]",
 					JMXAbstract.GetTypes(
 						typeof(CModDataMtrl),
@@ -22,7 +24,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 						typeof(CModDataDyJoint),
 						typeof(CModDataDyLattice),
 						typeof(CModDataProgEquipPow)),
-					e.Obj != null ? e.Obj.GetType() : null, e.Obj));
+					obj.GetType(),obj));
 			});
 			// Create nodes
 			Childs.Add(new JMXAttribute("Type", DataSet.Type));

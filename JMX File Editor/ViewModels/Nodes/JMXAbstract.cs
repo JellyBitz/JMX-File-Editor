@@ -39,6 +39,10 @@ namespace JMXFileEditor.ViewModels
 		#endregion
 
 		#region Public Methods
+		/// <summary>
+		/// Add nodes from base class using the abstract object being set
+		/// </summary>
+		protected abstract void AddBaseNodes(object Obj);
 		public abstract override object GetClassFrom(JMXStructure Structure);
 		#endregion
 
@@ -60,8 +64,10 @@ namespace JMXFileEditor.ViewModels
 
 			// Clear old values
 			Childs.Clear();
+			// Set new values
+			this.AddBaseNodes(Obj);
 
-			// Try to create it
+			// Try to create abstraction
 			if (Type != null && m_SupportedFormats.TryGetValue(Type, out AddChildEventHandler handler))
 				handler.Invoke(this, new AddChildEventArgs(Obj, Childs, IsEditable));
 		}

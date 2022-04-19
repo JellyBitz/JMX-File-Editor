@@ -85,9 +85,7 @@ namespace JMXFileEditor.ViewModels
 		/// <param name="Type">Type from the new class</param>
 		public void AddFormatHandler(Type Type, AddChildEventHandler Handler)
 		{
-			// Avoid adding it twice
-			if (m_SupportedFormats.ContainsKey(Type))
-				return;
+			// Override handler
 			m_SupportedFormats[Type] = Handler;
 		}
 		/// <summary>
@@ -146,6 +144,13 @@ namespace JMXFileEditor.ViewModels
 		/// Get the class from provided structure
 		/// </summary>
 		public virtual object GetClassFrom(JMXStructure Structure)
+		{
+			return GetClassFrom(Structure, 0);
+		}
+		/// <summary>
+		/// Get the class from provided structure starting from the child index specified
+		/// </summary>
+		public virtual object GetClassFrom(JMXStructure Structure, int StartIndex)
 		{
 			return null;
 		}
