@@ -1,29 +1,28 @@
-﻿using JMXFileEditor.Silkroad.Mathematics;
+﻿using JMXFileEditor.Silkroad.IO;
 
 using System.Collections.Generic;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVRES
 {
-    public class PrimAniGroup
+    public class PrimAniGroup : ISerializableBS
     {
         public string Name { get; set; } = string.Empty;
-        public List<PrimAniTypeData> Entries { get; set; } = new List<PrimAniTypeData>();
+        public List<PrimAniTypeData> AniTypeDataList { get; set; } = new List<PrimAniTypeData>();
 
-        public class PrimAniTypeData
+        public void Deserialize(BSReader reader)
         {
-            public PrimAnimationType Type { get; set; }
-            public int PrimAnimationIndex { get; set; }
-            public List<Event> Events { get; set; } = new List<Event>();
-            public List<Vector2> WalkGraph { get; set; } = new List<Vector2>();
-            public float WalkLength { get; set; }
+            this.Name = reader.ReadString();
+            var aniTypeDataCount = reader.ReadInt32();
+            for (int i = 0; i < aniTypeDataCount; i++)
+                this.AniTypeDataList.Add(reader.Deserialize<PrimAniTypeData>());
+        }
 
-            public class Event
-            {
-                public uint Time { get; set; }
-                public uint Type { get; set; }
-                public uint UnkUInt01 { get; set; }
-                public uint UnkUInt02 { get; set; }
-            }
+        public void Serialize(BSWriter writer)
+        {
+            writer.Write(this.Name);
+            writer.Write(this.AniTypeDataList.Count);
+            foreach (var item in this.AniTypeDataList)
+                writer.Serialize(item);
         }
     }
 }

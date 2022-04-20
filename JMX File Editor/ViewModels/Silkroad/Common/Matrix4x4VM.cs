@@ -6,11 +6,11 @@ namespace JMXFileEditor.ViewModels.Silkroad.Common
     /// ViewModel representing a Matrix on 3D space
     /// </summary>
 
-    public class Matrix3DVM : JMXStructure
+    public class Matrix4x4VM : JMXStructure
     {
         #region Constructor
 
-        public Matrix3DVM(string Name, Matrix4x4 Matrix) : base(Name, true)
+        public Matrix4x4VM(string Name, Matrix4x4 Matrix) : base(Name, true)
         {
             Childs.Add(new JMXAttribute("M11", Matrix.M11));
             Childs.Add(new JMXAttribute("M12", Matrix.M12));

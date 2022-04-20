@@ -27,11 +27,11 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             JMXVRES_0109 file = new JMXVRES_0109();
 
             // Unknown flags
-            file.FlagUInt01 = (uint)((JMXAttribute)Structure.Childs[9]).Value;
-            file.FlagUInt02 = (uint)((JMXAttribute)Structure.Childs[10]).Value;
-            file.FlagUInt03 = (uint)((JMXAttribute)Structure.Childs[11]).Value;
-            file.FlagUInt04 = (uint)((JMXAttribute)Structure.Childs[12]).Value;
-            file.FlagUInt05 = (uint)((JMXAttribute)Structure.Childs[13]).Value;
+            file.Flag0 = (int)((JMXAttribute)Structure.Childs[9]).Value;
+            file.Flag1 = (int)((JMXAttribute)Structure.Childs[10]).Value;
+            file.Flag2 = (int)((JMXAttribute)Structure.Childs[11]).Value;
+            file.Flag3 = (int)((JMXAttribute)Structure.Childs[12]).Value;
+            file.Flag4 = (int)((JMXAttribute)Structure.Childs[13]).Value;
 
             // Object info
             // TODO: New VM class ?!
@@ -47,7 +47,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             file.CollisionBox01 = (BoundingBoxF)((BoundingBoxVM)Structure.Childs[20]).GetClass();
             file.CollisionBox02 = (BoundingBoxF)((BoundingBoxVM)Structure.Childs[21]).GetClass();
             file.UseCollisionMatrix = (bool)((JMXAttribute)Structure.Childs[22]).Value;
-            file.CollisionMatrix = (Matrix4x4)((Matrix3DVM)Structure.Childs[23]).GetClass();
+            file.CollisionMatrix = (Matrix4x4)((Matrix4x4VM)Structure.Childs[23]).GetClass();
 
             // FileOffset.Material
             file.MaterialSet = ((JMXStructure)Structure.Childs[24]).GetChildList<PrimMtrlSet>();
@@ -76,7 +76,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             file.AniModSets = ((JMXStructure)Structure.Childs[35]).GetChildList<ModDataSet>();
 
             // Extra
-            file.ResourceAttachable = (ResAttachable)((CResAttachableVM)Structure.Childs[36]).GetClass();
+            file.ResourceAttachable = (ResAttachable)((ResAttachableVM)Structure.Childs[36]).GetClass();
 
             return file;
         }
@@ -92,15 +92,15 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
         {
             AddFormatHandler(typeof(PrimMtrlSet), (s, e) =>
             {
-                e.Childs.Add(new CPrimMtrlSetVM("[" + e.Childs.Count + "]", e.Obj is PrimMtrlSet _obj ? _obj : new PrimMtrlSet()));
+                e.Childs.Add(new PrimMtrlSetVM("[" + e.Childs.Count + "]", e.Obj is PrimMtrlSet _obj ? _obj : new PrimMtrlSet()));
             });
             AddFormatHandler(typeof(PrimMesh), (s, e) =>
             {
-                e.Childs.Add(new CPrimMeshVM("[" + e.Childs.Count + "]", e.Obj is PrimMesh _obj ? _obj : new PrimMesh()));
+                e.Childs.Add(new PrimMeshVM("[" + e.Childs.Count + "]", e.Obj is PrimMesh _obj ? _obj : new PrimMesh()));
             });
             AddFormatHandler(typeof(PrimAnimation), (s, e) =>
             {
-                e.Childs.Add(new CPrimAniVM("[" + e.Childs.Count + "]", e.Obj is PrimAnimation _obj ? _obj : new PrimAnimation()));
+                e.Childs.Add(new PrimAniVM("[" + e.Childs.Count + "]", e.Obj is PrimAnimation _obj ? _obj : new PrimAnimation()));
             });
             AddFormatHandler(typeof(PrimMeshGroup), (s, e) =>
             {
@@ -108,15 +108,15 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             });
             AddFormatHandler(typeof(PrimAniGroup), (s, e) =>
             {
-                e.Childs.Add(new CPrimAniGroupVM("[" + e.Childs.Count + "]", e.Obj is PrimAniGroup _obj ? _obj : new PrimAniGroup()));
+                e.Childs.Add(new PrimAniGroupVM("[" + e.Childs.Count + "]", e.Obj is PrimAniGroup _obj ? _obj : new PrimAniGroup()));
             });
             AddFormatHandler(typeof(ModDataSet), (s, e) =>
             {
-                e.Childs.Add(new CModDataSetVM("[" + e.Childs.Count + "]", e.Obj is ModDataSet _obj ? _obj : new ModDataSet()));
+                e.Childs.Add(new ModDataSetVM("[" + e.Childs.Count + "]", e.Obj is ModDataSet _obj ? _obj : new ModDataSet()));
             });
             AddFormatHandler(typeof(ResAttachable), (s, e) =>
             {
-                e.Childs.Add(new CResAttachableVM("[" + e.Childs.Count + "]", e.Obj is ResAttachable _obj ? _obj : new ResAttachable()));
+                e.Childs.Add(new ResAttachableVM("[" + e.Childs.Count + "]", e.Obj is ResAttachable _obj ? _obj : new ResAttachable()));
             });
         }
 
@@ -126,11 +126,11 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
         private void CreateNodes(JMXVRES_0109 JMXFile)
         { 
             // Unknown flags
-            Childs.Add(new JMXAttribute("Flag.UInt01", JMXFile.FlagUInt01));
-            Childs.Add(new JMXAttribute("Flag.UInt02", JMXFile.FlagUInt02));
-            Childs.Add(new JMXAttribute("Flag.UInt03", JMXFile.FlagUInt03));
-            Childs.Add(new JMXAttribute("Flag.UInt04", JMXFile.FlagUInt04));
-            Childs.Add(new JMXAttribute("Flag.UInt05", JMXFile.FlagUInt05));
+            Childs.Add(new JMXAttribute("Flag.UInt01", JMXFile.Flag0));
+            Childs.Add(new JMXAttribute("Flag.UInt02", JMXFile.Flag1));
+            Childs.Add(new JMXAttribute("Flag.UInt03", JMXFile.Flag2));
+            Childs.Add(new JMXAttribute("Flag.UInt04", JMXFile.Flag3));
+            Childs.Add(new JMXAttribute("Flag.UInt05", JMXFile.Flag4));
 
             // Object info
             //Childs.Add(new JMXOption("Resource.Type", JMXFile.Type, JMXOption.GetValues<object>(typeof(ResourceType))));
@@ -146,7 +146,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             Childs.Add(new BoundingBoxVM("CollisionBox01", JMXFile.CollisionBox01));
             Childs.Add(new BoundingBoxVM("CollisionBox02", JMXFile.CollisionBox02));
             Childs.Add(new JMXAttribute("UseCollisionMatrix", JMXFile.UseCollisionMatrix));
-            Childs.Add(new Matrix3DVM("CollisionMatrix", JMXFile.CollisionMatrix));
+            Childs.Add(new Matrix4x4VM("CollisionMatrix", JMXFile.CollisionMatrix));
 
             // FileOffset.Material
             AddChildArray("MaterialSet", JMXFile.MaterialSet.ToArray(), true, true);
@@ -175,7 +175,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             AddChildArray("AnimationModSets", JMXFile.AniModSets.ToArray(), true, true);
 
             // Extra
-            Childs.Add(new CResAttachableVM("ResourceAttachable", JMXFile.ResourceAttachable));
+            Childs.Add(new ResAttachableVM("ResourceAttachable", JMXFile.ResourceAttachable));
         }
 
         #endregion Private Helpers

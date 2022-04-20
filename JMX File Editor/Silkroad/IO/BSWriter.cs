@@ -38,6 +38,12 @@ namespace JMXFileEditor.Silkroad.IO
             value.Serialize(this);
         }
 
+        public void Serialize<T, TParam>(T value, TParam param)
+            where T : ISerializableWithParamBS<TParam>
+        {
+            value.Serialize(this, param);
+        }
+
         public void Write(Vector2 value)
         {
             this.Write(value.X);

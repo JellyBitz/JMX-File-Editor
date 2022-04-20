@@ -45,6 +45,14 @@ namespace JMXFileEditor.Silkroad.IO
             return serialized;
         }
 
+        public T Deserialize<T, TParam>(TParam param)
+           where T : ISerializableWithParamBS<TParam>, new()
+        {
+            var serialized = new T();
+            serialized.Deserialize(this, param);
+            return serialized;
+        }
+
         public float ReadFloat() => this.ReadSingle();
 
         public Vector2 ReadVector2() => new Vector2(this.ReadFloat(), this.ReadFloat());

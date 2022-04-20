@@ -1,10 +1,10 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVRES;
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 {
-	public class CPrimMtrlSetVM : JMXStructure
+	public class PrimMtrlSetVM : JMXStructure
 	{
 		#region Constructor
-		public CPrimMtrlSetVM(string Name, PrimMtrlSet MtrlSet) : base(Name, true)
+		public PrimMtrlSetVM(string Name, PrimMtrlSet MtrlSet) : base(Name, true)
 		{
 			Childs.Add(new JMXAttribute("Index", MtrlSet.Index));
 			Childs.Add(new JMXAttribute("Path", MtrlSet.Path));
@@ -16,7 +16,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 		{
 			PrimMtrlSet mtrlSet = new PrimMtrlSet()
 			{
-				Index = (uint)((JMXAttribute)Structure.Childs[0]).Value,
+				Index = (int)((JMXAttribute)Structure.Childs[0]).Value,
 				Path = (string)((JMXAttribute)Structure.Childs[1]).Value
 			};
 			return mtrlSet;

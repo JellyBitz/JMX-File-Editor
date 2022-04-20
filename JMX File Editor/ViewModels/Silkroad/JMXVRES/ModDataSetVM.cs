@@ -3,10 +3,10 @@ using JMXFileEditor.Silkroad.Data.JMXVRES.ModData;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 {
-	public class CModDataSetVM : JMXStructure
+	public class ModDataSetVM : JMXStructure
 	{
 		#region Constructor
-		public CModDataSetVM(string Name, ModDataSet DataSet) : base(Name, true)
+		public ModDataSetVM(string Name, ModDataSet DataSet) : base(Name, true)
 		{
 			// Add new format
 			m_SupportedFormats.Add(typeof(IModData), (s, e) => {

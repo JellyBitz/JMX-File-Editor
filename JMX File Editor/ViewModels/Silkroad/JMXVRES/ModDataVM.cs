@@ -238,7 +238,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 				Childs.Add(new JMXAttribute("UnkUInt08", TexAni.UnkUInt08));
 				Childs.Add(new JMXAttribute("UnkUInt09", TexAni.UnkUInt09));
 				Childs.Add(new JMXAttribute("UnkUInt10", TexAni.UnkUInt10));
-				Childs.Add(new Matrix3DVM("Matrix", TexAni.Matrix));
+				Childs.Add(new Matrix4x4VM("Matrix", TexAni.Matrix));
 			}
 			#endregion
 
@@ -252,7 +252,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 					UnkUInt08 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
 					UnkUInt09 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
 					UnkUInt10 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
-					Matrix = (Matrix4x4)((Matrix3DVM)Structure.Childs[i++]).GetClass()
+					Matrix = (Matrix4x4)((Matrix4x4VM)Structure.Childs[i++]).GetClass()
 				};
 				return obj;
 			}

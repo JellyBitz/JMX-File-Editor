@@ -22,11 +22,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
         /// </summary>
         public const string LatestSignature = "JMXVRES 0109";
 
-        public uint FlagUInt01 { get; set; }
-        public uint FlagUInt02 { get; set; }
-        public uint FlagUInt03 { get; set; }
-        public uint FlagUInt04 { get; set; }
-        public uint FlagUInt05 { get; set; }
+        public int Flag0 { get; set; }
+        public int Flag1 { get; set; }
+        public int Flag2 { get; set; }
+        public int Flag3 { get; set; }
+        public int Flag4 { get; set; }
         public ObjectGeneralInfo ObjectInfo { get; set; }
         public byte[] UnkBuffer { get; set; } = new byte[40];
         public string CollisionMesh { get; set; } = string.Empty;
@@ -80,12 +80,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                 reader.ReadInt32(); // ModPaletteOffset
                 reader.ReadInt32(); // CollisionOffset
 
-                // Unknown flags
-                FlagUInt01 = reader.ReadUInt32();
-                FlagUInt02 = reader.ReadUInt32();
-                FlagUInt03 = reader.ReadUInt32();
-                FlagUInt04 = reader.ReadUInt32();
-                FlagUInt05 = reader.ReadUInt32();
+                Flag0 = reader.ReadInt32();
+                Flag1 = reader.ReadInt32();
+                Flag2 = reader.ReadInt32();
+                Flag3 = reader.ReadInt32();
+                Flag4 = reader.ReadInt32();
 
                 // Object info
                 this.ObjectInfo = reader.Deserialize<ObjectGeneralInfo>();
@@ -105,29 +104,15 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
 
                 // FileOffset.Material
                 var count = reader.ReadInt32();
-                MaterialSet = new List<PrimMtrlSet>();
+                MaterialSet = new List<PrimMtrlSet>(count);
                 for (int i = 0; i < count; i++)
-                {
-                    // create
-                    MaterialSet.Add(new PrimMtrlSet()
-                    {
-                        Index = reader.ReadUInt32(),
-                        Path = reader.ReadString()
-                    });
-                }
+                    MaterialSet.Add(reader.Deserialize<PrimMtrlSet>());
 
                 // FileOffset.Mesh
                 count = reader.ReadInt32();
-                MeshSet = new List<PrimMesh>();
+                MeshSet = new List<PrimMesh>(count);
                 for (int i = 0; i < count; i++)
-                {
-                    // create
-                    MeshSet.Add(new PrimMesh()
-                    {
-                        Path = reader.ReadString(),
-                        UnkUInt01 = FlagUInt01 == 1 ? reader.ReadUInt32() : 0
-                    });
-                }
+                    MeshSet.Add(reader.Deserialize<PrimMesh, int>(this.Flag0));
 
                 // FileOffset.Animation
                 AnimationTypeVersion = reader.ReadUInt32();
@@ -147,53 +132,15 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
 
                 // FileOffset.MeshGroup
                 count = reader.ReadInt32();
-                MeshGroups = new List<PrimMeshGroup>();
+                MeshGroups = new List<PrimMeshGroup>(count);
                 for (int i = 0; i < count; i++)
                     this.MeshGroups.Add(reader.Deserialize<PrimMeshGroup>());
 
                 // FileOffset.AnimationGroup
                 count = reader.ReadInt32();
-                AnimationGroups = new List<PrimAniGroup>();
+                AnimationGroups = new List<PrimAniGroup>(count);
                 for (int i = 0; i < count; i++)
-                {
-                    // create
-                    var animationGroup = new PrimAniGroup();
-                    AnimationGroups.Add(animationGroup);
-                    // read
-                    animationGroup.Name = reader.ReadString();
-                    var animationEntryCount = reader.ReadInt32();
-                    animationGroup.Entries = new List<PrimAniGroup.PrimAniTypeData>(animationEntryCount);
-                    for (int j = 0; j < animationEntryCount; j++)
-                    {
-                        // create
-                        var entry = new PrimAniGroup.PrimAniTypeData();
-                        animationGroup.Entries.Add(entry);
-                        // read
-                        entry.Type = (PrimAnimationType)reader.ReadInt32();
-                        entry.PrimAnimationIndex = reader.ReadInt32();
-                        var eventCount = reader.ReadInt32();
-                        entry.Events = new List<PrimAniGroup.PrimAniTypeData.Event>(eventCount);
-                        for (int k = 0; k < eventCount; k++)
-                        {
-                            // create
-                            entry.Events.Add(new PrimAniGroup.PrimAniTypeData.Event()
-                            {
-                                Time = reader.ReadUInt32(),
-                                Type = reader.ReadUInt32(),
-                                UnkUInt01 = reader.ReadUInt32(),
-                                UnkUInt02 = reader.ReadUInt32()
-                            });
-                        }
-                        var WalkGraphPointCount = reader.ReadInt32();
-                        entry.WalkLength = reader.ReadSingle();
-                        entry.WalkGraph = new List<Vector2>(WalkGraphPointCount);
-                        for (int k = 0; k < WalkGraphPointCount; k++)
-                        {
-                            // create
-                            entry.WalkGraph.Add(reader.ReadVector2());
-                        }
-                    }
-                }
+                    this.AnimationGroups.Add(reader.Deserialize<PrimAniGroup>());
 
                 // FileOffset.ModPalette
                 for (int x = 0; x < 2; x++)
@@ -203,11 +150,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
 
                     count = reader.ReadInt32();
                     for (int i = 0; i < count; i++)
-                    {
-                        var set = reader.Deserialize<ModDataSet>();
-
-                        modSet.Add(set);
-                    }
+                        modSet.Add(reader.Deserialize<ModDataSet>());
                 }
                 if (ObjectInfo.Type == ObjectGeneralType.Character || ObjectInfo.Type == ObjectGeneralType.Item)
                 {
@@ -251,11 +194,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                 writer.Write(0); // CollisionOffset
 
                 // Unknown Flags
-                writer.Write(FlagUInt01);
-                writer.Write(FlagUInt02);
-                writer.Write(FlagUInt03);
-                writer.Write(FlagUInt04);
-                writer.Write(FlagUInt05);
+                writer.Write(Flag0);
+                writer.Write(Flag1);
+                writer.Write(Flag2);
+                writer.Write(Flag3);
+                writer.Write(Flag4);
 
                 // Object Info
                 writer.Serialize(this.ObjectInfo);
@@ -273,31 +216,22 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
 
                 var materialOffset = (int)stream.Position;
                 writer.Write(MaterialSet.Count);
-                for (int i = 0; i < MaterialSet.Count; i++)
-                {
-                    writer.Write(MaterialSet[i].Index);
-                    writer.Write(MaterialSet[i].Path);
-                }
+                foreach (var item in MaterialSet)
+                    writer.Serialize(item);
 
                 // FileOffset.Mesh
                 var meshOffset = (int)stream.Position;
                 writer.Write(MeshSet.Count);
-                for (int i = 0; i < MeshSet.Count; i++)
-                {
-                    writer.Write(MeshSet[i].Path);
-                    if (FlagUInt01 != 0)
-                        writer.Write(MeshSet[i].UnkUInt01);
-                }
+                foreach (var item in MeshSet)
+                    writer.Serialize(item, this.Flag0);
 
                 // FileOffset.Animation
                 var animationOffset = (int)stream.Position;
                 writer.Write(AnimationTypeVersion);
                 writer.Write(AnimationTypeUserDefine);
                 writer.Write(AnimationSet.Count);
-                for (int i = 0; i < AnimationSet.Count; i++)
-                {
-                    writer.Write(AnimationSet[i].Path);
-                }
+                foreach (var item in AnimationSet)
+                    writer.Serialize(item);
 
                 // FileOffset.Skeleton
                 var skeletonOffset = (int)stream.Position;
@@ -313,40 +247,14 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                 writer.Write(MeshGroups.Count);
                 foreach (var group in MeshGroups)
                 {
-                    writer.Write(group.Name);
-                    writer.Write(group.MeshIndices.Count);
-                    foreach (var item in group.MeshIndices)
-                        writer.Write(item);
+                    writer.Serialize(group);
                 }
 
                 // FileOffset.AnimationGroup
                 var aniGroupOffset = (int)stream.Position;
                 writer.Write(AnimationGroups.Count);
-                for (int i = 0; i < AnimationGroups.Count; i++)
-                {
-                    writer.Write(AnimationGroups[i].Name);
-                    writer.Write(AnimationGroups[i].Entries.Count);
-                    for (int j = 0; j < AnimationGroups[i].Entries.Count; j++)
-                    {
-                        writer.Write((uint)AnimationGroups[i].Entries[j].Type);
-                        writer.Write(AnimationGroups[i].Entries[j].PrimAnimationIndex);
-                        writer.Write(AnimationGroups[i].Entries[j].Events.Count);
-                        for (int k = 0; k < AnimationGroups[i].Entries[j].Events.Count; k++)
-                        {
-                            writer.Write(AnimationGroups[i].Entries[j].Events[k].Time);
-                            writer.Write(AnimationGroups[i].Entries[j].Events[k].Type);
-                            writer.Write(AnimationGroups[i].Entries[j].Events[k].UnkUInt01);
-                            writer.Write(AnimationGroups[i].Entries[j].Events[k].UnkUInt02);
-                        }
-                        writer.Write(AnimationGroups[i].Entries[j].WalkGraph.Count);
-                        writer.Write(AnimationGroups[i].Entries[j].WalkLength);
-                        for (int k = 0; k < AnimationGroups[i].Entries[j].WalkGraph.Count; k++)
-                        {
-                            writer.Write(AnimationGroups[i].Entries[j].WalkGraph[k].X);
-                            writer.Write(AnimationGroups[i].Entries[j].WalkGraph[k].Y);
-                        }
-                    }
-                }
+                foreach (var item in AnimationGroups)
+                    writer.Serialize(item);
 
                 var modPaletteOffset = (int)stream.Position;
                 // FileOffset.ModPalette
@@ -375,7 +283,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                     if (ObjectInfo.Type == ObjectGeneralType.Character)
                         writer.Write(ResourceAttachable.nComboNum);
                 }
-                
+
                 // Overwrite offsets now that we know them
                 writer.Seek(12, SeekOrigin.Begin);
                 writer.Write(materialOffset);

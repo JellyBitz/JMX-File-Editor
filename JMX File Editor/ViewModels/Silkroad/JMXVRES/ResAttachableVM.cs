@@ -2,10 +2,10 @@
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 {
-	public class CResAttachableVM : JMXStructure
+	public class ResAttachableVM : JMXStructure
 	{
 		#region Constructor
-		public CResAttachableVM(string Name, ResAttachable Resource) : base(Name, true)
+		public ResAttachableVM(string Name, ResAttachable Resource) : base(Name, true)
 		{
 			// add format
 			AddFormatHandler(typeof(ResAttachable.Slot), (s,e) => {
