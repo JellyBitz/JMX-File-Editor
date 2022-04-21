@@ -1,7 +1,8 @@
-﻿using JMXFileEditor.Silkroad.Data.Common;
+﻿using JMXFileEditor.Silkroad.Mathematics;
+
 namespace JMXFileEditor.ViewModels.Silkroad.Common
 {
-	public class Color4VM : JMXStructure
+    public class Color4VM : JMXStructure
 	{
 		#region Constructor
 		public Color4VM(string Name, Color4 Color) : base(Name, true)

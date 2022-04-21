@@ -1,10 +1,11 @@
-﻿using JMXFileEditor.Silkroad.Data.Common;
+﻿using JMXFileEditor.Silkroad.Mathematics;
+
 namespace JMXFileEditor.ViewModels.Silkroad.Common
 {
-	/// <summary>
-	/// ViewModel representing Vector3
-	/// </summary>
-	public class Vector2VM : JMXStructure
+    /// <summary>
+    /// ViewModel representing Vector3
+    /// </summary>
+    public class Vector2VM : JMXStructure
 	{
 		#region Constructor
 		public Vector2VM(string Name, Vector2 Vector) : base(Name, true)
