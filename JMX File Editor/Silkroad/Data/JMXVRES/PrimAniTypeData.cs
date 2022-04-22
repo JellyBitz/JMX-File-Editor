@@ -7,12 +7,16 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
 {
     public class PrimAniTypeData : ISerializableBS
     {
+
+        #region Public Properties
         public PrimAnimationType Type { get; set; }
         public int PrimAnimationIndex { get; set; }
         public List<PrimAnimationEvent> Events { get; set; } = new List<PrimAnimationEvent>();
         public List<Vector2> WalkGraph { get; set; } = new List<Vector2>();
         public float WalkLength { get; set; }
+        #endregion
 
+        #region Interface Implementation
         public void Deserialize(BSReader reader)
         {
             this.Type = (PrimAnimationType)reader.ReadInt32();
@@ -41,5 +45,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
             foreach (var item in this.WalkGraph)
                 writer.Write(item);
         }
+        #endregion
     }
 }

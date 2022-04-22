@@ -35,6 +35,12 @@
         ATTACK7 = 0xB9,
         ATTACK8 = 0xBA,
         ATTACK9 = 0xBE,
+        ATTACK10 = 0xC0,
+        ATTACK11 = 0xC1,
+        ATTACK12 = 0xC2,
+        ATTACK13 = 0xC3,
+        ATTACK14 = 0xC4,
+        ATTACK15 = 0xC5,
 
         REVOLUTION = 0x27,
 

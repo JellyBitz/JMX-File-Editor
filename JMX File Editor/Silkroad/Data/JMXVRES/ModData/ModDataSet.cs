@@ -6,11 +6,14 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
 {
     public class ModDataSet : ISerializableBS
     {
+        #region Public Properties
         public int Type { get; set; }
         public PrimAnimationType AnimationType { get; set; }
         public string Name { get; set; } = string.Empty;
         public List<IModData> ModData { get; set; } = new List<IModData>();
+        #endregion
 
+        #region Interface Implementation
         public void Deserialize(BSReader reader)
         {
             this.Type = reader.ReadInt32();
@@ -26,7 +29,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
                 this.ModData.Add(data);
             }
         }
-
         public void Serialize(BSWriter writer)
         {
             writer.Write(this.Type);
@@ -40,5 +42,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
                 writer.Serialize(data);
             }
         }
+        #endregion
     }
 }

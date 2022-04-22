@@ -5,6 +5,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVBMT
 {
     public class PrimMtrl : ISerializableBS
     {
+        #region Public Properties
         public string Name { get; set; } = string.Empty;
         public Color4 Diffuse { get; set; } = new Color4();
         public Color4 Ambient { get; set; } = new Color4();
@@ -19,7 +20,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVBMT
         public bool IsAbsolutePath { get; set; }
         public string NormalMapPath { get; set; } = string.Empty;
         public uint UnkUInt01 { get; set; }
+        #endregion
 
+        #region Interface Implementations
         public void Deserialize(BSReader reader)
         {
             this.Name = reader.ReadString();
@@ -40,7 +43,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVBMT
                 this.UnkUInt01 = reader.ReadUInt32();
             }
         }
-
         public void Serialize(BSWriter writer)
         {
             writer.Write(this.Name);
@@ -62,5 +64,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVBMT
                 writer.Write(this.UnkUInt01);
             }
         }
+        #endregion
     }
 }

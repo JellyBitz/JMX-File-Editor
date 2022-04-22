@@ -38,7 +38,6 @@ namespace JMXFileEditor
             // No cases found
             return Visibility.Collapsed;
         }
-
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

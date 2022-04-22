@@ -17,7 +17,7 @@ namespace JMXFileEditor.Utility
             int length = Count;
             if (length % bytesPerLine != 0)
             {
-                length += bytesPerLine - length % bytesPerLine;
+                length += bytesPerLine - (length % bytesPerLine);
             }
             for (int x = 0; x <= length; ++x)
             {
@@ -37,7 +37,7 @@ namespace JMXFileEditor.Utility
                 {
                     output.AppendFormat("{0:X2} ", ByteArray[Offset + x]);
                     char ch = (char)ByteArray[Offset + x];
-                    if (!Char.IsControl(ch))
+                    if (!char.IsControl(ch))
                     {
                         ascii_output.AppendFormat("{0}", ch);
                     }

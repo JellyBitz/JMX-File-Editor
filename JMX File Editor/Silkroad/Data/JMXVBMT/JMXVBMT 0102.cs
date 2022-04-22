@@ -8,21 +8,21 @@ namespace JMXFileEditor.Silkroad.Data.JMXVBMT
 {
     /// <summary>
     /// Joymax Binary Material File
-    /// <para>https://github.com/DummkopfOfHachtenduden/SilkroadDoc/wiki/JMXVBMT </para>
+    /// <para>https://github.com/DummkopfOfHachtenduden/SilkroadDoc/wiki/JMXVBMT</para>
     /// </summary>
     public class JMXVBMT_0102 : IJMXFile
     {
+        #region Public Properties
         /// <summary>
         /// Original header used by Joymax
         /// </summary>
         public const string LatestSignature = "JMXVBMT 0102";
-
-        public List<PrimMtrl> Materials { get; set; }
-
+        public List<PrimMtrl> Materials { get; set; } = new List<PrimMtrl>();
         public string Format => LatestSignature;
-
         public string Extension { get; } = "bmt";
+        #endregion
 
+        #region Interface Implementations
         public void Load(Stream stream)
         {
             // Read file structure
@@ -42,7 +42,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVBMT
                     this.Materials.Add(reader.Deserialize<PrimMtrl>());
             }
         }
-
         public void Save(string path)
         {
             // Override file structure
@@ -55,5 +54,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVBMT
                     writer.Serialize(mtrl);
             }
         }
+        #endregion
     }
 }

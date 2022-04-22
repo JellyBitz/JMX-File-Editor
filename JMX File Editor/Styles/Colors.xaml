@@ -9,13 +9,10 @@
     <Color x:Key="ForegroundMain">#222</Color>
     <SolidColorBrush x:Key="ForegroundMainBrush" Color="{StaticResource ForegroundMain}"/>
 
-    <Color x:Key="BackgroundAccentMain">#00BBFF</Color>
+    <Color x:Key="BackgroundAccentMain">#747ED3</Color>
     <SolidColorBrush x:Key="BackgroundAccentMainBrush" Color="{StaticResource BackgroundAccentMain}"/>
 
     <Color x:Key="BackgroundDark">#E1E1FF</Color>
     <SolidColorBrush x:Key="BackgroundDarkBrush" Color="{StaticResource BackgroundDark}"/>
-
-
-
 
 </ResourceDictionary>

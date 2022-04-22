@@ -7,8 +7,8 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
 {
     public class ModDataMtrl : IModData
     {
+        #region Public Properties
         public override ModDataType Type => ModDataType.ModDataMtrl;
-
         public uint UnkUInt06 { get; set; }
         public uint UnkUInt07 { get; set; }
         public uint UnkUInt08 { get; set; }
@@ -23,48 +23,15 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
         public uint UnkUInt15 { get; set; }
         public uint UnkUInt16 { get; set; }
         public uint UnkUInt17 { get; set; }
+        #endregion
 
-        public class GradientKey : ISerializableBS
-        {
-            public int Time { get; set; }
-            public Color4 Value { get; set; } = new Color4();
-
-            public void Deserialize(BSReader reader)
-            {
-                this.Time = reader.ReadInt32();
-                this.Value = reader.ReadColor4();
-            }
-
-            public void Serialize(BSWriter writer)
-            {
-                writer.Write(this.Time);
-                writer.Write(this.Value);
-            }
-        }
-
-        public class CurveKey : ISerializableBS
-        {
-            public int Time { get; set; }
-            public float Value { get; set; }
-
-            public void Deserialize(BSReader reader)
-            {
-                this.Time = reader.ReadInt32();
-                this.Value = reader.ReadSingle();
-            }
-
-            public void Serialize(BSWriter writer)
-            {
-                writer.Write(this.Time);
-                writer.Write(this.Value);
-            }
-        }
-
+        #region Interface Implementation
         public override void Deserialize(BSReader reader)
         {
             base.Deserialize(reader);
-            this.UnkUInt06 = reader.ReadUInt32(); // 1000
-            this.UnkUInt07 = reader.ReadUInt32(); // 2
+
+            this.UnkUInt06 = reader.ReadUInt32();
+            this.UnkUInt07 = reader.ReadUInt32();
             this.UnkUInt08 = reader.ReadUInt32();
 
             var gradientKeyCount = reader.ReadInt32();
@@ -118,5 +85,50 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
             writer.Write(this.UnkUInt16);
             writer.Write(this.UnkUInt17);
         }
+        #endregion
+
+        #region Internal Classes
+        public class GradientKey : ISerializableBS
+        {
+            #region Public Properties
+            public int Time { get; set; }
+            public Color4 Value { get; set; } = new Color4();
+            #endregion
+
+            #region Interface Implementation
+            public void Deserialize(BSReader reader)
+            {
+                this.Time = reader.ReadInt32();
+                this.Value = reader.ReadColor4();
+            }
+
+            public void Serialize(BSWriter writer)
+            {
+                writer.Write(this.Time);
+                writer.Write(this.Value);
+            }
+            #endregion
+        }
+        public class CurveKey : ISerializableBS
+        {
+            #region Public Properties
+            public int Time { get; set; }
+            public float Value { get; set; }
+            #endregion
+
+            #region Interface Implementation
+            public void Deserialize(BSReader reader)
+            {
+                this.Time = reader.ReadInt32();
+                this.Value = reader.ReadSingle();
+            }
+            public void Serialize(BSWriter writer)
+            {
+                writer.Write(this.Time);
+                writer.Write(this.Value);
+            }
+            #endregion
+        }
+        #endregion
     }
 }

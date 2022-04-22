@@ -84,7 +84,7 @@
     <Compile Include="Silkroad\Data\JMXVRES\PrimAnimationEvent.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\PrimAniTypeData.cs" />
     <Compile Include="Silkroad\ISerializableBS.cs" />
-    <Compile Include="Silkroad\ISerializableWithParamBS.cs" />
+    <Compile Include="Silkroad\ISerializableParameterizedBS.cs" />
     <Compile Include="Silkroad\Mathematics\BoundingBoxF.cs" />
     <Compile Include="Silkroad\Mathematics\Color3.cs" />
     <Compile Include="Silkroad\Mathematics\Color32.cs" />
@@ -126,18 +126,19 @@
     <Compile Include="ViewModels\Nodes\JMXOption.cs" />
     <Compile Include="ViewModels\Nodes\JMXProperty.cs" />
     <Compile Include="ViewModels\Nodes\JMXStructure.cs" />
-    <Compile Include="ViewModels\Silkroad\Common\BoundingBoxVM.cs" />
-    <Compile Include="ViewModels\Silkroad\Common\Color4VM.cs" />
-    <Compile Include="ViewModels\Silkroad\Common\Matrix4x4VM.cs" />
-    <Compile Include="ViewModels\Silkroad\Common\Vector2VM.cs" />
-    <Compile Include="ViewModels\Silkroad\Common\Vector3VM.cs" />
-    <Compile Include="ViewModels\Silkroad\JMXVBMT\CPrimMtrlVM.cs" />
+    <Compile Include="ViewModels\Silkroad\Common\ObjectGeneralInfoVM.cs" />
+    <Compile Include="ViewModels\Silkroad\Mathematics\BoundingBoxVM.cs" />
+    <Compile Include="ViewModels\Silkroad\Mathematics\Color4VM.cs" />
+    <Compile Include="ViewModels\Silkroad\Mathematics\Matrix4x4VM.cs" />
+    <Compile Include="ViewModels\Silkroad\Mathematics\Vector2VM.cs" />
+    <Compile Include="ViewModels\Silkroad\Mathematics\Vector3VM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVBMT\PrimMtrlVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVBMT\JMXVBMTVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVCPD\JMXVCPDVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVRES\ModDataSetVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVRES\ModDataVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVRES\PrimAniGroupVM.cs" />
-    <Compile Include="ViewModels\Silkroad\JMXVRES\PrimAniVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVRES\PrimAnimationVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVRES\PrimMeshGroup.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVRES\PrimMeshVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVRES\PrimMtrlSetVM.cs" />
@@ -190,6 +191,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include=".editorconfig" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

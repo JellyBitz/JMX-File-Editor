@@ -5,6 +5,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
 {
     public class ModDataParticleConfig : ISerializableBS
     {
+        #region Public Properties
         public bool IsEnabled { get; set; }
         public string Path { get; set; } = string.Empty;
         public string BoneRelative { get; set; } = string.Empty;
@@ -15,7 +16,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
         public byte UnkByte03 { get; set; }
         public byte UnkByte04 { get; set; }
         public Vector3 UnkVector01 { get; set; } = new Vector3();
+        #endregion
 
+        #region Interface Implementation
         public void Deserialize(BSReader reader)
         {
             this.IsEnabled = reader.ReadInt32() != 0;
@@ -30,10 +33,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
             if (this.UnkByte04 == 1)
                 this.UnkVector01 = reader.ReadVector3();
         }
-
         public void Serialize(BSWriter writer)
         {
-            writer.Write(this.IsEnabled ? 1u : 0u);
+            writer.Write(this.IsEnabled ? 1 : 0);
             writer.Write(this.Path);
             writer.Write(this.BoneRelative);
             writer.Write(this.Position);
@@ -45,5 +47,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
             if (this.UnkByte04 == 1)
                 writer.Write(this.UnkVector01);
         }
+        #endregion
     }
 }

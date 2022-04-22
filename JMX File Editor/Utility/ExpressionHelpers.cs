@@ -49,8 +49,6 @@ namespace JMXFileEditor.Utility
             // Set the property value
             propertyInfo.SetValue(target, value);
         }
-
-
         /// <summary>
         /// Sets the underlying properties value to the given value
         /// from an expression that contains the property

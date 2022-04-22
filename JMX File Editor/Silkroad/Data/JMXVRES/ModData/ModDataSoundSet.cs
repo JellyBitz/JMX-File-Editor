@@ -6,9 +6,12 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
 {
     public class ModDataSoundSet : ISerializableBS
     {
+        #region Public Properties
         public string Name { get; set; } = string.Empty;
         public List<ModDataSoundTrack> Tracks { get; set; } = new List<ModDataSoundTrack>();
+        #endregion
 
+        #region Interface Implementation
         public void Deserialize(BSReader reader)
         {
             this.Name = reader.ReadString();
@@ -17,11 +20,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
             {
                 if (reader.ReadUInt32() == 0)
                     continue;
-
                 this.Tracks.Add(reader.Deserialize<ModDataSoundTrack>());
             }
         }
-
         public void Serialize(BSWriter writer)
         {
             writer.Write(this.Name);
@@ -32,5 +33,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
                 writer.Serialize(track);
             }
         }
+        #endregion
     }
 }
