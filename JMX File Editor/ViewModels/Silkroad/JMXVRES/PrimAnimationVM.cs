@@ -2,10 +2,10 @@
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 {
-    public class PrimAniVM : JMXStructure
+    public class PrimAnimationVM : JMXStructure
     {
         #region Constructor
-        public PrimAniVM(string Name, PrimAnimation Animation) : base(Name, true)
+        public PrimAnimationVM(string Name, PrimAnimation Animation) : base(Name, true)
         {
             Childs.Add(new JMXAttribute("Path", Animation.Path));
         }

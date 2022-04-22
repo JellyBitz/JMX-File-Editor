@@ -1,5 +1,6 @@
 ﻿using JMXFileEditor.Silkroad.Data.Common;
 using JMXFileEditor.Silkroad.Data.JMXVCPD;
+using JMXFileEditor.ViewModels.Silkroad.Common;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVCPD
 {
@@ -28,17 +29,13 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVCPD
             file.Int05 = (uint)((JMXAttribute)Structure.Childs[4]).Value;
 
             // Object info
-            // TODO: Create VM class
-            file.ObjectInfo.Type = (ObjectGeneralType)((JMXAttribute)Structure.Childs[5]).Value;
-            file.ObjectInfo.Name = (string)((JMXAttribute)Structure.Childs[6]).Value;
-            file.ObjectInfo.Int01 = (int)((JMXAttribute)Structure.Childs[7]).Value;
-            file.ObjectInfo.Int02 = (int)((JMXAttribute)Structure.Childs[8]).Value;
+            file.ObjectInfo = (ObjectGeneralInfo)((ObjectGeneralInfoVM)Structure.Childs[5]).GetClass();
 
             // FileOffset.Collision
-            file.CollisionResourcePath = (string)((JMXAttribute)Structure.Childs[9]).Value;
+            file.CollisionResourcePath = (string)((JMXAttribute)Structure.Childs[6]).Value;
 
             // FileOffset.Resource
-            file.ResourceSet = ((JMXStructure)Structure.Childs[10]).GetChildList<string>();
+            file.ResourceSet = ((JMXStructure)Structure.Childs[7]).GetChildList<string>();
 
             return file;
         }
@@ -59,11 +56,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVCPD
             Childs.Add(new JMXAttribute("UnkUInt05", JMXFile.Int05));
 
             // Object info
-            // TODO: New VM class
-            Childs.Add(new JMXOption("ObjInfo.Type", JMXFile.ObjectInfo.Type, JMXOption.GetValues<object>(typeof(ObjectGeneralType))));
-            Childs.Add(new JMXAttribute("ObjInfo.Name", JMXFile.ObjectInfo.Name));
-            Childs.Add(new JMXAttribute("ObjInfo.Int01", JMXFile.ObjectInfo.Int01));
-            Childs.Add(new JMXAttribute("ObjInfo.Int02", JMXFile.ObjectInfo.Int02));
+            Childs.Add(new ObjectGeneralInfoVM("ObjectInfo", JMXFile.ObjectInfo));
 
             // FileOffset.Collision
             Childs.Add(new JMXAttribute("CollisionResourcePath", JMXFile.CollisionResourcePath));

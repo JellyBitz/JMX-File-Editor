@@ -1,13 +1,13 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVBMT;
 using JMXFileEditor.Silkroad.Mathematics;
-using JMXFileEditor.ViewModels.Silkroad.Common;
+using JMXFileEditor.ViewModels.Silkroad.Mathematics;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVBMT
 {
-    public class CPrimMtrlVM : JMXStructure
+    public class PrimMtrlVM : JMXStructure
     {
         #region Constructor
-        public CPrimMtrlVM(string Name, PrimMtrl Mtrl) : base(Name, true)
+        public PrimMtrlVM(string Name, PrimMtrl Mtrl) : base(Name, true)
         {
             // add formats
             AddFormatHandler(typeof(Color4), (s, e) => {

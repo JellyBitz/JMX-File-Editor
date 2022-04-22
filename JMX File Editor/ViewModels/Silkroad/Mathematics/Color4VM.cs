@@ -1,6 +1,6 @@
 ﻿using JMXFileEditor.Silkroad.Mathematics;
 
-namespace JMXFileEditor.ViewModels.Silkroad.Common
+namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
 {
     public class Color4VM : JMXStructure
     {

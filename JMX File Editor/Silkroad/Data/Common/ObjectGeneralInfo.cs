@@ -7,7 +7,7 @@ namespace JMXFileEditor.Silkroad.Data.Common
         #region Public Properties
         public ObjectGeneralType Type { get; set; }
         public ObjectGeneralCategory Category { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public int Int01 { get; set; }
         public int Int02 { get; set; }
         #endregion

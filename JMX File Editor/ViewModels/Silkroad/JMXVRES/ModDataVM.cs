@@ -1,7 +1,7 @@
 ﻿using System;
 using JMXFileEditor.Silkroad.Data.JMXVRES.ModData;
 using JMXFileEditor.Silkroad.Mathematics;
-using JMXFileEditor.ViewModels.Silkroad.Common;
+using JMXFileEditor.ViewModels.Silkroad.Mathematics;
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 {
     public class ModDataVM : JMXAbstract

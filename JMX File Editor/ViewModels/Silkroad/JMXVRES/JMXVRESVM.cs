@@ -3,6 +3,7 @@ using JMXFileEditor.Silkroad.Data.JMXVRES;
 using JMXFileEditor.Silkroad.Data.JMXVRES.ModData;
 using JMXFileEditor.Silkroad.Mathematics;
 using JMXFileEditor.ViewModels.Silkroad.Common;
+using JMXFileEditor.ViewModels.Silkroad.Mathematics;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 {
@@ -32,49 +33,46 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             file.Flag05 = (int)((JMXAttribute)Structure.Childs[4]).Value;
 
             // Object info
-            file.ObjectInfo.Type = (ObjectGeneralType)((JMXAttribute)Structure.Childs[5]).Value;
-            file.ObjectInfo.Name = (string)((JMXAttribute)Structure.Childs[6]).Value;
-            file.ObjectInfo.Int01 = (int)((JMXAttribute)Structure.Childs[7]).Value;
-            file.ObjectInfo.Int02 = (int)((JMXAttribute)Structure.Childs[8]).Value;
+            file.ObjectInfo = (ObjectGeneralInfo)((ObjectGeneralInfoVM)Structure.Childs[5]).GetClass();
 
             // Reserved
-            file.UnkBuffer = ((JMXStructure)Structure.Childs[9]).GetChildList<byte>().ToArray();
+            file.UnkBuffer = ((JMXStructure)Structure.Childs[6]).GetChildList<byte>().ToArray();
 
             // FileOffset.Collision
-            file.CollisionMesh = (string)((JMXAttribute)Structure.Childs[10]).Value;
-            file.CollisionBox01 = (BoundingBoxF)((BoundingBoxVM)Structure.Childs[11]).GetClass();
-            file.CollisionBox02 = (BoundingBoxF)((BoundingBoxVM)Structure.Childs[12]).GetClass();
-            file.UseCollisionMatrix = (bool)((JMXAttribute)Structure.Childs[13]).Value;
-            file.CollisionMatrix = (Matrix4x4)((Matrix4x4VM)Structure.Childs[14]).GetClass();
+            file.CollisionMesh = (string)((JMXAttribute)Structure.Childs[7]).Value;
+            file.CollisionBox01 = (BoundingBoxF)((BoundingBoxVM)Structure.Childs[8]).GetClass();
+            file.CollisionBox02 = (BoundingBoxF)((BoundingBoxVM)Structure.Childs[9]).GetClass();
+            file.UseCollisionMatrix = (bool)((JMXAttribute)Structure.Childs[10]).Value;
+            file.CollisionMatrix = (Matrix4x4)((Matrix4x4VM)Structure.Childs[11]).GetClass();
 
             // FileOffset.Material
-            file.MaterialSet = ((JMXStructure)Structure.Childs[15]).GetChildList<PrimMtrlSet>();
+            file.MaterialSet = ((JMXStructure)Structure.Childs[12]).GetChildList<PrimMtrlSet>();
 
             // FileOffset.Mesh
-            file.MeshSet = ((JMXStructure)Structure.Childs[16]).GetChildList<PrimMesh>();
+            file.MeshSet = ((JMXStructure)Structure.Childs[13]).GetChildList<PrimMesh>();
 
             // FileOffset.Animation
-            file.AnimationTypeVersion = (uint)((JMXAttribute)Structure.Childs[17]).Value;
-            file.AnimationTypeUserDefine = (uint)((JMXAttribute)Structure.Childs[18]).Value;
-            file.AnimationSet = ((JMXStructure)Structure.Childs[19]).GetChildList<PrimAnimation>();
+            file.AnimationTypeVersion = (uint)((JMXAttribute)Structure.Childs[14]).Value;
+            file.AnimationTypeUserDefine = (uint)((JMXAttribute)Structure.Childs[15]).Value;
+            file.AnimationSet = ((JMXStructure)Structure.Childs[16]).GetChildList<PrimAnimation>();
 
             // FileOffset.Skeleton
-            file.HasSkeleton = (bool)((JMXAttribute)Structure.Childs[20]).Value;
-            file.SkeletonPath = (string)((JMXAttribute)Structure.Childs[21]).Value;
-            file.AttachmentBone = (string)((JMXAttribute)Structure.Childs[22]).Value;
+            file.HasSkeleton = (bool)((JMXAttribute)Structure.Childs[17]).Value;
+            file.SkeletonPath = (string)((JMXAttribute)Structure.Childs[18]).Value;
+            file.AttachmentBone = (string)((JMXAttribute)Structure.Childs[19]).Value;
 
             // FileOffset.MeshGroups
-            file.MeshGroups = ((JMXStructure)Structure.Childs[23]).GetChildList<PrimMeshGroup>();
+            file.MeshGroups = ((JMXStructure)Structure.Childs[20]).GetChildList<PrimMeshGroup>();
 
             // FileOffset.AnimationGroup
-            file.AnimationGroups = ((JMXStructure)Structure.Childs[24]).GetChildList<PrimAniGroup>();
+            file.AnimationGroups = ((JMXStructure)Structure.Childs[21]).GetChildList<PrimAniGroup>();
 
             // FileOffset.ModPalette
-            file.SystemModSets = ((JMXStructure)Structure.Childs[25]).GetChildList<ModDataSet>();
-            file.AniModSets = ((JMXStructure)Structure.Childs[26]).GetChildList<ModDataSet>();
+            file.SystemModSets = ((JMXStructure)Structure.Childs[22]).GetChildList<ModDataSet>();
+            file.AniModSets = ((JMXStructure)Structure.Childs[23]).GetChildList<ModDataSet>();
 
             // Extra
-            file.ResourceAttachable = (ResAttachable)((ResAttachableVM)Structure.Childs[27]).GetClass();
+            file.ResourceAttachable = (ResAttachable)((ResAttachableVM)Structure.Childs[24]).GetClass();
 
             return file;
         }
@@ -98,7 +96,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             });
             AddFormatHandler(typeof(PrimAnimation), (s, e) =>
             {
-                e.Childs.Add(new PrimAniVM("[" + e.Childs.Count + "]", e.Obj is PrimAnimation _obj ? _obj : new PrimAnimation()));
+                e.Childs.Add(new PrimAnimationVM("[" + e.Childs.Count + "]", e.Obj is PrimAnimation _obj ? _obj : new PrimAnimation()));
             });
             AddFormatHandler(typeof(PrimMeshGroup), (s, e) =>
             {
@@ -130,11 +128,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             Childs.Add(new JMXAttribute("Flag05", JMXFile.Flag05));
 
             // Object info
-            // TODO: New VM class
-            Childs.Add(new JMXOption("ObjInfo.Type", JMXFile.ObjectInfo.Type, JMXOption.GetValues<object>(typeof(ObjectGeneralType))));
-            Childs.Add(new JMXAttribute("ObjInfo.Name", JMXFile.ObjectInfo.Name));
-            Childs.Add(new JMXAttribute("ObjInfo.Int01", JMXFile.ObjectInfo.Int01));
-            Childs.Add(new JMXAttribute("ObjInfo.Int02", JMXFile.ObjectInfo.Int02));
+            Childs.Add(new ObjectGeneralInfoVM("ObjectInfo",JMXFile.ObjectInfo));
 
             // Reserved
             AddChildArray("UnkBuffer", JMXFile.UnkBuffer, true, false);

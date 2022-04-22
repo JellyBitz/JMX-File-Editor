@@ -1,6 +1,6 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVRES;
 using JMXFileEditor.Silkroad.Mathematics;
-using JMXFileEditor.ViewModels.Silkroad.Common;
+using JMXFileEditor.ViewModels.Silkroad.Mathematics;
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 {
     public class PrimAniGroupVM : JMXStructure

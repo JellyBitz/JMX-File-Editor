@@ -35,7 +35,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVBMT
         {
             AddFormatHandler(typeof(PrimMtrl), (s, e) =>
             {
-                e.Childs.Add(new CPrimMtrlVM("[" + e.Childs.Count + "]", e.Obj is PrimMtrl _obj ? _obj : new PrimMtrl()));
+                e.Childs.Add(new PrimMtrlVM("[" + e.Childs.Count + "]", e.Obj is PrimMtrl _obj ? _obj : new PrimMtrl()));
             });
         }
         /// <summary>
