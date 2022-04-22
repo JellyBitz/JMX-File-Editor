@@ -20,7 +20,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.Common
         {
             return new ObjectGeneralInfo()
             {
-                Type = (ObjectGeneralType)((JMXAttribute)Structure.Childs[0]).Value,
+                Type = (ObjectGeneralType)((JMXOption)Structure.Childs[0]).Value,
                 Name = (string)((JMXAttribute)Structure.Childs[1]).Value,
                 Int01 = (int)((JMXAttribute)Structure.Childs[2]).Value,
                 Int02 = (int)((JMXAttribute)Structure.Childs[3]).Value
