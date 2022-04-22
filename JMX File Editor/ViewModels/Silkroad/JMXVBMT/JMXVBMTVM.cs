@@ -21,7 +21,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVBMT
             JMXVBMT_0102 file = new JMXVBMT_0102();
 
             // MaterialSet
-            file.Materials = ((JMXStructure)Structure.Childs[1]).GetChildList<PrimMtrl>();
+            file.Materials = ((JMXStructure)Structure.Childs[0]).GetChildList<PrimMtrl>();
 
             return file;
         }
