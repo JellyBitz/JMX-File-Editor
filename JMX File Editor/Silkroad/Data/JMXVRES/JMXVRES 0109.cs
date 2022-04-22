@@ -44,8 +44,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
         public List<PrimAniGroup> AnimationGroups { get; set; }
         public List<ModDataSet> SystemModSets { get; set; }
         public List<ModDataSet> AniModSets { get; set; }
-        public ResAttachable ResourceAttachable { get; set; } = new ResAttachable();
-        public byte[] NonDecodedBytes { get; set; }
+        public ResAttachable ResourceAttachable { get; set; }
         #endregion Public Properties
 
         #region Interface Implementation

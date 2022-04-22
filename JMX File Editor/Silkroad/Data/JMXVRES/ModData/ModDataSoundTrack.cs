@@ -5,9 +5,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
     public class ModDataSoundTrack : ISerializableBS
     {
         #region Public Properties
-        public string Path { get; set; }
+        public string Path { get; set; } = string.Empty;
         public int Time { get; set; }
-        public string Event { get; set; }
+        public string Event { get; set; } = string.Empty;
         #endregion
 
         #region Interface Implementation

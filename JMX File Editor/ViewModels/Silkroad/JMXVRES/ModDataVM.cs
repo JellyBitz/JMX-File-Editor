@@ -72,7 +72,14 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
         #region Abstract Implementation
         protected override void AddBaseNodes(object Obj)
         {
-            IModData obj = (IModData)Obj;
+            // Set default object
+            if (CurrentType == null)
+            {
+                SetCurrentType(new ModDataMtrl().GetType());
+                return;
+            }
+            IModData obj = Obj != null ? (IModData)Obj : new ModDataMtrl();
+            // Add nodes
             Childs.Add(new JMXAttribute("UnkFloat01", obj.UnkFloat01));
             Childs.Add(new JMXAttribute("UnkUInt01", obj.UnkUInt01));
             Childs.Add(new JMXAttribute("UnkUInt02", obj.UnkUInt02));
