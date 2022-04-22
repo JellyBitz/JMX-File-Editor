@@ -84,7 +84,7 @@
     <Compile Include="Silkroad\Data\JMXVRES\PrimAnimationEvent.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\PrimAniTypeData.cs" />
     <Compile Include="Silkroad\ISerializableBS.cs" />
-    <Compile Include="Silkroad\ISerializableWithParamBS.cs" />
+    <Compile Include="Silkroad\ISerializableParameterizedBS.cs" />
     <Compile Include="Silkroad\Mathematics\BoundingBoxF.cs" />
     <Compile Include="Silkroad\Mathematics\Color3.cs" />
     <Compile Include="Silkroad\Mathematics\Color32.cs" />
@@ -190,6 +190,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include=".editorconfig" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

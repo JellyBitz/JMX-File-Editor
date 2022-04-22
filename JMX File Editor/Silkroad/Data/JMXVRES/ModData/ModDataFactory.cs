@@ -2,6 +2,10 @@
 {
     public static class ModDataFactory
     {
+        /// <summary>
+        /// Creates an instance from <see cref="IModData"/>
+        /// </summary>
+        /// <param name="type">Instance type</param>
         public static IModData Create(ModDataType type)
         {
             switch (type)

@@ -15,7 +15,7 @@
         /// </summary>
         public object Value
         {
-            get { return m_Value; }
+            get => m_Value;
             set
             {
                 // Ignore sets if cannot be edited
@@ -24,13 +24,9 @@
                     // Make sure the new value can be converted to the original value
                     var valueType = Value.GetType();
                     if (valueType.IsEnum)
-                    {
                         m_Value = System.Enum.Parse(valueType, value.ToString(), true);
-                    }
                     else
-                    {
                         m_Value = System.Convert.ChangeType(value, valueType);
-                    }
                     OnPropertyChanged(nameof(Value));
                 }
             }

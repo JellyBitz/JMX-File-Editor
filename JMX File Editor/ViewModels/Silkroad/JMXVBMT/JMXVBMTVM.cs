@@ -8,17 +8,14 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVBMT
     public class JMXVBMTVM : JMXStructure
     {
         #region Constructor
-
         public JMXVBMTVM(JMXVBMT_0102 JMXFile) : base(JMXFile.Format, true)
         {
             AddChildFormats();
             CreateNodes(JMXFile);
         }
-
         #endregion Constructor
 
         #region Public Methods
-
         public override object GetClassFrom(JMXStructure Structure)
         {
             JMXVBMT_0102 file = new JMXVBMT_0102();
@@ -28,11 +25,9 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVBMT
 
             return file;
         }
-
         #endregion Public Methods
 
         #region Private Helpers
-
         /// <summary>
         /// Add new node formats
         /// </summary>
@@ -43,17 +38,14 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVBMT
                 e.Childs.Add(new CPrimMtrlVM("[" + e.Childs.Count + "]", e.Obj is PrimMtrl _obj ? _obj : new PrimMtrl()));
             });
         }
-
         /// <summary>
         /// Create UI format
         /// </summary>
         private void CreateNodes(JMXVBMT_0102 JMXFile)
         {
-            // Signature
             // MaterialSet
             AddChildArray("Materials", JMXFile.Materials.ToArray(), true, true);
         }
-
         #endregion Private Helpers
     }
 }

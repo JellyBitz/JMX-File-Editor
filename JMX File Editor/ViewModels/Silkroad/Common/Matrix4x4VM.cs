@@ -9,7 +9,6 @@ namespace JMXFileEditor.ViewModels.Silkroad.Common
     public class Matrix4x4VM : JMXStructure
     {
         #region Constructor
-
         public Matrix4x4VM(string Name, Matrix4x4 Matrix) : base(Name, true)
         {
             Childs.Add(new JMXAttribute("M11", Matrix.M11));
@@ -32,11 +31,9 @@ namespace JMXFileEditor.ViewModels.Silkroad.Common
             Childs.Add(new JMXAttribute("M43", Matrix.M43));
             Childs.Add(new JMXAttribute("M44", Matrix.M44));
         }
-
         #endregion Constructor
 
         #region Public Methods
-
         public override object GetClassFrom(JMXStructure Structure)
         {
             return new Matrix4x4
@@ -62,7 +59,6 @@ namespace JMXFileEditor.ViewModels.Silkroad.Common
                         (float)((JMXAttribute)Structure.Childs[15]).Value
             );
         }
-
         #endregion Public Methods
     }
 }

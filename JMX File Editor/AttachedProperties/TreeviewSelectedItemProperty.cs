@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,7 +14,7 @@ namespace JMXFileEditor
             // Make sure is a treeview attachment
             if (!(sender is TreeView element))
                 return;
-            
+
             // handler
             void OnSelectedItemChanged(object _s, EventArgs _e)
             {

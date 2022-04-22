@@ -14,7 +14,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             });
             // Create viewmodel node
             Childs.Add(new JMXAttribute("Name", AniGroup.Name));
-            AddChildArray("Entries", AniGroup.AniTypeDataList.ToArray(), true, true);
+            AddChildArray("DataList", AniGroup.AniTypeDataList.ToArray(), true, true);
         }
         #endregion
 
@@ -75,8 +75,8 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
                 {
                     Childs.Add(new JMXAttribute("Time", Event.Time));
                     Childs.Add(new JMXAttribute("Type", Event.Type));
-                    Childs.Add(new JMXAttribute("UnkUInt01", Event.Param0));
-                    Childs.Add(new JMXAttribute("UnkUInt02", Event.Param1));
+                    Childs.Add(new JMXAttribute("UnkUInt01", Event.Param01));
+                    Childs.Add(new JMXAttribute("UnkUInt02", Event.Param02));
                 }
                 #endregion
 
@@ -87,8 +87,8 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
                     {
                         Time = (int)((JMXAttribute)Structure.Childs[0]).Value,
                         Type = (int)((JMXAttribute)Structure.Childs[1]).Value,
-                        Param0 = (int)((JMXAttribute)Structure.Childs[2]).Value,
-                        Param1 = (int)((JMXAttribute)Structure.Childs[3]).Value
+                        Param01 = (int)((JMXAttribute)Structure.Childs[2]).Value,
+                        Param02 = (int)((JMXAttribute)Structure.Childs[3]).Value
                     };
                     return obj;
                 }

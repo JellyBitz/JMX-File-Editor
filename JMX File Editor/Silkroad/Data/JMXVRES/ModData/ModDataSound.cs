@@ -6,23 +6,23 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
 {
     public class ModDataSound : IModData
     {
+        #region Public Properties
         public override ModDataType Type => ModDataType.ModDataSound;
-
         public uint UnkUInt06 { get; set; }
         public uint UnkUInt07 { get; set; }
         public uint UnkUInt08 { get; set; }
         public float UnkFloat02 { get; set; }
         public float UnkFloat03 { get; set; }
-
         public uint UnkUInt09 { get; set; }
         public uint UnkUInt10 { get; set; }
         public uint UnkUInt11 { get; set; }
         public uint UnkUInt12 { get; set; }
-
         public uint UnkUInt13 { get; set; }
         public uint UnkUInt14 { get; set; }
         public List<ModDataSoundSet> SoundSet { get; set; } = new List<ModDataSoundSet>();
+        #endregion
 
+        #region Interface Implementation
         public override void Deserialize(BSReader reader)
         {
             base.Deserialize(reader);
@@ -36,8 +36,8 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
             this.UnkUInt06 = reader.ReadUInt32();
             this.UnkUInt07 = reader.ReadUInt32();
             this.UnkUInt08 = reader.ReadUInt32();
-            this.UnkFloat02 = reader.ReadSingle(); // 10
-            this.UnkFloat03 = reader.ReadSingle(); // 100
+            this.UnkFloat02 = reader.ReadSingle();
+            this.UnkFloat03 = reader.ReadSingle();
             this.UnkUInt09 = reader.ReadUInt32();
             this.UnkUInt10 = reader.ReadUInt32();
             this.UnkUInt11 = reader.ReadUInt32();
@@ -48,7 +48,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
             for (int i = 0; i < soundSetCount; i++)
                 this.SoundSet.Add(reader.Deserialize<ModDataSoundSet>());
         }
-
         public override void Serialize(BSWriter writer)
         {
             base.Serialize(writer);
@@ -72,5 +71,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
             foreach (var item in this.SoundSet)
                 writer.Serialize(item);
         }
+        #endregion
     }
 }

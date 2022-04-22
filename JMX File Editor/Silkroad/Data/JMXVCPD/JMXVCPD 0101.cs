@@ -9,18 +9,15 @@ namespace JMXFileEditor.Silkroad.Data.JMXVCPD
 {
     /// <summary>
     /// Joymax Compound File
-    /// <para>https://github.com/DummkopfOfHachtenduden/SilkroadDoc/wiki/JMXVCPD </para>
+    /// <para>https://github.com/DummkopfOfHachtenduden/SilkroadDoc/wiki/JMXVCPD</para>
     /// </summary>
     public class JMXVCPD_0101 : IJMXFile
     {
         #region Public Properties
-
         /// <summary>
         /// Original header used by Joymax
         /// </summary>
         public const string LatestSignature = "JMXVCPD 0101";
-
-        public string Header { get; set; }
         public uint Int01 { get; set; }
         public uint Int02 { get; set; }
         public uint Int03 { get; set; }
@@ -28,17 +25,12 @@ namespace JMXFileEditor.Silkroad.Data.JMXVCPD
         public uint Int05 { get; set; }
         public ObjectGeneralInfo ObjectInfo { get; set; }
         public string CollisionResourcePath { get; set; } = string.Empty;
-        public List<string> ResourceSet { get; set; } = new List<string>();
-
+        public List<string> ResourceSet { get; set; }
         #endregion Public Properties
 
         #region Interface Implementation
-
-        public string Format
-        { get { return LatestSignature; } }
-
+        public string Format => LatestSignature;
         public string Extension { get; } = "bsr";
-
         public void Load(Stream stream)
         {
             // Read file structure
@@ -51,9 +43,10 @@ namespace JMXFileEditor.Silkroad.Data.JMXVCPD
                     throw new NotSupportedException($"Migration from '{signature}' not supported.");
                 }
 
-                // File Offsets
-                reader.ReadUInt32(); //collisionOffset
-                reader.ReadUInt32(); //resourceOffset
+                // File offsets (Collision, Resources)
+                reader.SkipRead(8);
+
+                // Unknown
                 Int01 = reader.ReadUInt32();
                 Int02 = reader.ReadUInt32();
                 Int03 = reader.ReadUInt32();
@@ -66,14 +59,13 @@ namespace JMXFileEditor.Silkroad.Data.JMXVCPD
                 // FileOffset.Collision
                 CollisionResourcePath = reader.ReadString();
 
-                // Offset.Resource
+                // FileOffset.Resources
                 var count = reader.ReadInt32();
                 ResourceSet = new List<string>(count);
                 for (int i = 0; i < count; i++)
                     ResourceSet.Add(reader.ReadString());
             }
         }
-
         public void Save(string path)
         {
             // Override file structure
@@ -83,8 +75,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVCPD
                 // Signature
                 writer.Write(LatestSignature, 12);
 
-                writer.Write(0); // collisionOffset
-                writer.Write(0); // resourceOffset
+                // Reserved file offsets
+                writer.Write(0); // CollisionOffset
+                writer.Write(0); // ResourceOffset
+
+                // Unknown
                 writer.Write(Int01);
                 writer.Write(Int02);
                 writer.Write(Int03);
@@ -94,11 +89,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVCPD
                 // Object Info
                 writer.Serialize(this.ObjectInfo);
 
-                // Collision
+                // FileOffset.Collision
                 var collisionOffset = (int)stream.Position;
                 writer.Write(CollisionResourcePath);
 
-                // ResourceList
+                // FileOffset.Resources
                 var resourceOffset = (int)stream.Position;
                 writer.Write(ResourceSet.Count);
                 for (int i = 0; i < ResourceSet.Count; i++)
@@ -110,7 +105,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVCPD
                 writer.Write(resourceOffset);
             }
         }
-
         #endregion Interface Implementation
     }
 }

@@ -11,22 +11,20 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
 {
     /// <summary>
     /// Joymax Resource File
-    /// <para>https://github.com/DummkopfOfHachtenduden/SilkroadDoc/wiki/JMXVRES </para>
+    /// <para>https://github.com/DummkopfOfHachtenduden/SilkroadDoc/wiki/JMXVRES</para>
     /// </summary>
     public class JMXVRES_0109 : IJMXFile
     {
         #region Public Properties
-
         /// <summary>
         /// Original header used by Joymax
         /// </summary>
         public const string LatestSignature = "JMXVRES 0109";
-
-        public int Flag0 { get; set; }
-        public int Flag1 { get; set; }
-        public int Flag2 { get; set; }
-        public int Flag3 { get; set; }
-        public int Flag4 { get; set; }
+        public int Flag01 { get; set; }
+        public int Flag02 { get; set; }
+        public int Flag03 { get; set; }
+        public int Flag04 { get; set; }
+        public int Flag05 { get; set; }
         public ObjectGeneralInfo ObjectInfo { get; set; }
         public byte[] UnkBuffer { get; set; } = new byte[40];
         public string CollisionMesh { get; set; } = string.Empty;
@@ -44,20 +42,15 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
         public string AttachmentBone { get; set; } = string.Empty;
         public List<PrimMeshGroup> MeshGroups { get; set; }
         public List<PrimAniGroup> AnimationGroups { get; set; }
-        public List<ModDataSet> SystemModSets { get; set; } = new List<ModDataSet>();
-        public List<ModDataSet> AniModSets { get; set; } = new List<ModDataSet>();
+        public List<ModDataSet> SystemModSets { get; set; }
+        public List<ModDataSet> AniModSets { get; set; }
         public ResAttachable ResourceAttachable { get; set; } = new ResAttachable();
         public byte[] NonDecodedBytes { get; set; }
-
         #endregion Public Properties
 
         #region Interface Implementation
-
-        public string Format
-        { get { return LatestSignature; } }
-
+        public string Format => LatestSignature;
         public string Extension { get; } = "bsr";
-
         public void Load(Stream stream)
         {
             // Read file structure
@@ -71,20 +64,15 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                     throw new NotSupportedException($"Migration from '{signature}' not supported.");
                 }
 
-                reader.ReadInt32(); // MaterialOffset
-                reader.ReadInt32(); // MeshOffset
-                reader.ReadInt32(); // SkeletonOffset
-                reader.ReadInt32(); // AnimationOffset
-                reader.ReadInt32(); // PrimMeshGroupOffset
-                reader.ReadInt32(); // PrimAniGroupOffset
-                reader.ReadInt32(); // ModPaletteOffset
-                reader.ReadInt32(); // CollisionOffset
+                // File offsets (Material, Mesh, Animation, Skeleton, MeshGroup, AnimationGroup, ModPalette, Collision)
+                reader.SkipRead(32);
 
-                Flag0 = reader.ReadInt32();
-                Flag1 = reader.ReadInt32();
-                Flag2 = reader.ReadInt32();
-                Flag3 = reader.ReadInt32();
-                Flag4 = reader.ReadInt32();
+                // Unknown Flags
+                Flag01 = reader.ReadInt32();
+                Flag02 = reader.ReadInt32();
+                Flag03 = reader.ReadInt32();
+                Flag04 = reader.ReadInt32();
+                Flag05 = reader.ReadInt32();
 
                 // Object info
                 this.ObjectInfo = reader.Deserialize<ObjectGeneralInfo>();
@@ -98,9 +86,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                 CollisionBox02 = reader.ReadBoundingBoxF();
                 UseCollisionMatrix = reader.ReadUInt32() != 0;
                 if (UseCollisionMatrix)
-                {
                     CollisionMatrix = reader.ReadMatrix4x4();
-                }
 
                 // FileOffset.Material
                 var count = reader.ReadInt32();
@@ -112,7 +98,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                 count = reader.ReadInt32();
                 MeshSet = new List<PrimMesh>(count);
                 for (int i = 0; i < count; i++)
-                    MeshSet.Add(reader.Deserialize<PrimMesh, int>(this.Flag0));
+                    MeshSet.Add(reader.DeserializeParameterized<PrimMesh>(this.Flag01));
 
                 // FileOffset.Animation
                 AnimationTypeVersion = reader.ReadUInt32();
@@ -143,34 +129,17 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                     this.AnimationGroups.Add(reader.Deserialize<PrimAniGroup>());
 
                 // FileOffset.ModPalette
-                for (int x = 0; x < 2; x++)
-                {
-                    // Quick variable to resume code
-                    var modSet = x == 0 ? SystemModSets : AniModSets;
+                count = reader.ReadInt32();
+                SystemModSets = new List<ModDataSet>();
+                for (int i = 0; i < count; i++)
+                    SystemModSets.Add(reader.Deserialize<ModDataSet>());
+                count = reader.ReadInt32();
+                AniModSets = new List<ModDataSet>();
+                for (int i = 0; i < count; i++)
+                    AniModSets.Add(reader.Deserialize<ModDataSet>());
 
-                    count = reader.ReadInt32();
-                    for (int i = 0; i < count; i++)
-                        modSet.Add(reader.Deserialize<ModDataSet>());
-                }
-                if (ObjectInfo.Type == ObjectGeneralType.Character || ObjectInfo.Type == ObjectGeneralType.Item)
-                {
-                    ResourceAttachable.UnkUInt01 = reader.ReadUInt32();
-                    ResourceAttachable.UnkUInt02 = reader.ReadUInt32();
-                    ResourceAttachable.AttachMethod = reader.ReadUInt32();
-                    count = reader.ReadInt32();
-                    for (int i = 0; i < count; i++)
-                    {
-                        ResourceAttachable.Slots.Add(new ResAttachable.Slot()
-                        {
-                            Index = reader.ReadUInt32(),
-                            MeshSetIndex = reader.ReadUInt32(),
-                        });
-                    }
-                    if (ObjectInfo.Type == ObjectGeneralType.Character)
-                    {
-                        ResourceAttachable.nComboNum = reader.ReadUInt32();
-                    }
-                }
+                // ResAttachable
+                ResourceAttachable = reader.DeserializeParameterized<ResAttachable>(ObjectInfo.Type);
             }
         }
 
@@ -183,7 +152,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                 // Signature
                 writer.Write(LatestSignature, 12);
 
-                // Dummy offsets
+                // Reserved offsets
                 writer.Write(0); // MaterialOffset
                 writer.Write(0); // MeshOffset
                 writer.Write(0); // SkeletonOffset
@@ -194,11 +163,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                 writer.Write(0); // CollisionOffset
 
                 // Unknown Flags
-                writer.Write(Flag0);
-                writer.Write(Flag1);
-                writer.Write(Flag2);
-                writer.Write(Flag3);
-                writer.Write(Flag4);
+                writer.Write(Flag01);
+                writer.Write(Flag02);
+                writer.Write(Flag03);
+                writer.Write(Flag04);
+                writer.Write(Flag05);
 
                 // Object Info
                 writer.Serialize(this.ObjectInfo);
@@ -223,7 +192,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                 var meshOffset = (int)stream.Position;
                 writer.Write(MeshSet.Count);
                 foreach (var item in MeshSet)
-                    writer.Serialize(item, this.Flag0);
+                    writer.SerializeParameterized(item, this.Flag01);
 
                 // FileOffset.Animation
                 var animationOffset = (int)stream.Position;
@@ -256,35 +225,19 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                 foreach (var item in AnimationGroups)
                     writer.Serialize(item);
 
-                var modPaletteOffset = (int)stream.Position;
                 // FileOffset.ModPalette
-                for (int x = 0; x < 2; x++)
-                {
-                    // Quick variable to resume code
-                    var modSet = x == 0 ? SystemModSets : AniModSets;
+                var modPaletteOffset = (int)stream.Position;
+                writer.Write(SystemModSets.Count);
+                foreach (var set in SystemModSets)
+                    writer.Serialize(set);
+                writer.Write(AniModSets.Count);
+                foreach (var set in AniModSets)
+                    writer.Serialize(set);
 
-                    writer.Write(modSet.Count);
-                    foreach (var set in modSet)
-                        writer.Serialize(set);
-                }
+                // ResAttachable
+                writer.SerializeParameterized(ResourceAttachable, ObjectInfo.Type);
 
-                // Extra
-                if (ObjectInfo.Type == ObjectGeneralType.Character || ObjectInfo.Type == ObjectGeneralType.Item)
-                {
-                    writer.Write(ResourceAttachable.UnkUInt01);
-                    writer.Write(ResourceAttachable.UnkUInt02);
-                    writer.Write(ResourceAttachable.AttachMethod);
-                    writer.Write(ResourceAttachable.Slots.Count);
-                    for (int i = 0; i < ResourceAttachable.Slots.Count; i++)
-                    {
-                        writer.Write(ResourceAttachable.Slots[i].Index);
-                        writer.Write(ResourceAttachable.Slots[i].MeshSetIndex);
-                    }
-                    if (ObjectInfo.Type == ObjectGeneralType.Character)
-                        writer.Write(ResourceAttachable.nComboNum);
-                }
-
-                // Overwrite offsets now that we know them
+                // Overwrite offsets now that we know them all
                 writer.Seek(12, SeekOrigin.Begin);
                 writer.Write(materialOffset);
                 writer.Write(meshOffset);
@@ -296,7 +249,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
                 writer.Write(collisionOffset);
             }
         }
-
         #endregion Interface Implementation
     }
 }

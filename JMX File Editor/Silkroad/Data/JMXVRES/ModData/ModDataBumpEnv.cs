@@ -6,8 +6,8 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
 {
     public class ModDataBumpEnv : ModDataEnvMap
     {
+        #region Public Properties
         public override ModDataType Type => ModDataType.ModDataBumpEnv;
-
         public float UnkFloat02 { get; set; }
         public float UnkFloat03 { get; set; }
         public float UnkFloat04 { get; set; }
@@ -15,7 +15,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
         public float UnkFloat06 { get; set; }
         public float UnkFloat07 { get; set; }
         public List<string> Textures { get; set; } = new List<string>();
+        #endregion
 
+        #region Interface Implementation
         public override void Deserialize(BSReader reader)
         {
             base.Deserialize(reader);
@@ -37,7 +39,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
                 this.Textures.Add(reader.ReadString());
             }
         }
-
         public override void Serialize(BSWriter writer)
         {
             base.Serialize(writer);
@@ -63,5 +64,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
                 writer.Write(texture);
             }
         }
+        #endregion
     }
 }

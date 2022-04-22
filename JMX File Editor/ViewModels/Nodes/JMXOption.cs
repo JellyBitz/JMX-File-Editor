@@ -19,7 +19,7 @@ namespace JMXFileEditor.ViewModels
         /// </summary>
         public object Value
         {
-            get { return m_Value; }
+            get => m_Value;
             set
             {
                 // Check if value can be edited and is one of the options
@@ -49,21 +49,21 @@ namespace JMXFileEditor.ViewModels
         /// <summary>
         /// Creates a child node view model
         /// </summary>
-        public JMXOption(string Name, object Value, List<object> Options,bool IsEditable = true) : base(Name, IsEditable)
+        public JMXOption(string Name, object Value, List<object> Options, bool IsEditable = true) : base(Name, IsEditable)
         {
             m_Value = Value;
             this.Options = Options;
         }
-		#endregion
+        #endregion
 
-		#region Public Static Helpers
-		/// <summary>
-		/// Get all the values from the enum type specified as array list
-		/// </summary>
-		public static List<T> GetValues<T>(Type EnumType)
-		{
-			return Enum.GetValues(EnumType).Cast<T>().ToList();
-		}
-		#endregion
-	}
+        #region Public Static Helpers
+        /// <summary>
+        /// Get all the values from the enum type specified as array list
+        /// </summary>
+        public static List<T> GetValues<T>(Type EnumType)
+        {
+            return Enum.GetValues(EnumType).Cast<T>().ToList();
+        }
+        #endregion
+    }
 }

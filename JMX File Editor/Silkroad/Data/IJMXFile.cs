@@ -16,11 +16,11 @@ namespace JMXFileEditor.Silkroad.Data
         /// </summary>
         string Extension { get; }
         /// <summary>
-        /// Loads the file from reading the stream
+        /// Loads the file from stream
         /// </summary>
         void Load(Stream stream);
         /// <summary>
-        /// Save the file data
+        /// Save file data
         /// </summary>
         void Save(string path);
     }
