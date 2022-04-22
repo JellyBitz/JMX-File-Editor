@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:JMXFileEditor"
-        xmlns:VM="clr-namespace:JMXFileEditor.ViewModels"
+        xmlns:vm="clr-namespace:JMXFileEditor.ViewModels"
+        xmlns:vmMaths="clr-namespace:JMXFileEditor.ViewModels.Silkroad.Mathematics"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         Width="480" Height="600"
@@ -104,7 +105,7 @@
                     <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}"
                                      Color="Black" />
                     <!-- Binding JMXStructure type -->
-                    <HierarchicalDataTemplate DataType="{x:Type VM:JMXStructure}"
+                    <HierarchicalDataTemplate DataType="{x:Type vm:JMXStructure}"
                                               ItemsSource="{Binding Childs}">
                         <StackPanel Orientation="Horizontal"
                                     MinHeight="20">
@@ -136,7 +137,7 @@
                         </StackPanel>
                     </HierarchicalDataTemplate>
                     <!-- Binding JMXAttribute type -->
-                    <DataTemplate DataType="{x:Type VM:JMXAttribute}">
+                    <DataTemplate DataType="{x:Type vm:JMXAttribute}">
                         <StackPanel Orientation="Horizontal">
                             <!-- Name -->
                             <TextBlock VerticalAlignment="Center"
@@ -151,7 +152,7 @@
                         </StackPanel>
                     </DataTemplate>
                     <!-- Binding JMXOption type -->
-                    <DataTemplate DataType="{x:Type VM:JMXOption}">
+                    <DataTemplate DataType="{x:Type vm:JMXOption}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center"
                                        Text="{Binding Name}" />
@@ -164,7 +165,7 @@
                         </StackPanel>
                     </DataTemplate>
                     <!-- Binding JMXAbstract type -->
-                    <HierarchicalDataTemplate DataType="{x:Type VM:JMXAbstract}"
+                    <HierarchicalDataTemplate DataType="{x:Type vm:JMXAbstract}"
                                               ItemsSource="{Binding Childs}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Name}"
@@ -177,6 +178,26 @@
                                       DisplayMemberPath="Name"
                                       MinWidth="100"
                                       IsEnabled="{Binding IsEditable}"/>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+
+                    <!-- Viewmodels out of base nodes -->
+
+                    <!-- Binding Color4VM type -->
+                    <HierarchicalDataTemplate DataType="{x:Type vmMaths:Color4VM}"
+                                              ItemsSource="{Binding Childs}">
+                        <StackPanel Orientation="Horizontal"
+                                    MinHeight="20">
+                            <!-- Name -->
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding Name}"/>
+                            <!-- Demo -->
+                            <Border Background="{Binding DemoBrush}"
+                                    Width="16"
+                                    Margin="5 2"
+                                    BorderThickness="1"
+                                    BorderBrush="Black"
+                                    ToolTip="{Binding DemoBrush}"/>
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
