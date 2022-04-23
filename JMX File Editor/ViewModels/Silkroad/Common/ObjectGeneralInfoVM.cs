@@ -9,6 +9,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.Common
         {
             // create nodes
             Childs.Add(new JMXOption("Type", ObjectInfo.Type, JMXOption.GetValues<object>(typeof(ObjectGeneralType))));
+            Childs.Add(new JMXOption("Category", ObjectInfo.Category, JMXOption.GetValues<object>(typeof(ObjectGeneralCategory))));
             Childs.Add(new JMXAttribute("Name", ObjectInfo.Name));
             Childs.Add(new JMXAttribute("Int01", ObjectInfo.Int01));
             Childs.Add(new JMXAttribute("Int02", ObjectInfo.Int02));
@@ -21,9 +22,10 @@ namespace JMXFileEditor.ViewModels.Silkroad.Common
             return new ObjectGeneralInfo()
             {
                 Type = (ObjectGeneralType)((JMXOption)Structure.Childs[0]).Value,
-                Name = (string)((JMXAttribute)Structure.Childs[1]).Value,
-                Int01 = (int)((JMXAttribute)Structure.Childs[2]).Value,
-                Int02 = (int)((JMXAttribute)Structure.Childs[3]).Value
+                Category = (ObjectGeneralCategory)((JMXOption)Structure.Childs[1]).Value,
+                Name = (string)((JMXAttribute)Structure.Childs[2]).Value,
+                Int01 = (int)((JMXAttribute)Structure.Childs[3]).Value,
+                Int02 = (int)((JMXAttribute)Structure.Childs[4]).Value
             };
         }
         #endregion
