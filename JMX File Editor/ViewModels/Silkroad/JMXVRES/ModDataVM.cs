@@ -303,7 +303,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             #region Public Methods
             public override object GetClassFrom(JMXStructure Structure, int i)
             {
-                ModDataMultiTex obj = new ModDataMultiTex()
+                ModDataMultiTexRev obj = new ModDataMultiTexRev()
                 {
                     UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
                     Path = (string)((JMXAttribute)Structure.Childs[i++]).Value,

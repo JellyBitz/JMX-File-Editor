@@ -45,7 +45,7 @@ namespace JMXFileEditor.Silkroad.IO
         {
             var chars = value.ToCharArray();
             // Make sure the buffer is the same length given
-            if(chars.length != length)
+            if(chars.Length != length)
             	Array.Resize(ref chars, length);
             // Apply encoding and write it
             var bytes = Encoding.GetEncoding(Encoding.CodePage).GetBytes(chars, 0, chars.Length);
