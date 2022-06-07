@@ -1,4 +1,4 @@
-# JMX File Editor
+# [<img src="https://i.imgur.com/vvB2LA0.png" width="24" height="24">](#) JMX File Editor
 
 Open, edit and save JMX files!
 
