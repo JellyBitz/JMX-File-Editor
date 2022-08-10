@@ -11,9 +11,21 @@ namespace JMXFileEditor.Silkroad.IO
     /// </summary>
     public class BSReader : BinaryReader
     {
+        #region Public Members
+        /// <summary>
+        /// Encoding used to read strings
+        /// </summary>
+        public Encoding Encoding { get; }
+        #endregion
+
         #region Constructor
-        public BSReader(Stream input) : base(input, Encoding.GetEncoding("EUC-KR"))
+        public BSReader(Stream input, Encoding encoding) : base(input, encoding)
         {
+            Encoding = encoding;
+        }
+        public BSReader(Stream input) : base(input)
+        {
+            Encoding = Encoding.Default;
         }
         #endregion
 
@@ -25,30 +37,43 @@ namespace JMXFileEditor.Silkroad.IO
         {
             base.BaseStream.Seek(count, SeekOrigin.Current);
         }
+        /// <summary>
+        /// Reads a string from the current stream. The string is prefixed with the length, encoded as an integer 32 bits at a time.
+        /// </summary>
         public override string ReadString()
         {
             var length = this.ReadInt32();
-            return this.ReadString(length);
+            return ReadString(length);
+
         }
+        public string[] ReadStringArray(int count)
+        {
+            string[] array = new string[count];
+            for (int i = 0; i < count; i++)
+                array[i] = ReadString();
+            return array;
+        }
+        /// <summary>
+        /// Reads a string from the current stream.
+        /// </summary>
         public string ReadString(int length)
         {
-            var buffer = base.ReadChars(length);
-            if ((uint)length > 8192) // negative or over 8K is probably a parsing error
+            // negative or over 8K is probably a parsing error
+            if (unchecked((uint)length) > 8192)
                 throw new ArgumentOutOfRangeException(nameof(length));
 
-            // Sometimes fixed strings contain trailing data.
-            var terminatorOffset = length;
-            for (int i = 0; i < length; i++)
-            {
-                if (buffer[i] == '\0')
-                {
-                    terminatorOffset = i;
-                    break;
-                }
-            }
-            return new string(buffer, 0, terminatorOffset);
+            // Read it and apply decoding
+            var bytes = base.ReadBytes(length);
+            return Encoding.GetEncoding(Encoding.CodePage).GetString(bytes);
         }
         public float ReadFloat() => this.ReadSingle();
+        public uint[] ReadUIntArray(int count)
+        {
+            uint[] array = new uint[count];
+            for (int i = 0; i < count; i++)
+                array[i] = ReadUInt32();
+            return array;
+        }
         public Vector2 ReadVector2() => new Vector2(this.ReadFloat(), this.ReadFloat());
         public Vector3 ReadVector3() => new Vector3(this.ReadFloat(), this.ReadFloat(), this.ReadFloat());
         public Vector4 ReadVector4() => new Vector4(this.ReadFloat(), this.ReadFloat(), this.ReadFloat(), this.ReadFloat());

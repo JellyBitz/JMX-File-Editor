@@ -35,7 +35,7 @@
 
         #region Constructor
         /// <summary>
-        /// Creates a child node view model
+        /// Creates a child node view model which represents generic data object
         /// </summary>
         public JMXAttribute(string Name, object Value, bool IsEditable = true) : base(Name, IsEditable)
         {

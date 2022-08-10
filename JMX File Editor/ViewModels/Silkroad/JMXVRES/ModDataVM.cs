@@ -83,7 +83,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             Childs.Add(new JMXAttribute("UnkFloat01", obj.UnkFloat01));
             Childs.Add(new JMXAttribute("UnkUInt01", obj.UnkUInt01));
             Childs.Add(new JMXAttribute("UnkUInt02", obj.UnkUInt02));
-            Childs.Add(new JMXAttribute("UnkUInt03", obj.UnkUInt03));
+            Childs.Add(new JMXAttribute("MeshIndex", obj.MeshIndex));
             Childs.Add(new JMXAttribute("UnkUInt04", obj.UnkUInt04));
             Childs.Add(new JMXAttribute("UnkUInt05", obj.UnkUInt05));
             Childs.Add(new JMXAttribute("UnkByte01", obj.UnkByte01));
@@ -123,7 +123,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             data.UnkFloat01 = (float)((JMXAttribute)Structure.Childs[0]).Value;
             data.UnkUInt01 = (uint)((JMXAttribute)Structure.Childs[1]).Value;
             data.UnkUInt02 = (uint)((JMXAttribute)Structure.Childs[2]).Value;
-            data.UnkUInt03 = (uint)((JMXAttribute)Structure.Childs[3]).Value;
+            data.MeshIndex = (int)((JMXAttribute)Structure.Childs[3]).Value;
             data.UnkUInt04 = (uint)((JMXAttribute)Structure.Childs[4]).Value;
             data.UnkUInt05 = (uint)((JMXAttribute)Structure.Childs[5]).Value;
             data.UnkByte01 = (byte)((JMXAttribute)Structure.Childs[6]).Value;
@@ -303,7 +303,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             #region Public Methods
             public override object GetClassFrom(JMXStructure Structure, int i)
             {
-                ModDataMultiTex obj = new ModDataMultiTex()
+                ModDataMultiTexRev obj = new ModDataMultiTexRev()
                 {
                     UnkUInt06 = (uint)((JMXAttribute)Structure.Childs[i++]).Value,
                     Path = (string)((JMXAttribute)Structure.Childs[i++]).Value,

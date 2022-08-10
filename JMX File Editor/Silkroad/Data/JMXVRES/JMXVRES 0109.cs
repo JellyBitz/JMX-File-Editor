@@ -52,8 +52,8 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
         public string Extension { get; } = "bsr";
         public void Load(Stream stream)
         {
-            // Read file structure
-            using (var reader = new BSReader(stream))
+            // Read file structure (CP949)
+            using (var reader = new BSReader(stream, System.Text.Encoding.GetEncoding(949)))
             {
                 // Signature
                 var signature = reader.ReadString(12);
@@ -146,7 +146,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES
         {
             // Override file structure
             using (var stream = new FileStream(Path, FileMode.Create, FileAccess.Write))
-            using (var writer = new BSWriter(stream))
+            using (var writer = new BSWriter(stream, System.Text.Encoding.GetEncoding(949)))
             {
                 // Signature
                 writer.Write(LatestSignature, 12);

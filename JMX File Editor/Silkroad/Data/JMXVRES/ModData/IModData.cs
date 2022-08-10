@@ -9,7 +9,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
         public float UnkFloat01 { get; set; }
         public uint UnkUInt01 { get; set; }
         public uint UnkUInt02 { get; set; }
-        public uint UnkUInt03 { get; set; }
+        public int MeshIndex { get; set; }
         public uint UnkUInt04 { get; set; }
         public uint UnkUInt05 { get; set; }
         public byte UnkByte01 { get; set; }
@@ -24,7 +24,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
             this.UnkFloat01 = reader.ReadSingle();
             this.UnkUInt01 = reader.ReadUInt32();
             this.UnkUInt02 = reader.ReadUInt32();
-            this.UnkUInt03 = reader.ReadUInt32();
+            this.MeshIndex = reader.ReadInt32();
             this.UnkUInt04 = reader.ReadUInt32();
             this.UnkUInt05 = reader.ReadUInt32();
             this.UnkByte01 = reader.ReadByte();
@@ -37,7 +37,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVRES.ModData
             writer.Write(this.UnkFloat01);
             writer.Write(this.UnkUInt01);
             writer.Write(this.UnkUInt02);
-            writer.Write(this.UnkUInt03);
+            writer.Write(this.MeshIndex);
             writer.Write(this.UnkUInt04);
             writer.Write(this.UnkUInt05);
             writer.Write(this.UnkByte01);

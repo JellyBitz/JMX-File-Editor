@@ -11,30 +11,50 @@ namespace JMXFileEditor.Silkroad.IO
     /// </summary>
     public class BSWriter : BinaryWriter
     {
+        #region Public Members
+        /// <summary>
+        /// Encoding used to write strings
+        /// </summary>
+        public Encoding Encoding { get; }
+        #endregion
+
         #region Constructor
-        public BSWriter(Stream output) : base(output, Encoding.GetEncoding("EUC-KR"))
+        public BSWriter(Stream input, Encoding encoding) : base(input, encoding)
         {
+            Encoding = encoding;
+        }
+        public BSWriter(Stream input) : base(input)
+        {
+            Encoding = Encoding.Default;
         }
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Writes a string on the current stream. The string is prefixed with the length, encoded as an integer 32 bits at a time.
+        /// </summary>
         public override void Write(string value)
         {
             this.Write(value.Length);
-            this.Write(value, value.Length);
+            Write(value, value.Length);
         }
+        public void Write(string[] values)
+        {
+            foreach (string value in values)
+                this.Write(value);
+        }
+        /// <summary>
+        /// Writes a string on the current stream.
+        /// </summary>
         public void Write(string value, int length)
         {
-            if (unchecked((uint)length) > 8192)
-                throw new ArgumentOutOfRangeException(nameof(length));
-
-            var buffer = value.ToCharArray();
-
-            // Make sure the buffer is cut of or expanded depending on length.
-            // Array.Resize is definitely not the best solution but it's the easiest and works both ways.
-            Array.Resize(ref buffer, length);
-
-            this.Write(buffer);
+            var chars = value.ToCharArray();
+            // Make sure the buffer is the same length given
+            if(chars.Length != length)
+            	Array.Resize(ref chars, length);
+            // Apply encoding and write it
+            var bytes = Encoding.GetEncoding(Encoding.CodePage).GetBytes(chars, 0, chars.Length);
+            this.Write(bytes);
         }
         public void Write(Vector2 value)
         {
@@ -115,6 +135,11 @@ namespace JMXFileEditor.Silkroad.IO
             this.Write(value.Green);
             this.Write(value.Blue);
             this.Write(value.Alpha);
+        }
+        public void Write(uint[] values)
+        {
+            foreach (uint value in values)
+                this.Write(value);
         }
         public void Serialize<T>(T value)
         where T : ISerializableBS
