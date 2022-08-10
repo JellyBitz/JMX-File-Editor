@@ -136,7 +136,17 @@
     <Compile Include="ViewModels\Nodes\JMXProperty.cs" />
     <Compile Include="ViewModels\Nodes\JMXStructure.cs" />
     <Compile Include="ViewModels\Silkroad\Common\ObjectGeneralInfoVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVDOF\BlockFogParamVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVDOF\BlockLightVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVDOF\BlockObjectVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVDOF\BlockVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVDOF\GridBucketVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVDOF\GridVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVDOF\GroupVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVDOF\JMXVDOFVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVDOF\LinkVM.cs" />
     <Compile Include="ViewModels\Silkroad\Mathematics\BoundingBoxVM.cs" />
+    <Compile Include="ViewModels\Silkroad\Mathematics\Color3VM.cs" />
     <Compile Include="ViewModels\Silkroad\Mathematics\Color4VM.cs" />
     <Compile Include="ViewModels\Silkroad\Mathematics\Matrix4x4VM.cs" />
     <Compile Include="ViewModels\Silkroad\Mathematics\Vector2VM.cs" />

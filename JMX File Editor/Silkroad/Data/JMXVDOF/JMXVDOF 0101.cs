@@ -138,7 +138,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
                 if (RoomNames.Count > 0 && FloorNames.Count > 0)
                 {
                     offsetLabels = (int)stream.Position;
+                    writer.Write(RoomNames.Count);
                     writer.Write(RoomNames.ToArray());
+                    writer.Write(FloorNames.Count);
                     writer.Write(FloorNames.ToArray());
                 }
 
@@ -155,7 +157,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
                 writer.Write(offsetGrid);
                 writer.Write(offsetGroups);
                 writer.Write(offsetLabels);
-                writer.Write(offsetBlocks);
                 writer.Write(0);
                 writer.Write(0);
                 writer.Write(offsetBoundingBox);

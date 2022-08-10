@@ -200,6 +200,23 @@
                                     ToolTip="{Binding DemoBrush}"/>
                         </StackPanel>
                     </HierarchicalDataTemplate>
+                    <!-- Binding Color3VM type -->
+                    <HierarchicalDataTemplate DataType="{x:Type vmMaths:Color3VM}"
+                                              ItemsSource="{Binding Childs}">
+                        <StackPanel Orientation="Horizontal"
+                                    MinHeight="20">
+                            <!-- Name -->
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="{Binding Name}"/>
+                            <!-- Demo -->
+                            <Border Background="{Binding DemoBrush}"
+                                    Width="16"
+                                    Margin="5 2"
+                                    BorderThickness="1"
+                                    BorderBrush="Black"
+                                    ToolTip="{Binding DemoBrush}"/>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>
         </Grid>

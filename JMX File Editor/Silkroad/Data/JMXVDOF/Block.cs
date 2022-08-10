@@ -16,8 +16,8 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
         public uint UnkUInt02 { get; set; }
         public BlockFogParam FogParameters { get; set; }
         public byte UnkByte01 { get; set; }
-        public Vector3 UnkVector01 { get; set; }
-        public Vector3 UnkVector02 { get; set; }
+        public Vector3 UnkVector01 { get; set; } = new Vector3();
+        public Vector3 UnkVector02 { get; set; } = new Vector3();
         public uint UnkUInt03 { get; set; }
         public string UnkString { get; set; } = string.Empty;
         public uint RoomIndex { get; set; }

@@ -8,7 +8,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
         #region Public Properties
         public uint Width { get; set; }
         public uint Height { get; set; }
-        public uint Lenght { get; set; }
+        public uint Length { get; set; }
         public List<GridBucket> BucketList { get; set; } = new List<GridBucket>();
         #endregion
 
@@ -17,7 +17,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
         {
             Width = reader.ReadUInt32();
             Height = reader.ReadUInt32();
-            Lenght = reader.ReadUInt32();
+            Length = reader.ReadUInt32();
 
             var count = reader.ReadInt32();
             BucketList = new List<GridBucket>(count);
@@ -28,7 +28,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
         {
             writer.Write(Width);
             writer.Write(Height);
-            writer.Write(Lenght);
+            writer.Write(Length);
 
             writer.Write(BucketList.Count);
             for (int i = 0; i < BucketList.Count; i++)
