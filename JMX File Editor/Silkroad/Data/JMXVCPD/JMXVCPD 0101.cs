@@ -73,7 +73,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVCPD
             using (var writer = new BSWriter(stream, System.Text.Encoding.GetEncoding(949)))
             {
                 // Signature
-                writer.Write(LatestSignature, 12);
+                writer.Write(LatestSignature.ToCharArray());
 
                 // Reserved file offsets
                 writer.Write(0); // CollisionOffset

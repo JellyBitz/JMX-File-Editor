@@ -35,26 +35,16 @@ namespace JMXFileEditor.Silkroad.IO
         /// </summary>
         public override void Write(string value)
         {
-            this.Write(value.Length);
-            Write(value, value.Length);
+            // Apply encoding and write it
+            var chars = value.ToCharArray();
+            var bytes = Encoding.GetEncoding(Encoding.CodePage).GetBytes(chars, 0, chars.Length);
+            this.Write(bytes.Length);
+            this.Write(bytes);
         }
         public void Write(string[] values)
         {
             foreach (string value in values)
                 this.Write(value);
-        }
-        /// <summary>
-        /// Writes a string on the current stream.
-        /// </summary>
-        public void Write(string value, int length)
-        {
-            var chars = value.ToCharArray();
-            // Make sure the buffer is the same length given
-            if(chars.Length != length)
-            	Array.Resize(ref chars, length);
-            // Apply encoding and write it
-            var bytes = Encoding.GetEncoding(Encoding.CodePage).GetBytes(chars, 0, chars.Length);
-            this.Write(bytes);
         }
         public void Write(Vector2 value)
         {
