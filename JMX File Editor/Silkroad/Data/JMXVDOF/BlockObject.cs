@@ -30,7 +30,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
             Flag = reader.ReadUInt32();
             UnkUInt01 = reader.ReadUInt32();
             RadiusSqrt = reader.ReadFloat();
-            if ((Flag & 4) == 1)
+            if ((Flag & 4) != 0)
                 WaterColor = reader.ReadUInt32();
         }
         public void Serialize(BSWriter writer)
@@ -45,7 +45,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
             writer.Write(Flag);
             writer.Write(UnkUInt01);
             writer.Write(RadiusSqrt);
-            if ((Flag & 4) == 1)
+            if ((Flag & 4) != 0)
                 writer.Write(WaterColor);
         }
         #endregion
