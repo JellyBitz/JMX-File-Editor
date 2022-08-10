@@ -38,6 +38,11 @@ namespace JMXFileEditor.Silkroad.IO
             this.Write(value.Length);
             Write(value, value.Length);
         }
+        public void Write(string[] values)
+        {
+            foreach (string value in values)
+                this.Write(value);
+        }
         /// <summary>
         /// Writes a string on the current stream.
         /// </summary>
@@ -130,6 +135,11 @@ namespace JMXFileEditor.Silkroad.IO
             this.Write(value.Green);
             this.Write(value.Blue);
             this.Write(value.Alpha);
+        }
+        public void Write(uint[] values)
+        {
+            foreach (uint value in values)
+                this.Write(value);
         }
         public void Serialize<T>(T value)
         where T : ISerializableBS

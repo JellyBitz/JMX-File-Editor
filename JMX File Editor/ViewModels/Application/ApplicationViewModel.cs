@@ -1,6 +1,7 @@
 ﻿using JMXFileEditor.Silkroad.Data;
 using JMXFileEditor.Silkroad.Data.JMXVBMT;
 using JMXFileEditor.Silkroad.Data.JMXVCPD;
+using JMXFileEditor.Silkroad.Data.JMXVDOF;
 using JMXFileEditor.Silkroad.Data.JMXVRES;
 using JMXFileEditor.ViewModels.Silkroad.JMXVBMT;
 using JMXFileEditor.ViewModels.Silkroad.JMXVCPD;
@@ -200,6 +201,9 @@ namespace JMXFileEditor.ViewModels
                             break;
                         case JMXVCPD_0101.LatestSignature:
                             file = new JMXVCPD_0101();
+                            break;
+                        case JMXVDOF_0101.LatestSignature:
+                            file = new JMXVDOF_0101();
                             break;
                         default:
                             throw new FileFormatException("JMX Header not found! File not supported.");

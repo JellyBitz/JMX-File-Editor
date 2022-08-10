@@ -65,6 +65,15 @@
     <Compile Include="Silkroad\Data\Common\ObjectGeneralInfo.cs" />
     <Compile Include="Silkroad\Data\Common\ObjectGeneralType.cs" />
     <Compile Include="Silkroad\Data\JMXVBMT\PrimMtrl.cs" />
+    <Compile Include="Silkroad\Data\JMXVDOF\Block.cs" />
+    <Compile Include="Silkroad\Data\JMXVDOF\BlockFogParam.cs" />
+    <Compile Include="Silkroad\Data\JMXVDOF\BlockLight.cs" />
+    <Compile Include="Silkroad\Data\JMXVDOF\BlockObject.cs" />
+    <Compile Include="Silkroad\Data\JMXVDOF\Grid.cs" />
+    <Compile Include="Silkroad\Data\JMXVDOF\GridBucket.cs" />
+    <Compile Include="Silkroad\Data\JMXVDOF\Group.cs" />
+    <Compile Include="Silkroad\Data\JMXVDOF\JMXVDOF 0101.cs" />
+    <Compile Include="Silkroad\Data\JMXVDOF\Link.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\ModData\ModDataBumpEnv.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\ModData\ModDataDyJoint.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\ModData\ModDataDyLattice.cs" />
