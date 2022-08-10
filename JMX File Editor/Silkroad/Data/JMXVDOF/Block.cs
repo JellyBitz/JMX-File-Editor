@@ -11,7 +11,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
         public uint UnkUInt01 { get; set; }
         public Vector3 Position { get; set; }
         public float Yaw { get; set; }
-        public float IsEntrance { get; set; }
+        public uint IsEntrance { get; set; }
         public BoundingBoxF CollisionBox01 { get; set; }
         public uint UnkUInt02 { get; set; }
         public BlockFogParam FogParameters { get; set; }
@@ -39,7 +39,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
             
             Position = reader.ReadVector3();
             Yaw = reader.ReadFloat();
-            IsEntrance = reader.ReadFloat();
+            IsEntrance = reader.ReadUInt32();
             CollisionBox01 = reader.ReadBoundingBoxF();
 
             UnkUInt02 = reader.ReadUInt32();

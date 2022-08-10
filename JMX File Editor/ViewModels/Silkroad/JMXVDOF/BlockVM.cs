@@ -61,7 +61,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVDOF
 
                 Position = (Vector3)((Vector3VM)s.Childs[i++]).GetClass(),
                 Yaw = (float)((JMXAttribute)s.Childs[i++]).Value,
-                IsEntrance = (float)((JMXAttribute)s.Childs[i++]).Value,
+                IsEntrance = (uint)((JMXAttribute)s.Childs[i++]).Value,
                 CollisionBox01 = (BoundingBoxF)((BoundingBoxVM)s.Childs[i++]).GetClass(),
 
                 UnkUInt02 = (uint)((JMXAttribute)s.Childs[i++]).Value,

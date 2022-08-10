@@ -6,6 +6,7 @@ Open, edit and save JMX files!
 - JMXVRES 0109 (.bsr)
 - JMXVBMT 0102 (.bmt)
 - JMXVCPD 0101 (.cpd)
+- JMXVDOF 0101 (.dof)
 
 ---
 > ### Do you like this project ? 
