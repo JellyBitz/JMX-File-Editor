@@ -7,10 +7,10 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
     {
         #region Public Properties
         public string Name { get; set; }
-        public Vector3 Position { get; set; }
-        public Color3 Color01 { get; set; }
-        public Color3 Color02 { get; set; }
-        public Color3 Color03 { get; set; }
+        public Vector3 Position { get; set; } = new Vector3();
+        public Color3 Color01 { get; set; } = new Color3();
+        public Color3 Color02 { get; set; } = new Color3();
+        public Color3 Color03 { get; set; } = new Color3();
         public float UnkFloat01 { get; set; }
         public float UnkFloat02 { get; set; }
         public float UnkFloat03 { get; set; }
