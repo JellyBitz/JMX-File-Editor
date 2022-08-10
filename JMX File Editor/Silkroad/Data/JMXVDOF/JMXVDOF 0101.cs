@@ -96,7 +96,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
             using (var writer = new BSWriter(stream, Encoding.GetEncoding(949)))
             {
                 // Signature
-                writer.Write(LatestSignature, 12);
+                writer.Write(LatestSignature.ToCharArray());
 
                 // Reserved file offsets (Block, Link, Grid, Group, Label, Offset01, Offset02, BoundingBox)
                 writer.Write(0);

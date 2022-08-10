@@ -48,7 +48,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVBMT
             using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
             using (var writer = new BSWriter(stream, System.Text.Encoding.GetEncoding(949)))
             {
-                writer.Write(LatestSignature, 12);
+                writer.Write(LatestSignature.ToCharArray());
                 writer.Write(Materials.Count);
                 foreach (var mtrl in Materials)
                     writer.Serialize(mtrl);
