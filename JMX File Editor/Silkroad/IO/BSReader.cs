@@ -46,6 +46,13 @@ namespace JMXFileEditor.Silkroad.IO
             return ReadString(length);
 
         }
+        public string[] ReadStringArray(int count)
+        {
+            string[] array = new string[count];
+            for (int i = 0; i < count; i++)
+                array[i] = ReadString();
+            return array;
+        }
         /// <summary>
         /// Reads a string from the current stream.
         /// </summary>
@@ -60,6 +67,13 @@ namespace JMXFileEditor.Silkroad.IO
             return Encoding.GetEncoding(Encoding.CodePage).GetString(bytes);
         }
         public float ReadFloat() => this.ReadSingle();
+        public uint[] ReadUIntArray(int count)
+        {
+            uint[] array = new uint[count];
+            for (int i = 0; i < count; i++)
+                array[i] = ReadUInt32();
+            return array;
+        }
         public Vector2 ReadVector2() => new Vector2(this.ReadFloat(), this.ReadFloat());
         public Vector3 ReadVector3() => new Vector3(this.ReadFloat(), this.ReadFloat(), this.ReadFloat());
         public Vector4 ReadVector4() => new Vector4(this.ReadFloat(), this.ReadFloat(), this.ReadFloat(), this.ReadFloat());
