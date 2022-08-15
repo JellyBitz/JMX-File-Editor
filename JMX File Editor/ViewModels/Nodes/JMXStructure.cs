@@ -223,7 +223,7 @@ namespace JMXFileEditor.ViewModels
                 e.Childs.Add(new JMXAttribute("[" + e.Childs.Count + "]", e.Obj is char _char ? _char : default, e.IsEditable));
             });
             AddFormatHandler(typeof(string), (s, e) => {
-                e.Childs.Add(new JMXAttribute("[" + e.Childs.Count + "]", e.Obj is string _string ? _string : default, e.IsEditable));
+                e.Childs.Add(new JMXAttribute("[" + e.Childs.Count + "]", e.Obj is string _string ? _string : string.Empty, e.IsEditable));
             });
         }
         #endregion
