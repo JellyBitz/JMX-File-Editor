@@ -135,7 +135,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
 
                 // FileOffsets.Labels
                 var offsetLabels = 0;
-                if (RoomNames.Count > 0 && FloorNames.Count > 0)
+                if (RoomNames.Count > 0 || FloorNames.Count > 0)
                 {
                     offsetLabels = (int)stream.Position;
                     writer.Write(RoomNames.Count);
