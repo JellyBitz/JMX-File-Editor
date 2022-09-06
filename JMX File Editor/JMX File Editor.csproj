@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>JMXFileEditor</RootNamespace>
     <AssemblyName>JMX File Editor</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -64,6 +64,64 @@
     <Compile Include="Silkroad\Data\Common\ObjectGeneralCategory.cs" />
     <Compile Include="Silkroad\Data\Common\ObjectGeneralInfo.cs" />
     <Compile Include="Silkroad\Data\Common\ObjectGeneralType.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Blends\ByteBlend.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Blends\DefaultBlend.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Blends\DiffuseBlend.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Blends\FloatBlend.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Blends\VectorBlend.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFCBAN.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFCDiffuseGraph.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFCFactory.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFCLinkMode.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFCNormalTimeLife.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFCNormalTimeLoopLife.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFController.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFCProgram.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFCScaleGraph.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFCShape.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFCStaticEmit.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Controller\EFCViewMode.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EEBlend.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EEConvertParameter.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EEGlobalData.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EEObject.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EEParameter.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EEProgram.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EEProgramBase.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EERefreshParameter.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EEResource.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EESource.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EESourceList.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EESourceNode.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EEStaticCommand.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EEStaticProgram.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EFMesh.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EFStaticEmit.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EFStoredEffect.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\EFStoredObject.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Emitter.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\IEEParameter.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\LifeTime.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterAngleVector1.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterAxisVector4.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterBlendDiffuseGraph.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterBlendScaleGraph.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterBlendScaleGraphPointer.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterBSAnimation.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterEFStaticEmit.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterFactory.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterFloat.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterFrameBANPosition.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterFrameBANRotation.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterFrameDiffuse.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterFrameScale.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterFrameTextureSlide.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterMatrix.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterRotVector.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\Parameter\ParameterVector.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\RenderShape.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\SourceNodeType.cs" />
+    <Compile Include="Silkroad\Data\JMXVEFF\ViewMode.cs" />
     <Compile Include="Silkroad\Data\JMXVBMT\PrimMtrl.cs" />
     <Compile Include="Silkroad\Data\JMXVDOF\Block.cs" />
     <Compile Include="Silkroad\Data\JMXVDOF\BlockFogParam.cs" />
