@@ -12,12 +12,20 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Controller
         public uint Int2 { get; set; }
         public uint Int3 { get; set; }
 
-        public override void Read(BSReader reader)
+        public override void Deserialize(BSReader reader)
         {
             Int0 = reader.ReadUInt32();
             Int1 = reader.ReadUInt32();
             Int2 = reader.ReadUInt32();
             Int3 = reader.ReadUInt32();
+        }
+
+        public override void Serialize(BSWriter writer)
+        {
+            writer.Write(Int0);
+            writer.Write(Int1);
+            writer.Write(Int2);
+            writer.Write(Int3);
         }
     }
 }

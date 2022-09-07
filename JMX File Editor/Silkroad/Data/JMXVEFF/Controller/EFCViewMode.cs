@@ -5,30 +5,20 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Controller
 {
     public class EFCViewMode : EFController
     {
+
         public override string Name => "ViewMode";
 
         public ViewMode ViewMode;
 
-        public override void Read(BSReader reader)
+        public override void Deserialize(BSReader reader)
         {
-            string name = reader.ReadString();
-            switch (name)
-            {
-                case "ViewNone":
-                    this.ViewMode = ViewMode.None;
-                    break;
-                case "ViewBillboard":
-                    this.ViewMode = ViewMode.Billboard;
-                    break;
-                case "ViewVBillboard":
-                    this.ViewMode = ViewMode.VBillboard;
-                    break;
-                case "ViewYBillboard":
-                    this.ViewMode = ViewMode.YBillboard;
-                    break;
-                default:
-                    throw new Exception($"Undefined {nameof(ViewMode)}: {name}");
-            }
+            var name = reader.ReadString();
+            if (!name.StartsWith("View") || !Enum.TryParse(name.Substring(4), out ViewMode shape))
+                throw new Exception($"Undefined {nameof(ViewMode)}: {name}");
+
+            ViewMode = shape;
         }
+
+        public override void Serialize(BSWriter writer) => writer.Write($"View{ViewMode}");
     }
 }

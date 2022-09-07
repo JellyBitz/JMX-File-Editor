@@ -2,13 +2,13 @@
 
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
-    public abstract class EEObject
+    public abstract class EEObject : ISerializableBS
     {
-        public virtual void Read(BSReader reader)
+        public virtual void Deserialize(BSReader reader)
         {
         }
 
-        public virtual void Write(BSWriter writer)
+        public virtual void Serialize(BSWriter writer)
         {
 
         }

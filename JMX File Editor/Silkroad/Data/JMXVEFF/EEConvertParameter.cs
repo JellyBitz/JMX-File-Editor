@@ -2,16 +2,18 @@
 
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
-    public abstract class EEConvertParameter<T1, T2> : IEEParameter
+    public abstract class EEConvertParameter<TLeft, TRight> : IEEParameter
+        where TLeft : new()
+        where TRight : new()
     {
         public abstract string Name { get; }
 
-        public T1 Left { get; protected set; }
-        public T2 Right { get; protected set; }
+        public TLeft Left { get; protected set; } = new TLeft();
+        public TRight Right { get; protected set; } = new TRight();
 
-        public abstract void Read(BSReader reader);
+        public abstract void Deserialize(BSReader reader);
 
-        public abstract void Write(BSWriter writer);
+        public abstract void Serialize(BSWriter writer);
 
         public abstract void Convert();
     }

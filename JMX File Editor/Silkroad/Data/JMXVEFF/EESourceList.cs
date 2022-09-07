@@ -11,16 +11,19 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
     {
         public List<EESourceNode> SourceData { get; set; } = new List<EESourceNode>();
 
-        public override void Read(BSReader reader)
+        public override void Deserialize(BSReader reader)
         {
             var sourceCount = reader.ReadInt32();
-            for (int i = 0; i < sourceCount; i++)
-            {
-                var data = new EESourceNode();
-                data.Read(reader);
+            SourceData.Capacity = sourceCount;
+            for (var i = 0; i < sourceCount; i++)
+                SourceData.Add(reader.Deserialize<EESourceNode>());
+        }
 
-                this.SourceData.Add(data);
-            }
+        public override void Serialize(BSWriter writer)
+        {
+            writer.Write(SourceData.Count);
+            foreach (var item in SourceData)
+                writer.Serialize(item);
         }
 
         public IEnumerator<EESourceNode> GetEnumerator() => ((IEnumerable<EESourceNode>)SourceData).GetEnumerator();

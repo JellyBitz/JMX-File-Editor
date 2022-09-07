@@ -71,9 +71,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
     }
 
     [Serializable]
-    public class EEResource
+    public class EEResource : ISerializableBS
     {
-        public bool Backface { get; set; }
+        public bool BackFace { get; set; }
         public D3DBLEND SrcBlend { get; set; }
         public D3DBLEND DstBlend { get; set; }
         public D3DTEXTUREARG SrcTextureArg1 { get; set; }
@@ -85,9 +85,10 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 
         public List<EFMesh> Meshes { get; } = new List<EFMesh>();
 
-        public void Read(BSReader reader)
+        public void Deserialize(BSReader reader)
         {
-            Backface = reader.ReadInt32() != 0;
+            BackFace = reader.ReadInt32() != 0;
+
             SrcBlend = (D3DBLEND)reader.ReadInt32();
             DstBlend = (D3DBLEND)reader.ReadInt32();
             SrcTextureArg1 = (D3DTEXTUREARG)reader.ReadInt32();
@@ -98,13 +99,26 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
             DstTextureOP = (D3DTEXTUREOP)reader.ReadInt32();
 
             var meshCount = reader.ReadInt32();
-            for (int iMesh = 0; iMesh < meshCount; iMesh++)
-            {
-                var mesh = new EFMesh();
-                mesh.Read(reader);
+            for (var i = 0; i < meshCount; i++)
+                Meshes.Add(reader.Deserialize<EFMesh>());
+        }
 
-                Meshes.Add(mesh);
-            }
+        public void Serialize(BSWriter writer)
+        {
+            writer.Write(BackFace ? 1 : 0);
+
+            writer.Write((int)SrcBlend);
+            writer.Write((int)DstBlend);
+            writer.Write((int)SrcTextureArg1);
+            writer.Write((int)SrcTextureArg2);
+            writer.Write((int)SrcTextureOP);
+            writer.Write((int)DstTextureArg1);
+            writer.Write((int)DstTextureArg2);
+            writer.Write((int)DstTextureOP);
+
+            writer.Write(Meshes.Count);
+            foreach (var mesh in Meshes)
+                writer.Serialize(mesh);
         }
     }
 }

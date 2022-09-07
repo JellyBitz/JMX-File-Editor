@@ -11,11 +11,18 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Controller
 
         public List<string> Animations { get; } = new List<string>();
 
-        public override void Read(BSReader reader)
+        public override void Deserialize(BSReader reader)
         {
             var count = reader.ReadInt32();
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
                 Animations.Add(reader.ReadString());
+        }
+
+        public override void Serialize(BSWriter writer)
+        {
+            writer.Write(Animations.Count);
+            foreach (var animation in Animations)
+                writer.Write(animation);
         }
     }
 }

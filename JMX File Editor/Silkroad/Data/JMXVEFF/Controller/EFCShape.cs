@@ -12,36 +12,21 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Controller
         public RenderShape Shape { get; set; }
         public EEResource Resource { get; } = new EEResource();
 
-        public override void Read(BSReader reader)
+        public override void Deserialize(BSReader reader)
         {
             var name = reader.ReadString();
 
-            switch (name)
-            {
-                case "ViewNone":
-                    this.Shape = RenderShape.None;
-                    break;
-                case "RenderPlate":
-                    this.Shape = RenderShape.Plate;
-                    break;
-                case "RenderMesh":
-                    this.Shape = RenderShape.Mesh;
-                    break;
-                case "RenderLinkDPipe":
-                    this.Shape = RenderShape.LinkDPipe;
-                    break;
-                case "RenderLinkPipe":
-                    this.Shape = RenderShape.LinkPipe;
-                    break;
-                case "RenderLinkObj":
-                    this.Shape = RenderShape.LinkObj;
-                    break;
+            if (!name.StartsWith("Render") || !Enum.TryParse(name.Substring(6), out RenderShape shape))
+                throw new Exception($"Undefined {nameof(RenderShape)}: {name}");
 
-                default:
-                    throw new Exception($"Undefined {nameof(RenderShape)}: {name}");
-            }
+            Shape = shape;
+            Resource.Deserialize(reader);
+        }
 
-            this.Resource.Read(reader);
+        public override void Serialize(BSWriter writer)
+        {
+            writer.Write($"Render{Shape}");
+            writer.Serialize(Resource);
         }
     }
 }

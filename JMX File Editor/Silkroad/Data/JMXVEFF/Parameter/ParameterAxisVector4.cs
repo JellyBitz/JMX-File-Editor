@@ -16,13 +16,13 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
             this.Right = Matrix4x4.CreateFromAxisAngle(axis, angle);
         }
 
-        public override void Read(BSReader reader)
+        public override void Deserialize(BSReader reader)
         {
             Left = reader.ReadVector4();
             Right = reader.ReadMatrix4x4();
         }
 
-        public override void Write(BSWriter writer)
+        public override void Serialize(BSWriter writer)
         {
             writer.Write(Left);
             writer.Write(Right);

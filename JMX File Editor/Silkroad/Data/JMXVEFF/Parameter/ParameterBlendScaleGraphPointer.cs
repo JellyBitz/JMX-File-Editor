@@ -6,14 +6,8 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
     {
         public override string Name => "BlendScaleGraphPointer";
 
-        public override void Read(BSReader reader)
-        {
-            this.Value = reader.ReadSingle();
-        }
+        public override void Deserialize(BSReader reader) => Value = reader.ReadFloat();
 
-        public override void Write(BSWriter writer)
-        {
-            writer.Write(this.Value);
-        }
+        public override void Serialize(BSWriter writer) => writer.Write(Value);
     }
 }

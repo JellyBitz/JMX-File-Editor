@@ -7,23 +7,35 @@ using System.Collections.Generic;
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
     [Serializable]
-    public class EEGlobalData
+    public class EEGlobalData : ISerializableBS
     {
         public int Int0 { get; private set; }
 
         public List<IEEParameter> Parameters { get; } = new List<IEEParameter>();
 
-        public void Read(BSReader reader)
+        public void Deserialize(BSReader reader)
         {
-            this.Int0 = reader.ReadInt32();
+            Int0 = reader.ReadInt32();
 
             var parameterCount = reader.ReadInt32();
-            for (int i = 0; i < parameterCount; i++)
+            for (var i = 0; i < parameterCount; i++)
             {
                 var parameter = ParameterFactory.CreateParameterByName(reader.ReadString());
-                parameter.Read(reader);
+                parameter.Deserialize(reader);
 
-                this.Parameters.Add(parameter);
+                Parameters.Add(parameter);
+            }
+        }
+
+        public void Serialize(BSWriter writer)
+        {
+            writer.Write(Int0);
+
+            writer.Write(Parameters.Count);
+            foreach (var parameter in Parameters)
+            {
+                writer.Write(parameter.Name);
+                writer.Serialize(parameter);
             }
         }
     }

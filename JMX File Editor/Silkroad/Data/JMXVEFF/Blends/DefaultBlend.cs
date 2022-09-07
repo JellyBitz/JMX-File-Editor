@@ -8,8 +8,15 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Blends
         public float Time;
         public TValue Value;
 
-        public abstract void Read(BSReader reader);
-        public abstract void Write(BSWriter writer);
+        public virtual void Read(BSReader reader)
+        {
+            this.Time = reader.ReadFloat();
+        }
+
+        public virtual void Write(BSWriter writer)
+        {
+            writer.Write(this.Time);
+        }
         public override string ToString() => $"{Time:0.00} - {Value}";
     }
 }

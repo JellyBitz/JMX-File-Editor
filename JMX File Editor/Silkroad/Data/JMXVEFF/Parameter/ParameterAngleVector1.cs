@@ -8,18 +8,15 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
     {
         public override string Name => "AngleVector1";
 
-        public override void Convert()
-        {
-            Right = new Vector3(Left.X, Left.Y, Left.Z * ((float)Math.PI / 180f));
-        }
+        public override void Convert() => Right = new Vector3(Left.X, Left.Y, Left.Z * ((float)Math.PI / 180f));
 
-        public override void Read(BSReader reader)
+        public override void Deserialize(BSReader reader)
         {
             Left = reader.ReadVector3();
             Right = reader.ReadVector3();
         }
 
-        public override void Write(BSWriter writer)
+        public override void Serialize(BSWriter writer)
         {
             writer.Write(Left);
             writer.Write(Right);

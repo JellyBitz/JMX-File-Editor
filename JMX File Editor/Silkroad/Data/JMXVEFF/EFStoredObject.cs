@@ -1,33 +1,31 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVEFF.Controller;
 using JMXFileEditor.Silkroad.IO;
-
+using System;
 using System.Collections.Generic;
 using System.IO;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
-    public class EFStoredObject
+    public class EFStoredObject : ISerializableBS
     {
-        private static bool _readHeader = true;
-
         public EFStoredObject(EFStoredObject parent = null)
         {
-            this.Parent = parent;
+            Parent = parent;
 
-            this.EEGlobalData = new EEGlobalData();
-            this.EmptyCommands0 = new EEStaticProgram();
-            this.EmitterCommands = new EEStaticProgram();
-            this.EmptyCommands1 = new EEStaticProgram();
-            this.ProgramCommands = new EEStaticProgram();
+            EEGlobalData = new EEGlobalData();
+            EmptyCommands0 = new EEStaticProgram();
+            EmitterCommands = new EEStaticProgram();
+            EmptyCommands1 = new EEStaticProgram();
+            ProgramCommands = new EEStaticProgram();
 
-            this.LifeTimeCommand = new EEStaticCommand();
-            this.ViewModeCommand = new EEStaticCommand();
-            this.RenderCommand = new EEStaticCommand();
+            LifeTimeCommand = new EEStaticCommand();
+            ViewModeCommand = new EEStaticCommand();
+            RenderModeCommand = new EEStaticCommand();
 
-            this.EmptyProgram0 = new EEProgram();
-            this.RenderCommands = new EEProgram();
+            EmptyProgram0 = new EEProgram();
+            RenderCommands = new EEProgram();
 
-            this.Resource = new EEResource();
+            Resource = new EEResource();
         }
 
         public EFStoredObject Parent { get; set; }
@@ -44,7 +42,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
         public EEStaticProgram ProgramCommands { get; } // ProgamUpdate
         public EEStaticCommand LifeTimeCommand { get; } //LifeTime
         public EEStaticCommand ViewModeCommand { get; } //ViewMode
-        public EEStaticCommand RenderCommand { get; } //RenderMode
+        public EEStaticCommand RenderModeCommand { get; } //RenderMode
         public EEProgram EmptyProgram0 { get; } //Empty?
         public EEProgram RenderCommands { get; } //RenderCommands?
         public EEResource Resource { get; set; }
@@ -58,74 +56,138 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
         public int Int3 { get; private set; }
         public byte Byte3 { get; private set; }
 
-        public virtual void Read(BSReader reader)
+        public virtual void Deserialize(BSReader reader)
         {
-            var dataOffset = reader.ReadInt32();
-            if (_readHeader)
-            {
-                this.Name = reader.ReadString();
-                this.ReadControllers(reader);
-            }
-            else
-            {
-                reader.BaseStream.Seek(dataOffset, SeekOrigin.Current);
-            }
-            this.ReadStoredData(reader);
-            this.ReadChildren(reader);
+            var dataOffset = reader.ReadInt32(); // dataOffset
+            //if (true)
+            //{
+            Name = reader.ReadString();
+            ReadControllers(reader);
+            //}
+            //else
+            //{
+            //reader.BaseStream.Seek(dataOffset, SeekOrigin.Current);
+            //}
+            ReadStoredData(reader);
+            ReadChildren(reader);
         }
 
         private void ReadControllers(BSReader reader)
         {
             var controllerCount = reader.ReadInt32();
-            for (int i = 0; i < controllerCount; i++)
+            Controllers.Capacity = controllerCount;
+            for (var i = 0; i < controllerCount; i++)
             {
                 var controllerName = reader.ReadString();
                 var controller = EFCFactory.CreateController(controllerName);
-                controller.Read(reader);
+                controller.Deserialize(reader);
 
-                this.Controllers.Add(controller);
+                Controllers.Add(controller);
             }
         }
 
         private void ReadChildren(BSReader reader)
         {
             var childObjectCount = reader.ReadInt32();
-            for (int i = 0; i < childObjectCount; i++)
+            Children.Capacity = childObjectCount;
+            for (var i = 0; i < childObjectCount; i++)
             {
                 var childObject = new EFStoredObject(this);
-                childObject.Read(reader);
+                childObject.Deserialize(reader);
 
-                this.Children.Add(childObject);
+                Children.Add(childObject);
             }
         }
 
         private void ReadStoredData(BSReader reader)
         {
-            this.EEGlobalData.Read(reader);
-            this.EmptyCommands0.Read(reader);
-            this.EmitterCommands.Read(reader);
-            this.EmptyCommands1.Read(reader);
-            this.LifeTimeCommand.Read(reader);
-            this.ProgramCommands.Read(reader);
+            EEGlobalData.Deserialize(reader);
+            EmptyCommands0.Deserialize(reader);
+            EmitterCommands.Deserialize(reader);
+            EmptyCommands1.Deserialize(reader);
+            LifeTimeCommand.Deserialize(reader);
+            ProgramCommands.Deserialize(reader);
 
-            this.Byte0 = reader.ReadByte(); // Type?
-            this.Byte1 = reader.ReadByte();
-            this.Int0 = reader.ReadInt32(); //Start?
-            this.Int1 = reader.ReadInt32(); //End?
-            this.Int2 = reader.ReadInt32();
+            Byte0 = reader.ReadByte(); // Type?
+            Byte1 = reader.ReadByte();
+            Int0 = reader.ReadInt32(); //Start?
+            Int1 = reader.ReadInt32(); //End?
+            Int2 = reader.ReadInt32();
 
-            this.Byte2 = reader.ReadByte();
+            Byte2 = reader.ReadByte();
 
-            this.Int3 = reader.ReadInt32();
+            Int3 = reader.ReadInt32();
 
-            this.Byte3 = reader.ReadByte();
+            Byte3 = reader.ReadByte();
 
-            this.ViewModeCommand.Read(reader);
-            this.Resource.Read(reader);
-            this.RenderCommand.Read(reader);
+            ViewModeCommand.Deserialize(reader);
+            Resource.Deserialize(reader);
+            RenderModeCommand.Deserialize(reader);
 
-            this.EmptyProgram0.Read(reader);
-            this.RenderCommands.Read(reader);
+            EmptyProgram0.Deserialize(reader);
+            RenderCommands.Deserialize(reader);
+        }
+
+        public void Serialize(BSWriter writer)
+        {
+            var storedObjectPosition = (int)writer.BaseStream.Position;
+            writer.Write(0); // dataOffset
+
+            writer.Write(Name);
+            WriteControllers(writer);
+            var dataOffset = ((int)writer.BaseStream.Position) - (storedObjectPosition + 4);
+
+            // Write correct dataOffset
+            writer.Seek(storedObjectPosition, SeekOrigin.Begin);
+            writer.Write(dataOffset);
+            writer.Seek(dataOffset, SeekOrigin.Current);
+
+            WriteStoredData(writer);
+            WriteChildren(writer);
+        }
+
+        private void WriteControllers(BSWriter writer)
+        {
+            writer.Write(Controllers.Count);
+            foreach (var item in Controllers)
+            {
+                writer.Write(item.Name);
+                writer.Serialize(item);
+            }
+        }
+        private void WriteStoredData(BSWriter writer)
+        {
+            writer.Serialize(EEGlobalData);
+            writer.Serialize(EmptyCommands0);
+            writer.Serialize(EmitterCommands);
+            writer.Serialize(EmptyCommands1);
+            writer.Serialize(LifeTimeCommand);
+            writer.Serialize(ProgramCommands);
+
+            writer.Write(Byte0);
+            writer.Write(Byte1);
+            writer.Write(Int0);
+            writer.Write(Int1);
+            writer.Write(Int2);
+
+            writer.Write(Byte2);
+
+            writer.Write(Int3);
+
+            writer.Write(Byte3);
+
+            writer.Serialize(ViewModeCommand);
+            writer.Serialize(Resource);
+            writer.Serialize(RenderModeCommand);
+            writer.Serialize(EmptyProgram0);
+
+            writer.Serialize(RenderCommands);
+        }
+        private void WriteChildren(BSWriter writer)
+        {
+            writer.Write(Children.Count);
+            foreach (var item in Children)
+                writer.Serialize(item);
         }
     }
 }

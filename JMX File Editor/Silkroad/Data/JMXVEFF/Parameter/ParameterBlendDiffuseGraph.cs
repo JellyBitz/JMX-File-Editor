@@ -8,19 +8,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
     {
         public override string Name => "BlendDiffuseGraph";
 
-        public ParameterBlendDiffuseGraph()
-        {
-            this.Value = new EEBlend<Color32, DiffuseBlend>();
-        }
 
-        public override void Read(BSReader reader)
-        {
-            this.Value.Read(reader);
-        }
+        public override void Deserialize(BSReader reader) => Value.Deserialize(reader);
 
-        public override void Write(BSWriter writer)
-        {
-            this.Value.Write(writer);
-        }
+        public override void Serialize(BSWriter writer) => Value.Serialize(writer);
     }
 }

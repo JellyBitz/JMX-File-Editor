@@ -1,13 +1,7 @@
-﻿using JMXFileEditor.Silkroad.IO;
-
-namespace JMXFileEditor.Silkroad.Data.JMXVEFF
+﻿namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
-    public interface IEEParameter
+    public interface IEEParameter : ISerializableBS
     {
         string Name { get; }
-
-        void Read(BSReader reader);
-
-        void Write(BSWriter writer);
     }
 }

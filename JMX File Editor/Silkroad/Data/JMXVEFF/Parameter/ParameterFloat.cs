@@ -7,14 +7,8 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
     {
         public override string Name => "float";
 
-        public override void Read(BSReader reader)
-        {
-            Value = reader.ReadSingle();
-        }
+        public override void Deserialize(BSReader reader) => Value = reader.ReadSingle();
 
-        public override void Write(BSWriter writer)
-        {
-            writer.Write(Value);
-        }
+        public override void Serialize(BSWriter writer) => writer.Write(Value);
     }
 }

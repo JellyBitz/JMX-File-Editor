@@ -4,20 +4,25 @@ using System.Collections.Generic;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
-    public class EFMesh
+    public class EFMesh : ISerializableBS
     {
         public string Path { get; set; }
         public List<string> Textures { get; } = new List<string>();
 
-        public void Read(BSReader reader)
+        public void Deserialize(BSReader reader)
         {
             Path = reader.ReadString();
             var textureCount = reader.ReadInt32();
-            for (int i = 0; i < textureCount; i++)
-            {
-                var texturePath = reader.ReadString();
-                Textures.Add(texturePath);
-            }
+            for (var i = 0; i < textureCount; i++)
+                Textures.Add(reader.ReadString());
+        }
+
+        public void Serialize(BSWriter writer)
+        {
+            writer.Write(Path);
+            writer.Write(Textures.Count);
+            foreach (var texture in Textures)
+                writer.Write(texture);
         }
     }
 }

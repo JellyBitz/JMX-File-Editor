@@ -8,27 +8,20 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
     {
         public override string Name => "FrameScale";
 
-        public ParameterFrameScale()
-        {
-            this.Value = new List<Vector3>();
-        }
-
-        public override void Read(BSReader reader)
+        public override void Deserialize(BSReader reader)
         {
             var count = reader.ReadInt32();
 
             Value.Capacity = count;
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
                 Value.Add(reader.ReadVector3());
         }
 
-        public override void Write(BSWriter writer)
+        public override void Serialize(BSWriter writer)
         {
-            var vectorCount = Value.Count;
-
-            writer.Write(vectorCount);
-            for (int i = 0; i < vectorCount; i++)
-                writer.Write(Value[i]);
+            writer.Write(Value.Count);
+            foreach (var item in Value)
+                writer.Write(item);
         }
     }
 }

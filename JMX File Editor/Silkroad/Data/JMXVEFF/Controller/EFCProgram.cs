@@ -7,8 +7,10 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Controller
     {
         public override string Name => "Program";
 
-        public EEStaticProgram StaticProgram { get; } = new EEStaticProgram();
+        public EEStaticProgram StaticProgram { get; set; } = new EEStaticProgram();
 
-        public override void Read(BSReader reader) => this.StaticProgram.Read(reader);
+        public override void Deserialize(BSReader reader) => StaticProgram.Deserialize(reader);
+
+        public override void Serialize(BSWriter writer) => writer.Serialize(StaticProgram);
     }
 }

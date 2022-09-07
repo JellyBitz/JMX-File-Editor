@@ -21,14 +21,24 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Controller
             unkFloatBlend2 = new EEBlend<float, FloatBlend>();
         }
 
-        public override void Read(BSReader reader)
+        public override void Deserialize(BSReader reader)
         {
-            unkFloatBlend0.Read(reader);
-            unkFloatBlend1.Read(reader);
-            unkFloatBlend2.Read(reader);
+            unkFloatBlend0.Deserialize(reader);
+            unkFloatBlend1.Deserialize(reader);
+            unkFloatBlend2.Deserialize(reader);
 
             unkFloat0 = reader.ReadSingle();
             unkFloat1 = reader.ReadSingle();
+        }
+
+        public override void Serialize(BSWriter writer)
+        {
+            writer.Serialize(unkFloatBlend0);
+            writer.Serialize(unkFloatBlend1);
+            writer.Serialize(unkFloatBlend2);
+
+            writer.Write(unkFloat0);
+            writer.Write(unkFloat1);
         }
     }
 }

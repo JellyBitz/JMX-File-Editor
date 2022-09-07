@@ -6,33 +6,53 @@ using System;
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
     [Serializable]
-    public class EESourceNode
+    public class EESourceNode : ISerializableBS
     {
-        public bool HasData { get; private set; }
-        public string Name { get; private set; }
-        public SourceNodeType Type { get; private set; }
-        public byte Byte1 { get; private set; }
-        public float Start { get; private set; }
-        public float End { get; private set; }
-        public float Float2 { get; private set; }
-        public IEEParameter Parameter { get; private set; }
+        public bool HasData { get; set; }
+        public string Name { get; set; }
+        public SourceNodeType Type { get; set; }
+        public byte Byte1 { get; set; }
+        public float Start { get; set; }
+        public float End { get; set; }
+        public float Float2 { get; set; } // Length?
+        public IEEParameter Parameter { get; set; }
 
-        internal void Read(BSReader reader)
+        public void Deserialize(BSReader reader)
         {
-            this.HasData = reader.ReadBoolean();
-            if (!this.HasData)
+            HasData = reader.ReadBoolean();
+            if (!HasData)
                 return;
 
-            this.Name = reader.ReadString();
-            this.Type = (SourceNodeType)reader.ReadByte();
-            this.Byte1 = reader.ReadByte();
+            Name = reader.ReadString();
+            Type = (SourceNodeType)reader.ReadByte();
+            Byte1 = reader.ReadByte();
 
-            this.Start = reader.ReadSingle();
-            this.End = reader.ReadSingle();
-            this.Float2 = reader.ReadSingle();
+            Start = reader.ReadSingle();
+            End = reader.ReadSingle();
+            Float2 = reader.ReadSingle();
 
-            this.Parameter = ParameterFactory.CreateParameterByCommandName(this.Name);
-            this.Parameter?.Read(reader);
+            Parameter = ParameterFactory.CreateParameterByCommandName(Name);
+            Parameter?.Deserialize(reader);
+        }
+
+        public void Serialize(BSWriter writer)
+        {
+            writer.Write(HasData);
+            if (!HasData)
+                return;
+
+            writer.Write(Name);
+            writer.Write((byte)Type);
+            writer.Write(Byte1);
+
+            writer.Write(Start);
+            writer.Write(End);
+            writer.Write(Float2);
+
+            if (Parameter == null)
+                return;
+
+            writer.Serialize(Parameter);
         }
     }
 }

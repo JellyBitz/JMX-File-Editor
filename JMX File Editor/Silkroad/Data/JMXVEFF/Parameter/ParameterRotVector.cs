@@ -10,21 +10,18 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
 
         public override void Convert()
         {
-            this.Right = Matrix4x4.CreateRotationX(this.Left.X * (float)Math.PI / 180.0f)
-                         * Matrix4x4.CreateRotationY(this.Left.Y * (float)Math.PI / 180.0f)
-                         * Matrix4x4.CreateRotationZ(this.Left.Z * (float)Math.PI / 180.0f);
-
-            // TODO: Figure out if this works too:
-            //       this.Right = Matrix4x4.CreateFromYawPitchRoll(this.Left.Y, this.Left.X, this.Left.Z);
+            Right = Matrix4x4.CreateRotationX(Left.X * (float)Math.PI / 180.0f)
+                * Matrix4x4.CreateRotationY(Left.Y * (float)Math.PI / 180.0f)
+                * Matrix4x4.CreateRotationZ(Left.Z * (float)Math.PI / 180.0f);
         }
 
-        public override void Read(BSReader reader)
+        public override void Deserialize(BSReader reader)
         {
             Left = reader.ReadVector3();
             Right = reader.ReadMatrix4x4();
         }
 
-        public override void Write(BSWriter writer)
+        public override void Serialize(BSWriter writer)
         {
             writer.Write(Left);
             writer.Write(Right);

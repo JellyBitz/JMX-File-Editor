@@ -13,7 +13,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
             this.Value = new List<string>();
         }
 
-        public override void Read(BSReader reader)
+        public override void Deserialize(BSReader reader)
         {
             int count = reader.ReadInt32();
             this.Value.Capacity = count;
@@ -22,9 +22,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
                 this.Value.Add(reader.ReadString());
         }
 
-        public override void Write(BSWriter writer)
+        public override void Serialize(BSWriter writer)
         {
-            throw new System.NotImplementedException();
+            writer.Write(Value.Count);
+            foreach (var item in Value)
+                writer.Write(item);
         }
     }
 }

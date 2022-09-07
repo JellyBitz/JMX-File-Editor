@@ -8,24 +8,23 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
     {
         public override string Name => "FrameBANPosition";
 
-        public ParameterFrameBANPosition()
+        public override void Deserialize(BSReader reader)
         {
-            this.Right = new List<Vector3>();
-        }
-
-        public override void Read(BSReader reader)
-        {
-            this.Left = reader.ReadSingle();
+            Left = reader.ReadSingle();
 
             var count = reader.ReadInt32();
-            this.Right.Capacity = count;
-            for (int i = 0; i < count; i++)
-                this.Right.Add(reader.ReadVector3());
+            Right.Capacity = count;
+            for (var i = 0; i < count; i++)
+                Right.Add(reader.ReadVector3());
         }
 
-        public override void Write(BSWriter writer)
+        public override void Serialize(BSWriter writer)
         {
-            throw new System.NotImplementedException();
+            writer.Write(Left);
+
+            writer.Write(Right.Count);
+            foreach (var right in Right)
+                writer.Write(right);
         }
 
         public override void Convert()

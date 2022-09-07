@@ -9,9 +9,8 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
     {
         public EESourceNode Data { get; } = new EESourceNode();
 
-        public override void Read(BSReader reader)
-        {
-            this.Data.Read(reader);
-        }
+        public override void Deserialize(BSReader reader) => Data.Deserialize(reader);
+
+        public override void Serialize(BSWriter writer) => writer.Serialize(Data);
     }
 }

@@ -7,13 +7,13 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Blends
     {
         public override void Read(BSReader reader)
         {
-            Time = reader.ReadSingle();
+            base.Read(reader);
             Value = reader.ReadVector3();
         }
 
         public override void Write(BSWriter writer)
         {
-            writer.Write(Time);
+            base.Write(writer);
             writer.Write(Value);
         }
     }

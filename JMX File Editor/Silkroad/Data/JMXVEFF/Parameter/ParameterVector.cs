@@ -7,8 +7,8 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
     {
         public override string Name => "Vector3";
 
-        public override void Read(BSReader reader) => this.Value = reader.ReadVector3();
+        public override void Deserialize(BSReader reader) => Value = reader.ReadVector3();
 
-        public override void Write(BSWriter writer) => writer.Write(Value);
+        public override void Serialize(BSWriter writer) => writer.Write(Value);
     }
 }

@@ -9,19 +9,19 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Controller
     {
         public override string Name => "DiffuseGraph";
 
-        public EEBlend<byte, ByteBlend> ByteBlend { get; }
-        public EEBlend<Color32, DiffuseBlend> DiffuseBlend { get; }
+        public EEBlend<byte, ByteBlend> ByteBlend { get; } = new EEBlend<byte, ByteBlend>();
+        public EEBlend<Color32, DiffuseBlend> DiffuseBlend { get; } = new EEBlend<Color32, DiffuseBlend>();
 
-        public EFCDiffuseGraph()
+        public override void Deserialize(BSReader reader)
         {
-            ByteBlend = new EEBlend<byte, ByteBlend>();
-            DiffuseBlend = new EEBlend<Color32, DiffuseBlend>();
+            ByteBlend.Deserialize(reader);
+            DiffuseBlend.Deserialize(reader);
         }
 
-        public override void Read(BSReader reader)
+        public override void Serialize(BSWriter writer)
         {
-            ByteBlend.Read(reader);
-            DiffuseBlend.Read(reader);
+            writer.Serialize(ByteBlend);
+            writer.Serialize(DiffuseBlend);
         }
     }
 }
