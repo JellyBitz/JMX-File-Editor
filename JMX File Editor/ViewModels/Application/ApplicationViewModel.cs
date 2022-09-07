@@ -2,6 +2,7 @@
 using JMXFileEditor.Silkroad.Data.JMXVBMT;
 using JMXFileEditor.Silkroad.Data.JMXVCPD;
 using JMXFileEditor.Silkroad.Data.JMXVDOF;
+using JMXFileEditor.Silkroad.Data.JMXVENVI;
 using JMXFileEditor.Silkroad.Data.JMXVRES;
 using JMXFileEditor.ViewModels.Silkroad.JMXVBMT;
 using JMXFileEditor.ViewModels.Silkroad.JMXVCPD;
@@ -30,7 +31,7 @@ namespace JMXFileEditor.ViewModels
         /// <summary>
         /// Title from application with the current version
         /// </summary>
-        public string Title { get; } = "JMX File Editor v" + FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion;
+        public string Title { get; } = $"JMX File Editor v{FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).FileVersion}";
         /// <summary>
         /// Gets or sets the current file opened
         /// </summary>
@@ -97,7 +98,8 @@ namespace JMXFileEditor.ViewModels
         public ApplicationViewModel(IWindow Window)
         {
             #region Commands setup
-            CommandOpenFile = new RelayCommand(() => {
+            CommandOpenFile = new RelayCommand(() =>
+            {
                 // Ask for file path and avoid empty result / canceled operation
                 var path = Window.OpenFileDialog("Open...", "All Files (*.*)|*.*");
                 if (path == string.Empty)
@@ -118,7 +120,8 @@ namespace JMXFileEditor.ViewModels
                     Window.ShowMessage("File Error", ex.Message);
                 }
             });
-            CommandSaveFile = new RelayCommand(() => {
+            CommandSaveFile = new RelayCommand(() =>
+            {
                 // Just in case
                 if (IsFileOpen)
                 {
@@ -139,7 +142,8 @@ namespace JMXFileEditor.ViewModels
                     }
                 }
             });
-            CommandSaveAsFile = new RelayCommand(() => {
+            CommandSaveAsFile = new RelayCommand(() =>
+            {
                 // Just in case
                 if (IsFileOpen)
                 {
@@ -150,7 +154,7 @@ namespace JMXFileEditor.ViewModels
                         var jmxFile = LoadJMXFile(FileProperties);
 
                         // Ask for file path and avoid empty result / canceled operation
-                        var filename = (FileProperties.Name != string.Empty ? FileProperties.Name : jmxFile.Format) + "." + jmxFile.Extension;
+                        var filename = $"{((FileProperties.Name != string.Empty ? FileProperties.Name : jmxFile.Format))}.{jmxFile.Extension}";
                         var folderPath = Window.OpenFolderDialog("Save...", ref filename);
                         // check paths are correct
                         if (folderPath == string.Empty)
@@ -205,6 +209,12 @@ namespace JMXFileEditor.ViewModels
                             break;
                         case JMXVDOF_0101.LatestSignature:
                             file = new JMXVDOF_0101();
+                            break;
+                        case "JMXVENVI1000":
+                        case "JMXVENVI1001":
+                        case "JMXVENVI1002":
+                        case "JMXVENVI1003":
+                            file = new JMXVENVI();
                             break;
                         default:
                             throw new FileFormatException("JMX Header not found! File not supported.");
