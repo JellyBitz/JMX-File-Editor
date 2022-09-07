@@ -97,6 +97,68 @@ namespace JMXFileEditor.Silkroad.Mathematics
                 M43 = value.Z
             };
         }
+        public static Matrix4x4 CreateRotationX(float value)
+        {
+            var cos = (float)Math.Cos(value);
+            var sin = (float)Math.Sin(value);
+
+            return new Matrix4x4(Identity)
+            {
+                M22 = cos,
+                M23 = sin,
+                M32 = -sin,
+                M33 = cos,
+            };
+        }
+
+        public static Matrix4x4 CreateRotationY(float value)
+        {
+            var cos = (float)Math.Cos(value);
+            var sin = (float)Math.Sin(value);
+
+            return new Matrix4x4(Identity)
+            {
+                M11 = cos,
+                M13 = -sin,
+                M31 = sin,
+                M33 = cos,
+            };
+        }
+
+        public static Matrix4x4 CreateRotationZ(float value)
+        {
+            var cos = (float)Math.Cos(value);
+            var sin = (float)Math.Sin(value);
+
+            return new Matrix4x4(Identity)
+            {
+                M11 = cos,
+                M12 = sin,
+                M21 = -sin,
+                M22 = cos,
+            };
+        }
+        public static Matrix4x4 CreateFromAxisAngle(Vector3 axis, float angle)
+        {
+            var sin = (float)Math.Sin(angle);
+            var cos = (float)Math.Cos(angle);
+
+            return new Matrix4x4(Identity)
+            {
+                M11 = (axis.X * axis.X) + (cos * (1.0f - (axis.X * axis.X))),
+                M12 = (axis.X * axis.Y) - (cos * axis.X * axis.Y) + (sin * axis.Z),
+                M13 = (axis.X * axis.Z) - (cos * axis.X * axis.Z) - (sin * axis.Y),
+
+                M21 = (axis.X * axis.Y) - (cos * axis.X * axis.Y) - (sin * axis.Z),
+                M22 = (axis.Y * axis.Y) + (cos * (1.0f - (axis.Y * axis.Y))),
+                M23 = (axis.Y * axis.Z) - (cos * axis.Y * axis.Z) + (sin * axis.X),
+
+                M31 = (axis.X * axis.Z) - (cos * axis.X * axis.Z) + (sin * axis.Y),
+                M32 = (axis.Y * axis.Z) - (cos * axis.Y * axis.Z) - (sin * axis.X),
+                M33 = (axis.Z * axis.Z) + (cos * (1.0f - (axis.Z * axis.Z))),
+            };
+        }
+
         public static Matrix4x4 operator *(Matrix4x4 left, Matrix4x4 right)
         {
             return new Matrix4x4
