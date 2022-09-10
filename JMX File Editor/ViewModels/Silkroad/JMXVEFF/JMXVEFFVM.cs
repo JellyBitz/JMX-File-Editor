@@ -24,6 +24,9 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
             {
                 Name = b.Name,
                 Controllers = b.Controllers,
+                
+                // TO BE CONTINUED...
+
             };
         }
         #endregion
