@@ -83,7 +83,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
         public D3DTEXTUREARG DstTextureArg2 { get; set; }
         public D3DTEXTUREOP DstTextureOP { get; set; }
 
-        public List<EFMesh> Meshes { get; } = new List<EFMesh>();
+        public List<EFMesh> Meshes { get; set; } = new List<EFMesh>();
 
         public void Deserialize(BSReader reader)
         {

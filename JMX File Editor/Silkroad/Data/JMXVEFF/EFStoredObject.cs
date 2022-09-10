@@ -8,33 +8,13 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
     public class EFStoredObject : ISerializableBS
     {
-        public EFStoredObject(EFStoredObject parent = null)
-        {
-            Parent = parent;
+        #region Public Properties
+        public string Name { get; set; } = "<None>";
+        public List<EFController> Controllers { get; set; } = new List<EFController>();
 
-            EEGlobalData = new EEGlobalData();
-            EmptyCommands0 = new EEStaticProgram();
-            EmitterCommands = new EEStaticProgram();
-            EmptyCommands1 = new EEStaticProgram();
-            ProgramCommands = new EEStaticProgram();
-
-            LifeTimeCommand = new EEStaticCommand();
-            ViewModeCommand = new EEStaticCommand();
-            RenderModeCommand = new EEStaticCommand();
-
-            EmptyProgram0 = new EEProgram();
-            RenderCommands = new EEProgram();
-
-            Resource = new EEResource();
-        }
 
         public EFStoredObject Parent { get; set; }
         public List<EFStoredObject> Children { get; } = new List<EFStoredObject>();
-
-        public string Name { get; private set; } = "<None>";
-
-        public List<EFController> Controllers { get; } = new List<EFController>();
-
         public EEGlobalData EEGlobalData { get; }
         public EEStaticProgram EmptyCommands0 { get; } //Empty?
         public EEStaticProgram EmitterCommands { get; } //Emitters?
@@ -55,10 +35,33 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
         public byte Byte2 { get; private set; }
         public int Int3 { get; private set; }
         public byte Byte3 { get; private set; }
+        #endregion
+
+        #region Constructor
+        public EFStoredObject(EFStoredObject parent = null)
+        {
+            Parent = parent;
+
+            EEGlobalData = new EEGlobalData();
+            EmptyCommands0 = new EEStaticProgram();
+            EmitterCommands = new EEStaticProgram();
+            EmptyCommands1 = new EEStaticProgram();
+            ProgramCommands = new EEStaticProgram();
+
+            LifeTimeCommand = new EEStaticCommand();
+            ViewModeCommand = new EEStaticCommand();
+            RenderModeCommand = new EEStaticCommand();
+
+            EmptyProgram0 = new EEProgram();
+            RenderCommands = new EEProgram();
+
+            Resource = new EEResource();
+        }
+        #endregion
 
         public virtual void Deserialize(BSReader reader)
         {
-            var dataOffset = reader.ReadInt32(); // dataOffset
+            reader.SkipRead(4); // dataOffset
             //if (true)
             //{
             Name = reader.ReadString();

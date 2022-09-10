@@ -1,20 +1,25 @@
-﻿using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
-using JMXFileEditor.Silkroad.IO;
-using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+
+using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
+using JMXFileEditor.Silkroad.IO;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
     public class EEBlend<TValue, TBlend> : IEnumerable<TBlend>, ISerializableBS
         where TBlend : DefaultBlend<TValue>, new()
     {
+        public List<TBlend> Points { get; private set; } = new List<TBlend>();
+
         public float Begin { get; set; }
         public float End { get; set; }
-        private List<TBlend> _points;
+        public TBlend this[int index] => Points[index];
 
-        public int Count => _points.Count;
-        public TBlend this[int index] => _points[index];
+        public EEBlend() { }
+        public EEBlend(List<TBlend> points)
+        {
+            Points = points;
+        }
 
         public void Deserialize(BSReader reader)
         {
@@ -22,13 +27,13 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
             End = reader.ReadSingle();
 
             var pointCount = reader.ReadInt32();
-            _points = new List<TBlend>(pointCount);
+            Points = new List<TBlend>(pointCount);
 
             for (var i = 0; i < pointCount; i++)
             {
                 var point = new TBlend();
                 point.Read(reader);
-                _points.Add(point);
+                Points.Add(point);
             }
         }
         public void Serialize(BSWriter writer)
@@ -36,15 +41,15 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
             writer.Write(Begin);
             writer.Write(End);
 
-            writer.Write(_points.Count);
-            foreach (var point in _points)
+            writer.Write(Points.Count);
+            foreach (var point in Points)
                 point.Write(writer);
         }
 
-        public override string ToString() => $"{nameof(Begin)}:{Begin}; {nameof(End)}:{End}; {Count} points";
+        public override string ToString() => $"{nameof(Begin)}:{Begin}; {nameof(End)}:{End}; {Points.Count} points";
 
-        public IEnumerator<TBlend> GetEnumerator() => ((IEnumerable<TBlend>)_points).GetEnumerator();
+        public IEnumerator<TBlend> GetEnumerator() => ((IEnumerable<TBlend>)Points).GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_points).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)Points).GetEnumerator();
     }
 }

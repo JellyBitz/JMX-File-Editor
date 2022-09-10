@@ -10,7 +10,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Controller
         public override string Name => "Shape";
 
         public RenderShape Shape { get; set; }
-        public EEResource Resource { get; } = new EEResource();
+        public EEResource Resource { get; set; } = new EEResource();
 
         public override void Deserialize(BSReader reader)
         {

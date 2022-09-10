@@ -7,6 +7,7 @@ using JMXFileEditor.Silkroad.Data.JMXVRES;
 using JMXFileEditor.ViewModels.Silkroad.JMXVBMT;
 using JMXFileEditor.ViewModels.Silkroad.JMXVCPD;
 using JMXFileEditor.ViewModels.Silkroad.JMXVDOF;
+using JMXFileEditor.ViewModels.Silkroad.JMXVEFF;
 using JMXFileEditor.ViewModels.Silkroad.JMXVRES;
 using System;
 using System.Diagnostics;
@@ -238,8 +239,11 @@ namespace JMXFileEditor.ViewModels
                 return new JMXVCPDVM(jmxvcpd_0101);
             if (JMXFile is JMXVDOF_0101 jmxvdof_0101)
                 return new JMXVDOFVM(jmxvdof_0101);
-            // format not implemented
-            throw new NotImplementedException();
+            if (JMXFile is EFStoredEffect jmxveff)
+                return new JMXVEFFVM(jmxveff);
+
+            // Viewmodel format not implemented
+            throw new NotImplementedException("View format is not implemented");
         }
         /// <summary>
         /// Create JMX file from ViewModel
@@ -254,6 +258,8 @@ namespace JMXFileEditor.ViewModels
                 return (IJMXFile)jmxvcpd.GetClass();
             if (JMXViewModel is JMXVDOFVM jmxvdof)
                 return (IJMXFile)jmxvdof.GetClass();
+            if (JMXViewModel is JMXVEFFVM jmxveff)
+                return (IJMXFile)jmxveff.GetClass();
 
             // format not implemented
             throw new NotImplementedException();

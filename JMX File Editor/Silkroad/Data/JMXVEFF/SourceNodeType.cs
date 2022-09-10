@@ -5,6 +5,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
     [Flags]
     public enum SourceNodeType : byte
     {
+        None,
         Bit0 = 1 << 0, // Relative to parent.
         Bit1 = 1 << 1, // Includes own transform.
         Bit2 = 1 << 2, // Includes parent transform.

@@ -3,7 +3,7 @@
 namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
 {
     /// <summary>
-    /// ViewModel representing Vector3
+    /// ViewModel representing <see cref="Vector3"/>
     /// </summary>
     public class Vector3VM : JMXStructure
     {
@@ -19,13 +19,12 @@ namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
         #region Public Methods
         public override object GetClassFrom(JMXStructure Structure)
         {
-            Vector3 vector = new Vector3
+            return new Vector3
             {
                 X = (float)((JMXAttribute)Structure.Childs[0]).Value,
                 Y = (float)((JMXAttribute)Structure.Childs[1]).Value,
                 Z = (float)((JMXAttribute)Structure.Childs[2]).Value
             };
-            return vector;
         }
         #endregion
     }

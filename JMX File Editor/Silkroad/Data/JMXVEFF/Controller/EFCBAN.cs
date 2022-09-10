@@ -9,7 +9,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Controller
     {
         public override string Name => "BAN";
 
-        public List<string> Animations { get; } = new List<string>();
+        public List<string> Animations { get; set; } = new List<string>();
 
         public override void Deserialize(BSReader reader)
         {

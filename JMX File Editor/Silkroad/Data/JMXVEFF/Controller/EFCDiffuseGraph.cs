@@ -9,8 +9,8 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Controller
     {
         public override string Name => "DiffuseGraph";
 
-        public EEBlend<byte, ByteBlend> ByteBlend { get; } = new EEBlend<byte, ByteBlend>();
-        public EEBlend<Color32, DiffuseBlend> DiffuseBlend { get; } = new EEBlend<Color32, DiffuseBlend>();
+        public EEBlend<byte, ByteBlend> ByteBlend { get; set; } = new EEBlend<byte, ByteBlend>();
+        public EEBlend<Color32, DiffuseBlend> DiffuseBlend { get; set; } = new EEBlend<Color32, DiffuseBlend>();
 
         public override void Deserialize(BSReader reader)
         {

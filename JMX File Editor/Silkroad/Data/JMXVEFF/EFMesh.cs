@@ -7,7 +7,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
     public class EFMesh : ISerializableBS
     {
         public string Path { get; set; }
-        public List<string> Textures { get; } = new List<string>();
+        public List<string> Textures { get; set; } = new List<string>();
 
         public void Deserialize(BSReader reader)
         {
