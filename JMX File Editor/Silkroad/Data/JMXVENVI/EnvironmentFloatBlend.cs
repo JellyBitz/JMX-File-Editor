@@ -1,11 +1,10 @@
 ﻿using JMXFileEditor.Silkroad.IO;
-using System;
-using System.Linq;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVENVI
 {
     class EnvironmentFloatBlend : EnvironmentDefaultBlend<float>
     {
+        #region Abstract Implementation
         public override void Deserialize(BSReader reader)
         {
             Value = reader.ReadFloat();
@@ -16,5 +15,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVENVI
             writer.Write(Value);
             writer.Write(Time);
         }
+        #endregion
     }
 }

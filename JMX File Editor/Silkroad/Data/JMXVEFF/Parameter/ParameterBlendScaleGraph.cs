@@ -1,8 +1,4 @@
-﻿
-
-using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
-
-
+﻿using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
 using JMXFileEditor.Silkroad.IO;
 using JMXFileEditor.Silkroad.Mathematics;
 

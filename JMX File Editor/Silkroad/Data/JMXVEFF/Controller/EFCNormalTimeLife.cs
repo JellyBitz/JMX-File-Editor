@@ -4,7 +4,5 @@
     public class EFCNormalTimeLife : EFController
     {
         public override string Name => "NormalTimeLife";
-
-        //EMPTY
     }
 }

@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-
-using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
+﻿using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
 using JMXFileEditor.Silkroad.IO;
+
+using System.Collections;
+using System.Collections.Generic;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {

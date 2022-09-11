@@ -1,5 +1,6 @@
 ﻿using JMXFileEditor.Silkroad.IO;
 using JMXFileEditor.Silkroad.Mathematics;
+
 using System.Collections.Generic;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter

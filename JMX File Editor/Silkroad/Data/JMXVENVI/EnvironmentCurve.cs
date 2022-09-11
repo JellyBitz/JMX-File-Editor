@@ -1,7 +1,6 @@
 ﻿using JMXFileEditor.Silkroad.IO;
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVENVI
 {
@@ -9,8 +8,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVENVI
         where TBlend : EnvironmentDefaultBlend<TValue>, new()
         where TValue : new()
     {
+        #region Public Properties
         public List<TBlend> Blends { get; set; } = new List<TBlend>();
+        #endregion
 
+        #region Abstract Implementation
         public void Deserialize(BSReader reader)
         {
             var length = reader.ReadInt32();
@@ -27,5 +29,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVENVI
             foreach (var item in Blends)
                 writer.Serialize(item);
         }
+        #endregion
     }
 }

@@ -1,19 +1,21 @@
 ﻿using JMXFileEditor.Silkroad.IO;
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVENVI
 {
     class EnvironmentNode : ISerializableBS
     {
+        #region Public Properties
         public string Name { get; set; }
         public short ProfileId { get; set; }
         public short Short0 { get; private set; }
         public int Int0 { get; set; }
         public int Int1 { get; set; }
         public List<EnvironmentNode> Children { get; set; } = new List<EnvironmentNode>();
+        #endregion
 
+        #region Interface Implementation
         public void Deserialize(BSReader reader)
         {
             var childCount = reader.ReadInt32();
@@ -41,5 +43,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVENVI
             foreach (var item in Children)
                 writer.Serialize(item);
         }
+        #endregion
     }
 }

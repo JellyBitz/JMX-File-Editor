@@ -1,6 +1,6 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVEFF.Controller;
 using JMXFileEditor.Silkroad.IO;
-using System;
+
 using System.Collections.Generic;
 using System.IO;
 

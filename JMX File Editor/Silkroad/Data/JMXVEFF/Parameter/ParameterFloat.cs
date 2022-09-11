@@ -1,6 +1,5 @@
 ﻿using JMXFileEditor.Silkroad.IO;
 
-
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
 {
     public class ParameterFloat : EEParameter<float>

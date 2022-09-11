@@ -6,6 +6,10 @@ using System.Text;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
+    /// <summary>
+    /// Joymax Visual Effects File
+    /// <para>https://github.com/DummkopfOfHachtenduden/SilkroadDoc/wiki/JMXVEFF</para>
+    /// </summary>
     public class EFStoredEffect : EFStoredObject, IJMXFile
     {
         #region Public Properties

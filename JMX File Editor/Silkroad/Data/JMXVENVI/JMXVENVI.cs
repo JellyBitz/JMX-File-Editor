@@ -1,21 +1,28 @@
 ﻿using JMXFileEditor.Silkroad.IO;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVENVI
 {
 
+    /// <summary>
+    /// Represents the color grading / post processing effects over the course of the day.
+    /// <para>https://github.com/DummkopfOfHachtenduden/SilkroadDoc/wiki/JMXVENVI</para>
+    /// </summary>
     class JMXVENVI : IJMXFile
     {
+        #region Public Properties
         public string Name { get; set; }
         public List<EnvironmentProfile> Profiles { get; } = new List<EnvironmentProfile>();
         public EnvironmentNode RootNode { get; set; } = new EnvironmentNode();
+        #endregion
+
+        #region Interface Implementation
         public string Format => "JMXVENVI";
         public string Extension => "ifo";
-
         public void Load(Stream stream)
         {
             using (var reader = new BSReader(stream, Encoding.GetEncoding(949)))
@@ -49,5 +56,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVENVI
                 writer.Serialize(RootNode);
             }
         }
+        #endregion
     }
 }

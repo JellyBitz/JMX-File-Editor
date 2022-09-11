@@ -1,12 +1,11 @@
 ﻿using JMXFileEditor.Silkroad.IO;
 using JMXFileEditor.Silkroad.Mathematics;
-using System;
-using System.Linq;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVENVI
 {
     class EnvironmentProfile : ISerializableParameterizedBS
     {
+        #region Public Properties
         public short Id { get; set; }
         public string Name { get; set; }
         public string String0 { get; set; }
@@ -27,7 +26,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVENVI
         public EnvironmentCurve<Color3, EnvironmentColorBlend> SkyBottomColor { get; set; } = new EnvironmentCurve<Color3, EnvironmentColorBlend>();
         public EnvironmentCurve<Color3, EnvironmentColorBlend> WaterColor { get; set; } = new EnvironmentCurve<Color3, EnvironmentColorBlend>();
         public EnvironmentCurve<float, EnvironmentFloatBlend> Curve15 { get; set; } = new EnvironmentCurve<float, EnvironmentFloatBlend>();
+        #endregion
 
+        #region Interface Implementation
         public void Deserialize(BSReader reader, params object[] parameters)
         {
             var version = (int)parameters[0];
@@ -54,7 +55,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVENVI
                 TerrainShadowColor.Blends.Add(new EnvironmentColorBlend { Time = 0.0f, Value = Color3.Zero });
                 TerrainShadowColor.Blends.Add(new EnvironmentColorBlend { Time = 1.0f, Value = Color3.Zero });
             }
-
 
             FogNearPlane.Deserialize(reader);
             FogFarPlane.Deserialize(reader);
@@ -115,5 +115,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVENVI
             writer.Serialize(WaterColor);
             writer.Serialize(Curve15);
         }
+        #endregion
     }
 }
