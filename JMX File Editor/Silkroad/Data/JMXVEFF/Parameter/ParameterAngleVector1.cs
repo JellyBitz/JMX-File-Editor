@@ -10,6 +10,12 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
 
         public override void Convert() => Right = new Vector3(Left.X, Left.Y, Left.Z * ((float)Math.PI / 180f));
 
+        public ParameterAngleVector1() { }
+        public ParameterAngleVector1(Vector3 left, Vector3 right)
+        {
+            Left = left;
+            Right = right;
+        }
         public override void Deserialize(BSReader reader)
         {
             Left = reader.ReadVector3();

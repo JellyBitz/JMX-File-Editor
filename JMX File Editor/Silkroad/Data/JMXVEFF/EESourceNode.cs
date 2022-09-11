@@ -9,7 +9,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
     public class EESourceNode : ISerializableBS
     {
         public bool HasData { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public SourceNodeType Type { get; set; }
         public byte Byte1 { get; set; }
         public float Start { get; set; }

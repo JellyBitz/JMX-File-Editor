@@ -8,6 +8,13 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
     {
         public override string Name => "RotVector";
 
+        public ParameterRotVector() { }
+        public ParameterRotVector(Vector3 left, Matrix4x4 right)
+        {
+            Left = left;
+            Right = right;
+        }
+
         public override void Convert()
         {
             Right = Matrix4x4.CreateRotationX(Left.X * (float)Math.PI / 180.0f)

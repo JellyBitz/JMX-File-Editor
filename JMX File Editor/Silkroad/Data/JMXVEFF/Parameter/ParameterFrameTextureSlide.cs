@@ -8,6 +8,12 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
     {
         public override string Name => "FrameTextureSlide";
 
+        public ParameterFrameTextureSlide() { }
+        public ParameterFrameTextureSlide(Vector3 left, List<Vector4> right)
+        {
+            Left = left;
+            Right = right;
+        }
         public override void Deserialize(BSReader reader)
         {
             Left = reader.ReadVector3();

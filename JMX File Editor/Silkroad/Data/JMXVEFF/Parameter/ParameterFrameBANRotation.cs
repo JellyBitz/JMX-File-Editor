@@ -12,6 +12,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
         {
             Right = new List<Matrix4x4>();
         }
+        public ParameterFrameBANRotation(float left, List<Matrix4x4> right)
+        {
+            Left = left;
+            Right = right;
+        }
 
         public override void Deserialize(BSReader reader)
         {

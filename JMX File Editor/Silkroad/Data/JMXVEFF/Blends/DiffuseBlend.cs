@@ -5,6 +5,12 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Blends
 {
     public class DiffuseBlend : DefaultBlend<Color32>
     {
+
+        public DiffuseBlend()
+        {
+            Value = new Color32();
+        }
+
         public override void Read(BSReader reader)
         {
             base.Read(reader);

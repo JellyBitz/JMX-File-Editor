@@ -8,6 +8,13 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
     {
         public override string Name => "AxisVector4";
 
+        public ParameterAxisVector4() { }
+        public ParameterAxisVector4(Vector4 left, Matrix4x4 right)
+        {
+            Left = left;
+            Right = right;
+        }
+
         public override void Convert()
         {
             var axis = new Vector3(this.Left.X, this.Left.Y, this.Left.Z);

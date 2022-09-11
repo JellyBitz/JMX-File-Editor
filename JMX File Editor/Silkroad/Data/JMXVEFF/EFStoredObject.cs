@@ -8,6 +8,33 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
     public class EFStoredObject : ISerializableBS
     {
+        #region Public Properties
+        public string Name { get; set; } = "<None>";
+        public List<EFController> Controllers { get; set; } = new List<EFController>();
+        public EEGlobalData EEGlobalData { get; set; }
+        public EEStaticProgram EmptyCommands0 { get; set; } //Empty?
+        public EEStaticProgram EmitterCommands { get; set; } //Emitters?
+        public EEStaticProgram EmptyCommands1 { get; set; } //Empty?
+        public EEStaticProgram ProgramCommands { get; set; } // ProgamUpdate
+        public EEStaticCommand LifeTimeCommand { get; set; } //LifeTime
+        public byte Byte0 { get; set; }
+        public byte Byte1 { get; set; }
+        public int Int0 { get; set; }
+        public int Int1 { get; set; }
+        public int Int2 { get; set; }
+        public byte Byte2 { get; set; }
+        public int Int3 { get; set; }
+        public byte Byte3 { get; set; }
+        public EEStaticCommand ViewModeCommand { get; set; } //ViewMode
+        public EEResource Resource { get; set; }
+        public EEStaticCommand RenderModeCommand { get; set; } //RenderMode
+        public EEProgram EmptyProgram0 { get; set; } //Empty?
+        public EEProgram RenderCommands { get; set; } //RenderCommands?
+        public EFStoredObject Parent { get; set; }
+        public List<EFStoredObject> Children { get; set; } = new List<EFStoredObject>();
+        #endregion
+
+        #region Constructor
         public EFStoredObject(EFStoredObject parent = null)
         {
             Parent = parent;
@@ -27,38 +54,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 
             Resource = new EEResource();
         }
-
-        public EFStoredObject Parent { get; set; }
-        public List<EFStoredObject> Children { get; } = new List<EFStoredObject>();
-
-        public string Name { get; private set; } = "<None>";
-
-        public List<EFController> Controllers { get; } = new List<EFController>();
-
-        public EEGlobalData EEGlobalData { get; }
-        public EEStaticProgram EmptyCommands0 { get; } //Empty?
-        public EEStaticProgram EmitterCommands { get; } //Emitters?
-        public EEStaticProgram EmptyCommands1 { get; } //Empty?
-        public EEStaticProgram ProgramCommands { get; } // ProgamUpdate
-        public EEStaticCommand LifeTimeCommand { get; } //LifeTime
-        public EEStaticCommand ViewModeCommand { get; } //ViewMode
-        public EEStaticCommand RenderModeCommand { get; } //RenderMode
-        public EEProgram EmptyProgram0 { get; } //Empty?
-        public EEProgram RenderCommands { get; } //RenderCommands?
-        public EEResource Resource { get; set; }
-
-        public byte Byte0 { get; private set; }
-        public byte Byte1 { get; private set; }
-        public int Int0 { get; private set; }
-        public int Int1 { get; private set; }
-        public int Int2 { get; private set; }
-        public byte Byte2 { get; private set; }
-        public int Int3 { get; private set; }
-        public byte Byte3 { get; private set; }
+        #endregion
 
         public virtual void Deserialize(BSReader reader)
         {
-            var dataOffset = reader.ReadInt32(); // dataOffset
+            reader.SkipRead(4); // dataOffset
             //if (true)
             //{
             Name = reader.ReadString();
@@ -135,6 +135,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 
             writer.Write(Name);
             WriteControllers(writer);
+
             var dataOffset = ((int)writer.BaseStream.Position) - (storedObjectPosition + 4);
 
             // Write correct dataOffset

@@ -8,6 +8,13 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter
     {
         public override string Name => "FrameBANPosition";
 
+        public ParameterFrameBANPosition() { }
+        public ParameterFrameBANPosition(float left, List<Vector3> right)
+        {
+            Left = left;
+            Right = right;
+        }
+
         public override void Deserialize(BSReader reader)
         {
             Left = reader.ReadSingle();

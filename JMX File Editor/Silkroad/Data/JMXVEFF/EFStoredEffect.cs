@@ -8,16 +8,19 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 {
     public class EFStoredEffect : EFStoredObject, IJMXFile
     {
-        public string Format => "JMXVEFF";
-        public string Extension => "EFP";
-
+        #region Public Properties
         public float Version12Value { get; set; } = 1.0f;
         public int Version13Value0 { get; set; } = 0;
         public int Version13Value1 { get; set; } = 0;
         public int Version13Value2 { get; set; } = 0;
+        #endregion
 
+        #region Interface Implementation
+        public string Format => "JMXVEFF";
+        public string Extension => "efp";
         public void Load(Stream stream)
         {
+            // Read file structure (CP949)
             using (var reader = new BSReader(stream, Encoding.GetEncoding(949)))
             {
                 var format = reader.ReadString(8);
@@ -42,14 +45,13 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
                 base.Deserialize(reader);
             }
         }
-
         public void Save(string path)
         {
             using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
             using (var writer = new BSWriter(stream, Encoding.GetEncoding(949)))
             {
-                // Auto-upgrade everything that's saved with this tool to JMXVEFF 0013
-                writer.Write("JMXVEFF 0013");
+                // Auto-upgrade everything saved to JMXVEFF 0013
+                writer.Write("JMXVEFF 0013".ToCharArray());
 
                 writer.Write(Version12Value);
 
@@ -60,5 +62,6 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
                 base.Serialize(writer);
             }
         }
+        #endregion
     }
 }

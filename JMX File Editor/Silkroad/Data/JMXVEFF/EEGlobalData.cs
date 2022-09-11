@@ -9,9 +9,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
     [Serializable]
     public class EEGlobalData : ISerializableBS
     {
-        public int Int0 { get; private set; }
+        public int Int0 { get; set; }
 
-        public List<IEEParameter> Parameters { get; } = new List<IEEParameter>();
+        public List<IEEParameter> Parameters { get; set; } = new List<IEEParameter>();
 
         public void Deserialize(BSReader reader)
         {
