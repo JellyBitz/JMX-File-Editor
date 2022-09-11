@@ -12,26 +12,29 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
 
             AddFormatHandler(typeof(IEEParameter), (s, e) =>
             {
+                // Set default case on a new one
+                IEEParameter obj = e.Obj == null ? new ParameterEFStaticEmit() : (IEEParameter)e.Obj;
+
                 e.Childs.Add(new EEParameterVM("[" + e.Childs.Count + "]",
                 JMXAbstract.GetTypes(
-                    typeof(ParameterEFStaticEmit),
                     typeof(ParameterFloat),
                     typeof(ParameterVector3),
                     typeof(ParameterMatrix),
-                    typeof(ParameterRotVector),
+                    typeof(ParameterEFStaticEmit),
                     typeof(ParameterAxisVector4),
+                    typeof(ParameterRotVector),
                     typeof(ParameterAngleVector1),
                     typeof(ParameterFrameScale),
+                    typeof(ParameterBlendScaleGraph),
                     typeof(ParameterBlendScaleGraphPointer),
                     typeof(ParameterFrameDiffuse),
+                    typeof(ParameterBlendDiffuseGraph),
                     typeof(ParameterFrameBANRotation),
                     typeof(ParameterFrameBANPosition),
-                    typeof(ParameterFrameTextureSlide),
-                    typeof(ParameterBlendScaleGraph),
-                    typeof(ParameterBlendDiffuseGraph),
-                    typeof(ParameterBSAnimation)),
-                e.Obj?.GetType(),
-                e.Obj));
+                    typeof(ParameterBSAnimation),
+                    typeof(ParameterFrameTextureSlide)),
+                obj.GetType(),
+                obj));
             });
             AddChildArray("Parameters", data.Parameters.ToArray(), true, true);
         }

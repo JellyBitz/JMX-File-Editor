@@ -8,7 +8,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
         #region Constructor
         public EESourceNodeVM(string Name, EESourceNode data) : base(Name, true)
         {
-            var name = new JMXAttribute("Name", data.Name);
+            var name = new JMXAttribute("CommandName", data.Name);
             Childs.Add(name);
             Childs.Add(new JMXOption("Type", data.Type, JMXOption.GetValues<object>(typeof(SourceNodeType))));
             Childs.Add(new JMXAttribute("UnkByte01", data.Byte1));
@@ -29,10 +29,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
                     typeof(ParameterFrameDiffuse),
                     typeof(ParameterFrameBANRotation),
                     typeof(ParameterFrameBANPosition),
-                    typeof(ParameterFrameTextureSlide),
-                    typeof(ParameterBlendScaleGraph),
-                    typeof(ParameterBlendDiffuseGraph),
-                    typeof(ParameterBSAnimation)),
+                    typeof(ParameterFrameTextureSlide)),
                 data.Parameter?.GetType(),
                 data.Parameter,
                 false);

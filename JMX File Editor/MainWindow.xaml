@@ -141,7 +141,8 @@
                         <StackPanel Orientation="Horizontal">
                             <!-- Name -->
                             <TextBlock VerticalAlignment="Center"
-                                       Text="{Binding Name}" />
+                                       Text="{Binding Name}"
+                                       ToolTip="{Binding Value, Converter={local:ObjectToTypeConverter}}"/>
                             <TextBlock Text=" : "
                                        VerticalAlignment="Center" />
                             <TextBox Style="{StaticResource TooltipErrorTextBoxStyle}"
