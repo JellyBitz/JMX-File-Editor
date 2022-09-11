@@ -1,6 +1,8 @@
-﻿using JMXFileEditor.Silkroad.Mathematics;
+﻿using System;
 using System.ComponentModel;
 using System.Windows.Media;
+
+using JMXFileEditor.Silkroad.Mathematics;
 
 namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
 {
@@ -25,9 +27,9 @@ namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
             {
                 DemoBrush = new SolidColorBrush(new Color()
                 {
-                    R = (byte)((float)red.Value * 255),
-                    G = (byte)((float)green.Value * 255),
-                    B = (byte)((float)blue.Value * 255),
+                    R = (byte)Math.Round((float)red.Value * 255),
+                    G = (byte)Math.Round((float)green.Value * 255),
+                    B = (byte)Math.Round((float)blue.Value * 255),
                     A = 255
                 });
                 ;

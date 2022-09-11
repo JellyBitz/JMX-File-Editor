@@ -1,6 +1,8 @@
-﻿using JMXFileEditor.Silkroad.Mathematics;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Windows.Media;
+using System;
+
+using JMXFileEditor.Silkroad.Mathematics;
 
 namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
 {
@@ -16,20 +18,21 @@ namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
             var red = new JMXAttribute("Red", Color.Red);
             var green = new JMXAttribute("Green", Color.Green);
             var blue = new JMXAttribute("Blue", Color.Blue);
+            var alpha = new JMXAttribute("Alpha", Color.Alpha);
             // Add nodes
             Childs.Add(red);
             Childs.Add(green);
             Childs.Add(blue);
-            Childs.Add(new JMXAttribute("Alpha", Color.Alpha));
+            Childs.Add(alpha);
             // Add handlers to update color brush
             void OnColorChange(object s, PropertyChangedEventArgs e)
             {
                 DemoBrush = new SolidColorBrush(new Color()
                 {
-                    R = (byte)((float)red.Value * 255),
-                    G = (byte)((float)green.Value * 255),
-                    B = (byte)((float)blue.Value * 255),
-                    A = 255
+                    R = (byte)Math.Round((float)red.Value * 255),
+                    G = (byte)Math.Round((float)green.Value * 255),
+                    B = (byte)Math.Round((float)blue.Value * 255),
+                    A = (byte)Math.Round((float)alpha.Value * 255),
                 });
                 ;
                 OnPropertyChanged(nameof(DemoBrush));
@@ -37,20 +40,21 @@ namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
             red.PropertyChanged += OnColorChange;
             green.PropertyChanged += OnColorChange;
             blue.PropertyChanged += OnColorChange;
+            alpha.PropertyChanged += OnColorChange;
             // Update it
             OnColorChange(null, null);
         }
         #endregion
 
         #region Public Methods
-        public override object GetClassFrom(JMXStructure Structure)
+        public override object GetClassFrom(JMXStructure Structure, int i)
         {
             return new Color4()
             {
-                Red = (float)((JMXAttribute)Structure.Childs[0]).Value,
-                Green = (float)((JMXAttribute)Structure.Childs[1]).Value,
-                Blue = (float)((JMXAttribute)Structure.Childs[2]).Value,
-                Alpha = (float)((JMXAttribute)Structure.Childs[3]).Value
+                Red = (float)((JMXAttribute)Structure.Childs[i++]).Value,
+                Green = (float)((JMXAttribute)Structure.Childs[i++]).Value,
+                Blue = (float)((JMXAttribute)Structure.Childs[i++]).Value,
+                Alpha = (float)((JMXAttribute)Structure.Childs[i++]).Value
             };
         }
         #endregion

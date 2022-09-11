@@ -3,8 +3,8 @@
     public class BoundingBoxF
     {
         #region Public Properties
-        public Vector3 Min { get; set; }
-        public Vector3 Max { get; set; }
+        public Vector3 Min { get; set; } = new Vector3();
+        public Vector3 Max { get; set; } = new Vector3();
         #endregion Public Properties
 
         #region Constructors

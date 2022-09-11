@@ -9,12 +9,12 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
         public string Path { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public uint UnkUInt01 { get; set; }
-        public Vector3 Position { get; set; }
+        public Vector3 Position { get; set; } = new Vector3();
         public float Yaw { get; set; }
         public uint IsEntrance { get; set; }
-        public BoundingBoxF CollisionBox01 { get; set; }
+        public BoundingBoxF CollisionBox01 { get; set; } = new BoundingBoxF();
         public uint UnkUInt02 { get; set; }
-        public BlockFogParam FogParameters { get; set; }
+        public BlockFogParam FogParameters { get; set; } = new BlockFogParam();
         public byte UnkByte01 { get; set; }
         public Vector3 UnkVector01 { get; set; } = new Vector3();
         public Vector3 UnkVector02 { get; set; } = new Vector3();

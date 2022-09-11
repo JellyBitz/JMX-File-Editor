@@ -141,19 +141,16 @@ namespace JMXFileEditor.ViewModels
             return GetClassFrom(this);
         }
         /// <summary>
-        /// Get the class from provided structure
+        /// Get the class from provided node structure
         /// </summary>
-        public virtual object GetClassFrom(JMXStructure Structure)
-        {
-            return GetClassFrom(Structure, 0);
-        }
+        /// <param name="s">Node</param>
+        public virtual object GetClassFrom(JMXStructure s) => GetClassFrom(s, 0);
         /// <summary>
-        /// Get the class from provided structure starting from the child index specified
+        /// Get the class from provided node structure starting from the child index specified
         /// </summary>
-        public virtual object GetClassFrom(JMXStructure Structure, int StartIndex)
-        {
-            return null;
-        }
+        /// <param name="s">Node structured</param>
+        /// <param name="i">Starting index</param>
+        public virtual object GetClassFrom(JMXStructure s, int i) => null;
         /// <summary>
         /// Try to convert this structure to generic list
         /// </summary>
@@ -223,7 +220,7 @@ namespace JMXFileEditor.ViewModels
                 e.Childs.Add(new JMXAttribute("[" + e.Childs.Count + "]", e.Obj is char _char ? _char : default, e.IsEditable));
             });
             AddFormatHandler(typeof(string), (s, e) => {
-                e.Childs.Add(new JMXAttribute("[" + e.Childs.Count + "]", e.Obj is string _string ? _string : default, e.IsEditable));
+                e.Childs.Add(new JMXAttribute("[" + e.Childs.Count + "]", e.Obj is string _string ? _string : string.Empty, e.IsEditable));
             });
         }
         #endregion
