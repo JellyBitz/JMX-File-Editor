@@ -2,6 +2,7 @@
 using JMXFileEditor.Silkroad.Data.JMXVBMT;
 using JMXFileEditor.Silkroad.Data.JMXVCPD;
 using JMXFileEditor.Silkroad.Data.JMXVDOF;
+using JMXFileEditor.Silkroad.Data.JMXVENVI;
 using JMXFileEditor.Silkroad.Data.JMXVEFF;
 using JMXFileEditor.Silkroad.Data.JMXVRES;
 using JMXFileEditor.ViewModels.Silkroad.JMXVBMT;
@@ -210,6 +211,12 @@ namespace JMXFileEditor.ViewModels
                             break;
                         case JMXVDOF_0101.LatestSignature:
                             file = new JMXVDOF_0101();
+                            break;
+                        case "JMXVENVI1000":
+                        case "JMXVENVI1001":
+                        case "JMXVENVI1002":
+                        case "JMXVENVI1003":
+                            file = new JMXVENVI();
                             break;
                         case "JMXVEFF 0011":
                         case "JMXVEFF 0012":

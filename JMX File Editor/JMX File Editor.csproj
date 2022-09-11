@@ -132,6 +132,13 @@
     <Compile Include="Silkroad\Data\JMXVDOF\Group.cs" />
     <Compile Include="Silkroad\Data\JMXVDOF\JMXVDOF 0101.cs" />
     <Compile Include="Silkroad\Data\JMXVDOF\Link.cs" />
+    <Compile Include="Silkroad\Data\JMXVENVI\EnvironmentColorBlend.cs" />
+    <Compile Include="Silkroad\Data\JMXVENVI\EnvironmentCurve.cs" />
+    <Compile Include="Silkroad\Data\JMXVENVI\EnvironmentDefaultBlend.cs" />
+    <Compile Include="Silkroad\Data\JMXVENVI\EnvironmentFloatBlend.cs" />
+    <Compile Include="Silkroad\Data\JMXVENVI\EnvironmentNode.cs" />
+    <Compile Include="Silkroad\Data\JMXVENVI\EnvironmentProfile.cs" />
+    <Compile Include="Silkroad\Data\JMXVENVI\JMXVENVI1003.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\ModData\ModDataBumpEnv.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\ModData\ModDataDyJoint.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\ModData\ModDataDyLattice.cs" />
