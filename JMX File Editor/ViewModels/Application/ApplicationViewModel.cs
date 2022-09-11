@@ -218,6 +218,7 @@ namespace JMXFileEditor.ViewModels
                         case "JMXVENVI1003":
                             file = new JMXVENVI();
                             break;
+                        case "JMXVEFF 0010":
                         case "JMXVEFF 0011":
                         case "JMXVEFF 0012":
                         case "JMXVEFF 0013":

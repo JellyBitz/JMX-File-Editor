@@ -59,15 +59,8 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
         public virtual void Deserialize(BSReader reader)
         {
             reader.SkipRead(4); // dataOffset
-            //if (true)
-            //{
             Name = reader.ReadString();
             ReadControllers(reader);
-            //}
-            //else
-            //{
-            //reader.BaseStream.Seek(dataOffset, SeekOrigin.Current);
-            //}
             ReadStoredData(reader);
             ReadChildren(reader);
         }

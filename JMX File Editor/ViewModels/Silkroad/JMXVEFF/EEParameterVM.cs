@@ -82,7 +82,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
             });
             AddFormatHandler(typeof(ParameterBSAnimation), (s, e) =>
             {
-                AddChildArray("Value", e.Obj is ParameterBSAnimation _obj ? _obj.Value.ToArray() : new ParameterBSAnimation().Value.ToArray(), true, true);
+                AddChildArray("Values", e.Obj is ParameterBSAnimation _obj ? _obj.Value.ToArray() : new ParameterBSAnimation().Value.ToArray(), true, true);
             });
 
 

@@ -31,15 +31,18 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
                 if (format != "JMXVEFF ")
                     throw new Exception($"Invalid file signature: {format}");
 
+                // Check file version
                 var version = reader.ReadString(4);
-                if (version != "0011" && version != "0012" && version != "0013")
-                    throw new NotSupportedException($"Unsupported version: {version}");
+                var ver = int.Parse(version);
 
-                if (version == "0012" || version == "0013")
-                {
+                // Supported formats
+                if (ver < 10 || ver > 13)
+                    throw new NotSupportedException($"Unsupported version: {version}");
+               
+                // Read stuff based on file version
+                if(ver >= 12 && ver <= 13)
                     Version12Value = reader.ReadFloat();
-                }
-                if (version == "0013")
+                if (ver == 13)
                 {
                     Version13Value0 = reader.ReadInt32();
                     Version13Value1 = reader.ReadInt32();
