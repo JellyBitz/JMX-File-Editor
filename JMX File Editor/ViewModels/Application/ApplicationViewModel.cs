@@ -154,8 +154,8 @@ namespace JMXFileEditor.ViewModels
                         // Converts to JMX File
                         var jmxFile = LoadJMXFile(FileProperties);
 
-                        // Ask for file path and avoid empty result / canceled operation
-                        var filename = $"{(FileProperties.Name != string.Empty ? FileProperties.Name : jmxFile.Format)}.{jmxFile.Extension}";
+                        // Set temporal filename
+                        var filename = GetCopyFileName(Path.GetFileName(FilePath),jmxFile.Extension,Path.GetDirectoryName(FilePath));
                         var folderPath = Window.OpenFolderDialog("Save...", ref filename);
                         // check paths are correct
                         if (folderPath == string.Empty)
@@ -263,6 +263,21 @@ namespace JMXFileEditor.ViewModels
 
             // format not implemented
             throw new NotImplementedException();
+        }
+        /// <summary>
+        /// Make a copy from filename the same way as Microsoft
+        /// </summary>
+        private string GetCopyFileName(string fileName, string extension, string dirName)
+        {
+            var copyFileName = $"{fileName} - Copy.{extension}";
+            var path = Path.Combine(dirName, copyFileName);
+            var n = 2;
+            while (File.Exists(path))
+            {
+                copyFileName = $"{fileName} - Copy ({n++}).{extension}";
+                path = Path.Combine(dirName, copyFileName);
+            }
+            return copyFileName;
         }
         #endregion
     }

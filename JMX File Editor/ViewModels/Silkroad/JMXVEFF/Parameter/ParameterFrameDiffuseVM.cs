@@ -20,9 +20,9 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Parameter
         #region Public Methods
         public override object GetClassFrom(JMXStructure s, int i)
         {
-            return new ParameterFrameScale()
+            return new ParameterFrameDiffuse()
             {
-                Value = ((JMXStructure)s.Childs[i++]).GetChildList<Vector3>()
+                Value = ((JMXStructure)s.Childs[i++]).GetChildList<Color32>()
             };
         }
         #endregion

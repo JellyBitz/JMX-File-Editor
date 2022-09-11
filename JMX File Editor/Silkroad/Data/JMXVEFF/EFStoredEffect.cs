@@ -51,7 +51,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
             using (var writer = new BSWriter(stream, Encoding.GetEncoding(949)))
             {
                 // Auto-upgrade everything saved to JMXVEFF 0013
-                writer.Write("JMXVEFF 0013");
+                writer.Write("JMXVEFF 0013".ToCharArray());
 
                 writer.Write(Version12Value);
 

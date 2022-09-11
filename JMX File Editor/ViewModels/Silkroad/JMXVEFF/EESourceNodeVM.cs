@@ -29,13 +29,16 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
                     typeof(ParameterFrameDiffuse),
                     typeof(ParameterFrameBANRotation),
                     typeof(ParameterFrameBANPosition),
-                    typeof(ParameterFrameTextureSlide)),
+                    typeof(ParameterFrameTextureSlide),
+                    typeof(ParameterBlendScaleGraph),
+                    typeof(ParameterBlendDiffuseGraph),
+                    typeof(ParameterBSAnimation)),
                 data.Parameter?.GetType(),
                 data.Parameter,
                 false);
             Childs.Add(parameterNode);
             // Update node depending on name
-            name.PropertyChanged += (_s, _e) =>
+            name.PropertyChanged += (s, e) =>
             {
                 var newParameter = ParameterFactory.CreateParameterByCommandName((string)name.Value);
                 parameterNode.SetCurrentType(newParameter?.GetType(), newParameter);

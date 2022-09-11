@@ -1,8 +1,10 @@
 ﻿using System;
 
 using JMXFileEditor.Silkroad.Data.JMXVEFF;
+using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
 using JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter;
 using JMXFileEditor.Silkroad.Mathematics;
+using JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends;
 using JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Parameter;
 using JMXFileEditor.ViewModels.Silkroad.Mathematics;
 
@@ -20,56 +22,69 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
             // Add child nodes to current interface node
             AddFormatHandler(typeof(ParameterEFStaticEmit), (s, e) =>
             {
-                AddChildNodes(new ParameterEFStaticEmitVM("Value", (ParameterEFStaticEmit)e.Obj));
+                AddChildNodes(new ParameterEFStaticEmitVM("Value", e.Obj is ParameterEFStaticEmit _obj ? _obj : new ParameterEFStaticEmit()));
             });
             AddFormatHandler(typeof(ParameterFloat), (s, e) =>
             {
-                e.Childs.Add(new JMXAttribute("Value", ((ParameterFloat)e.Obj).Value));
+                e.Childs.Add(new JMXAttribute("Value", e.Obj is ParameterFloat _obj ? _obj.Value : default));
             });
             AddFormatHandler(typeof(ParameterVector3), (s, e) =>
             {
-                AddChildNodes(new Vector3VM("Value", ((ParameterVector3)e.Obj).Value));
+                AddChildNodes(new Vector3VM("Value", e.Obj is ParameterVector3 _obj ? _obj.Value : new Vector3()));
             });
             AddFormatHandler(typeof(ParameterMatrix), (s, e) =>
             {
-                AddChildNodes(new Matrix4x4VM("Value", ((ParameterMatrix)e.Obj).Value));
+                AddChildNodes(new Matrix4x4VM("Value", e.Obj is ParameterMatrix _obj ? _obj.Value : new Matrix4x4()));
             });
             AddFormatHandler(typeof(ParameterRotVector), (s, e) =>
             {
-                AddChildNodes(new ParameterRotVectorVM("Value", (ParameterRotVector)e.Obj));
+                AddChildNodes(new ParameterRotVectorVM("Value", e.Obj is ParameterRotVector _obj ? _obj : new ParameterRotVector()));
             });
             AddFormatHandler(typeof(ParameterAxisVector4), (s, e) =>
             {
-                AddChildNodes(new ParameterAxisVector4VM("Value", (ParameterAxisVector4)e.Obj));
+                AddChildNodes(new ParameterAxisVector4VM("Value", e.Obj is ParameterAxisVector4 _obj ? _obj : new ParameterAxisVector4()));
             });
             AddFormatHandler(typeof(ParameterAngleVector1), (s, e) =>
             {
-                AddChildNodes(new ParameterAngleVector1VM("Value", (ParameterAngleVector1)e.Obj));
+                AddChildNodes(new ParameterAngleVector1VM("Value", e.Obj is ParameterAngleVector1 _obj ? _obj : new ParameterAngleVector1()));
             });
             AddFormatHandler(typeof(ParameterFrameScale), (s, e) =>
             {
-                AddChildNodes(new ParameterFrameScaleVM("Value", (ParameterFrameScale)e.Obj));
+                AddChildNodes(new ParameterFrameScaleVM("Value", e.Obj is ParameterFrameScale _obj ? _obj : new ParameterFrameScale()));
             });
             AddFormatHandler(typeof(ParameterBlendScaleGraphPointer), (s, e) =>
             {
-                e.Childs.Add(new JMXAttribute("Value", ((ParameterBlendScaleGraphPointer)e.Obj).Value));
+                e.Childs.Add(new JMXAttribute("Value", e.Obj is ParameterBlendScaleGraphPointer _obj ? _obj.Value : default));
             });
             AddFormatHandler(typeof(ParameterFrameDiffuse), (s, e) =>
             {
-                AddChildNodes(new ParameterFrameDiffuseVM("Value", (ParameterFrameDiffuse)e.Obj));
+                AddChildNodes(new ParameterFrameDiffuseVM("Value", e.Obj is ParameterFrameDiffuse _obj ? _obj : new ParameterFrameDiffuse()));
             });
             AddFormatHandler(typeof(ParameterFrameBANRotation), (s, e) =>
             {
-                AddChildNodes(new ParameterFrameBANRotationVM("Value", (ParameterFrameBANRotation)e.Obj));
+                AddChildNodes(new ParameterFrameBANRotationVM("Value", e.Obj is ParameterFrameBANRotation _obj ? _obj : new ParameterFrameBANRotation()));
             });
             AddFormatHandler(typeof(ParameterFrameBANPosition), (s, e) =>
             {
-                AddChildNodes(new ParameterFrameBANPositionVM("Value", (ParameterFrameBANPosition)e.Obj));
+                AddChildNodes(new ParameterFrameBANPositionVM("Value", e.Obj is ParameterFrameBANPosition _obj ? _obj : new ParameterFrameBANPosition()));
             });
             AddFormatHandler(typeof(ParameterFrameTextureSlide), (s, e) =>
             {
-                AddChildNodes(new ParameterFrameTextureSlideVM("Value", (ParameterFrameTextureSlide)e.Obj));
+                AddChildNodes(new ParameterFrameTextureSlideVM("Value", e.Obj is ParameterFrameTextureSlide _obj ? _obj : new ParameterFrameTextureSlide()));
             });
+            AddFormatHandler(typeof(ParameterBlendScaleGraph), (s, e) =>
+            {
+                AddChildNodes(new EEVectorBlendVM("Value", e.Obj is ParameterBlendScaleGraph _obj ? _obj.Value : new EEBlend<Vector3, VectorBlend>()));
+            });
+            AddFormatHandler(typeof(ParameterBlendDiffuseGraph), (s, e) =>
+            {
+                AddChildNodes(new EEDiffuseBlendVM("Value", e.Obj is ParameterBlendDiffuseGraph _obj ? _obj.Value : new EEBlend<Color32, DiffuseBlend>()));
+            });
+            AddFormatHandler(typeof(ParameterBSAnimation), (s, e) =>
+            {
+                AddChildArray("Value", e.Obj is ParameterBSAnimation _obj ? _obj.Value.ToArray() : new ParameterBSAnimation().Value.ToArray(), true, true);
+            });
+
 
             // Update values with new formats
             SetCurrentType(CurrentType, CurrentObject);
@@ -87,7 +102,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
             // Check interface format
             if (CurrentType == typeof(ParameterEFStaticEmit))
             {
-                data = (ParameterEFStaticEmit)new ParameterEFStaticEmitVM(string.Empty, new ParameterEFStaticEmit()).GetClassFrom(this, i++);
+                data = (ParameterEFStaticEmit)new ParameterEFStaticEmitVM(string.Empty, new ParameterEFStaticEmit()).GetClassFrom(s, i++);
             }
             else if (CurrentType == typeof(ParameterFloat))
             {
@@ -100,31 +115,31 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
             {
                 data = new ParameterVector3()
                 {
-                    Value = (Vector3)new Vector3VM(string.Empty, new Vector3()).GetClassFrom(this, i++)
+                    Value = (Vector3)new Vector3VM(string.Empty, new Vector3()).GetClassFrom(s, i++),
                 };
             }
             else if (CurrentType == typeof(ParameterMatrix))
             {
                 data = new ParameterMatrix()
                 {
-                    Value = (Matrix4x4)new Matrix4x4VM(string.Empty, new Matrix4x4()).GetClassFrom(this, i++)
+                    Value = (Matrix4x4)new Matrix4x4VM(string.Empty, new Matrix4x4()).GetClassFrom(s, i++),
                 };
             }
             else if (CurrentType == typeof(ParameterRotVector))
             {
-                data = (ParameterRotVector)new ParameterRotVectorVM(string.Empty, new ParameterRotVector()).GetClassFrom(this, i++);
+                data = (ParameterRotVector)new ParameterRotVectorVM(string.Empty, new ParameterRotVector()).GetClassFrom(s, i++);
             }
             else if (CurrentType == typeof(ParameterAxisVector4))
             {
-                data = (ParameterAxisVector4)new ParameterAxisVector4VM(string.Empty, new ParameterAxisVector4()).GetClassFrom(this, i++);
+                data = (ParameterAxisVector4)new ParameterAxisVector4VM(string.Empty, new ParameterAxisVector4()).GetClassFrom(s, i++);
             }
             else if (CurrentType == typeof(ParameterAngleVector1))
             {
-                data = (ParameterAngleVector1)new ParameterAngleVector1VM(string.Empty, new ParameterAngleVector1()).GetClassFrom(this, i++);
+                data = (ParameterAngleVector1)new ParameterAngleVector1VM(string.Empty, new ParameterAngleVector1()).GetClassFrom(s, i++);
             }
             else if (CurrentType == typeof(ParameterFrameScale))
             {
-                data = (ParameterFrameScale)new ParameterFrameScaleVM(string.Empty, new ParameterFrameScale()).GetClassFrom(this, i++);
+                data = (ParameterFrameScale)new ParameterFrameScaleVM(string.Empty, new ParameterFrameScale()).GetClassFrom(s, i++);
             }
             else if (CurrentType == typeof(ParameterBlendScaleGraphPointer))
             {
@@ -135,19 +150,40 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
             }
             else if (CurrentType == typeof(ParameterFrameDiffuse))
             {
-                data = (ParameterFrameDiffuse)new ParameterFrameDiffuseVM(string.Empty, new ParameterFrameDiffuse()).GetClassFrom(this, i++);
+                data = (ParameterFrameDiffuse)new ParameterFrameDiffuseVM(string.Empty, new ParameterFrameDiffuse()).GetClassFrom(s, i++);
             }
             else if (CurrentType == typeof(ParameterFrameBANRotation))
             {
-                data = (ParameterFrameBANRotation)new ParameterFrameBANRotationVM(string.Empty, new ParameterFrameBANRotation()).GetClassFrom(this, i++);
+                data = (ParameterFrameBANRotation)new ParameterFrameBANRotationVM(string.Empty, new ParameterFrameBANRotation()).GetClassFrom(s, i++);
             }
             else if (CurrentType == typeof(ParameterFrameBANPosition))
             {
-                data = (ParameterFrameBANPosition)new ParameterFrameBANPositionVM(string.Empty, new ParameterFrameBANPosition()).GetClassFrom(this, i++);
+                data = (ParameterFrameBANPosition)new ParameterFrameBANPositionVM(string.Empty, new ParameterFrameBANPosition()).GetClassFrom(s, i++);
             }
             else if (CurrentType == typeof(ParameterFrameTextureSlide))
             {
-                data = (ParameterFrameTextureSlide)new ParameterFrameTextureSlideVM(string.Empty, new ParameterFrameTextureSlide()).GetClassFrom(this, i++);
+                data = (ParameterFrameTextureSlide)new ParameterFrameTextureSlideVM(string.Empty, new ParameterFrameTextureSlide()).GetClassFrom(s, i++);
+            }
+            else if (CurrentType == typeof(ParameterBlendScaleGraph))
+            {
+                data = new ParameterBlendScaleGraph()
+                {
+                    Value = (EEBlend<Vector3, VectorBlend>)new EEVectorBlendVM(string.Empty, new EEBlend<Vector3, VectorBlend>()).GetClassFrom(s, i++)
+                };
+            }
+            else if (CurrentType == typeof(ParameterBlendDiffuseGraph))
+            {
+                data = new ParameterBlendDiffuseGraph()
+                {
+                    Value = (EEBlend<Color32, DiffuseBlend>)new EEDiffuseBlendVM(string.Empty, new EEBlend<Color32, DiffuseBlend>()).GetClassFrom(s, i++)
+                };
+            }
+            else if (CurrentType == typeof(ParameterBSAnimation))
+            {
+                data = new ParameterBSAnimation()
+                {
+                    Value = ((JMXStructure)s.Childs[i++]).GetChildList<string>(),
+                };
             }
             // return interface
             return data;

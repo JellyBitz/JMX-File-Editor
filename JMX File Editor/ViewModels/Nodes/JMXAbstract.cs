@@ -56,7 +56,9 @@ namespace JMXFileEditor.ViewModels
         {
             // Make sure type provided is correct
             if (Type != null && AvailableTypes.Count > 0 && !AvailableTypes.Contains(Type))
-                throw new ArgumentException("JMXAbstract error. Object type is not supported for this node!");
+                throw new ArgumentException(
+                    "JMXAbstract Error.\r\n"+
+                    "[" + Type.Name + "] is not supported on this node [" + this + "]");
 
             // Set current values
             m_CurrentType = Type;

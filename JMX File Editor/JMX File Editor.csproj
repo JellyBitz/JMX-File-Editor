@@ -203,8 +203,10 @@
     <Compile Include="ViewModels\Silkroad\JMXVDOF\GroupVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVDOF\JMXVDOFVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVDOF\LinkVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVEFF\Blends\VectorBlendVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\Blends\DiffuseBlendVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\Blends\EEDiffuseBlendVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVEFF\Blends\EEVectorBlendVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\Blends\FloatBlendVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\Blends\ByteBlendVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\Blends\EEByteBlendVM.cs" />
@@ -220,6 +222,7 @@
     <Compile Include="ViewModels\Silkroad\JMXVEFF\Controller\EFControllerVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\Controller\EFCViewModeVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\Blends\EEFloatBlendVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVEFF\EEGlobalDataVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\EEParameterVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\EEResourceVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\EESourceNodeVM.cs" />

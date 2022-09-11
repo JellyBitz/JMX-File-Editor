@@ -20,11 +20,11 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Parameter
         #endregion
 
         #region Public Methods
-        public override object GetClassFrom(JMXStructure s)
+        public override object GetClassFrom(JMXStructure s, int i)
         {
             return new ParameterEFStaticEmit()
             {
-                Value = (EFStaticEmit)new EFStaticEmitVM(string.Empty, default).GetClassFrom(this)
+                Value = (EFStaticEmit)new EFStaticEmitVM(string.Empty, default).GetClassFrom(s)
             };
         }
         #endregion

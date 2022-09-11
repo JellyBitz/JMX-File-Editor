@@ -1,6 +1,6 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVEFF;
 
-namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Controller
+namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
 {
     public class EFMeshVM : JMXStructure
     {

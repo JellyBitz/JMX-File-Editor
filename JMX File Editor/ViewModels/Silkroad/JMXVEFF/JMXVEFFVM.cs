@@ -24,9 +24,31 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
             {
                 Name = b.Name,
                 Controllers = b.Controllers,
-                
-                // TO BE CONTINUED...
 
+                EEGlobalData = b.EEGlobalData,
+                EmptyCommands0 = b.EmptyCommands0,
+                EmitterCommands = b.EmitterCommands,
+                EmptyCommands1 = b.EmptyCommands1,
+                LifeTimeCommand = b.LifeTimeCommand,
+                ProgramCommands = b.ProgramCommands,
+
+                Byte0 = b.Byte0,
+                Byte1 = b.Byte1,
+                Int0 = b.Int0,
+                Int1 = b.Int1,
+                Int2 = b.Int2,
+                Byte2 = b.Byte2,
+                Int3 = b.Int3,
+                Byte3 = b.Byte3,
+
+                ViewModeCommand = b.ViewModeCommand,
+                Resource = b.Resource,
+                RenderModeCommand = b.RenderModeCommand,
+
+                EmptyProgram0 = b.EmptyProgram0,
+                RenderCommands = b.RenderCommands,
+
+                Children = b.Children,
             };
         }
         #endregion
