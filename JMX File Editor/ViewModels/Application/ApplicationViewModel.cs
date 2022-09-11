@@ -155,7 +155,7 @@ namespace JMXFileEditor.ViewModels
                         var jmxFile = LoadJMXFile(FileProperties);
 
                         // Set temporal filename
-                        var filename = GetCopyFileName(Path.GetFileName(FilePath),jmxFile.Extension,Path.GetDirectoryName(FilePath));
+                        var filename = GetCopyFileName(Path.GetFileNameWithoutExtension(FilePath),jmxFile.Extension,Path.GetDirectoryName(FilePath));
                         var folderPath = Window.OpenFolderDialog("Save...", ref filename);
                         // check paths are correct
                         if (folderPath == string.Empty)
