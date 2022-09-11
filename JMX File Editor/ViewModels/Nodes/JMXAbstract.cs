@@ -30,7 +30,7 @@ namespace JMXFileEditor.ViewModels
         /// <summary>
         /// Creates a abstract node view model
         /// </summary>
-        public JMXAbstract(string Name, Type[] AvailableTypes, Type CurrentType = null, object CurrentObject = null) : base(Name, AvailableTypes != null)
+        public JMXAbstract(string Name, Type[] AvailableTypes, Type CurrentType = null, object CurrentObject = null, bool IsEditable = true) : base(Name, IsEditable)
         {
             this.AvailableTypes.AddRange(AvailableTypes);
             // Set initial type/values
@@ -43,7 +43,7 @@ namespace JMXFileEditor.ViewModels
         /// Add nodes from base class using the abstract object being set
         /// </summary>
         protected abstract void AddBaseNodes(object Obj);
-        public abstract override object GetClassFrom(JMXStructure Structure);
+        public abstract override object GetClassFrom(JMXStructure s, int i = 0);
         #endregion
 
         #region Private Helpers
@@ -54,9 +54,11 @@ namespace JMXFileEditor.ViewModels
         /// <param name="Obj">The object which contains the values</param>
         public void SetCurrentType(Type Type, object Obj = null)
         {
-            // Make sure type provided is right
-            if (Type != null && !AvailableTypes.Contains(Type))
-                throw new ArgumentException("JMXAbstract error. Type not supported!");
+            // Make sure type provided is correct
+            if (Type != null && AvailableTypes.Count > 0 && !AvailableTypes.Contains(Type))
+                throw new ArgumentException(
+                    "JMXAbstract Error.\r\n"+
+                    "[" + Type.Name + "] is not supported on this node [" + this + "]");
 
             // Set current values
             m_CurrentType = Type;

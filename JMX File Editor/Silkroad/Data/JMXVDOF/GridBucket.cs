@@ -7,7 +7,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
     {
         #region Public Properties
         public uint ID { get; set; }
-        public List<uint> BlockIndices { get; set; }
+        public List<uint> BlockIndices { get; set; } = new List<uint>();
         #endregion
 
         #region Interface Implementation

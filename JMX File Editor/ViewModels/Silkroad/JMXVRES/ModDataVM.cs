@@ -91,26 +91,26 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             Childs.Add(new JMXAttribute("UnkByte03", obj.UnkByte03));
             Childs.Add(new JMXAttribute("UnkByte04", obj.UnkByte04));
         }
-        public override object GetClassFrom(JMXStructure Structure)
+        public override object GetClassFrom(JMXStructure s, int i)
         {
             IModData data = null;
             // Check abstract formats
             if (CurrentType == typeof(ModDataMtrl))
-                data = (ModDataMtrl)new ModDataMtrlVM(string.Empty, new ModDataMtrl()).GetClassFrom(this, 10);
+                data = (ModDataMtrl)new ModDataMtrlVM(string.Empty, new ModDataMtrl()).GetClassFrom(this, i+10);
             else if (CurrentType == typeof(ModDataTexAni))
-                data = (ModDataTexAni)new ModDataTexAniVM(string.Empty, new ModDataTexAni()).GetClassFrom(this, 10);
+                data = (ModDataTexAni)new ModDataTexAniVM(string.Empty, new ModDataTexAni()).GetClassFrom(this, i + 10);
             else if (CurrentType == typeof(ModDataMultiTex))
-                data = (ModDataMultiTex)new ModDataMultiTexVM(string.Empty, new ModDataMultiTex()).GetClassFrom(this, 10);
+                data = (ModDataMultiTex)new ModDataMultiTexVM(string.Empty, new ModDataMultiTex()).GetClassFrom(this, i + 10);
             else if (CurrentType == typeof(ModDataMultiTexRev))
-                data = (ModDataMultiTexRev)new ModDataMultiTexRevVM(string.Empty, new ModDataMultiTexRev()).GetClassFrom(this, 10);
+                data = (ModDataMultiTexRev)new ModDataMultiTexRevVM(string.Empty, new ModDataMultiTexRev()).GetClassFrom(this, i + 10);
             else if (CurrentType == typeof(ModDataParticle))
-                data = (ModDataParticle)new ModDataParticleVM(string.Empty, new ModDataParticle()).GetClassFrom(this, 10);
+                data = (ModDataParticle)new ModDataParticleVM(string.Empty, new ModDataParticle()).GetClassFrom(this, i + 10);
             else if (CurrentType == typeof(ModDataEnvMap))
-                data = (ModDataEnvMap)new ModDataEnvMapVM(string.Empty, new ModDataEnvMap()).GetClassFrom(this, 10);
+                data = (ModDataEnvMap)new ModDataEnvMapVM(string.Empty, new ModDataEnvMap()).GetClassFrom(this, i + 10);
             else if (CurrentType == typeof(ModDataBumpEnv))
-                data = (ModDataBumpEnv)new ModDataBumpEnvVM(string.Empty, new ModDataBumpEnv()).GetClassFrom(this, 10);
+                data = (ModDataBumpEnv)new ModDataBumpEnvVM(string.Empty, new ModDataBumpEnv()).GetClassFrom(this, i + 10);
             else if (CurrentType == typeof(ModDataSound))
-                data = (ModDataSound)new ModDataSoundVM(string.Empty, new ModDataSound()).GetClassFrom(this, 10);
+                data = (ModDataSound)new ModDataSoundVM(string.Empty, new ModDataSound()).GetClassFrom(this, i + 10);
             else if (CurrentType == typeof(ModDataDyVertex))
                 data = new ModDataDyVertex();
             else if (CurrentType == typeof(ModDataDyJoint))
@@ -120,16 +120,16 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             else if (CurrentType == typeof(ModDataProgEquipPow))
                 data = new ModDataProgEquipPow();
             // Set base nodes
-            data.UnkFloat01 = (float)((JMXAttribute)Structure.Childs[0]).Value;
-            data.UnkUInt01 = (uint)((JMXAttribute)Structure.Childs[1]).Value;
-            data.UnkUInt02 = (uint)((JMXAttribute)Structure.Childs[2]).Value;
-            data.MeshIndex = (int)((JMXAttribute)Structure.Childs[3]).Value;
-            data.UnkUInt04 = (uint)((JMXAttribute)Structure.Childs[4]).Value;
-            data.UnkUInt05 = (uint)((JMXAttribute)Structure.Childs[5]).Value;
-            data.UnkByte01 = (byte)((JMXAttribute)Structure.Childs[6]).Value;
-            data.UnkByte02 = (byte)((JMXAttribute)Structure.Childs[7]).Value;
-            data.UnkByte03 = (byte)((JMXAttribute)Structure.Childs[8]).Value;
-            data.UnkByte04 = (byte)((JMXAttribute)Structure.Childs[9]).Value;
+            data.UnkFloat01 = (float)((JMXAttribute)s.Childs[i++]).Value;
+            data.UnkUInt01 = (uint)((JMXAttribute)s.Childs[i++]).Value;
+            data.UnkUInt02 = (uint)((JMXAttribute)s.Childs[i++]).Value;
+            data.MeshIndex = (int)((JMXAttribute)s.Childs[i++]).Value;
+            data.UnkUInt04 = (uint)((JMXAttribute)s.Childs[i++]).Value;
+            data.UnkUInt05 = (uint)((JMXAttribute)s.Childs[i++]).Value;
+            data.UnkByte01 = (byte)((JMXAttribute)s.Childs[i++]).Value;
+            data.UnkByte02 = (byte)((JMXAttribute)s.Childs[i++]).Value;
+            data.UnkByte03 = (byte)((JMXAttribute)s.Childs[i++]).Value;
+            data.UnkByte04 = (byte)((JMXAttribute)s.Childs[i++]).Value;
             // return abstract class
             return data;
         }

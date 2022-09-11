@@ -8,9 +8,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
         #region Public Properties
         public string Path { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-        public Vector3 Position { get; set; }
-        public Vector3 Rotation { get; set; }
-        public Vector3 Scale { get; set; }
+        public Vector3 Position { get; set; } = new Vector3();
+        public Vector3 Rotation { get; set; } = new Vector3();
+        public Vector3 Scale { get; set; } = new Vector3();
         public uint Flag { get; set; }
         public uint UnkUInt01 { get; set; }
         public float RadiusSqrt { get; set; }

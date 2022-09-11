@@ -3,10 +3,12 @@ using JMXFileEditor.Silkroad.Data.JMXVBMT;
 using JMXFileEditor.Silkroad.Data.JMXVCPD;
 using JMXFileEditor.Silkroad.Data.JMXVDOF;
 using JMXFileEditor.Silkroad.Data.JMXVENVI;
+using JMXFileEditor.Silkroad.Data.JMXVEFF;
 using JMXFileEditor.Silkroad.Data.JMXVRES;
 using JMXFileEditor.ViewModels.Silkroad.JMXVBMT;
 using JMXFileEditor.ViewModels.Silkroad.JMXVCPD;
 using JMXFileEditor.ViewModels.Silkroad.JMXVDOF;
+using JMXFileEditor.ViewModels.Silkroad.JMXVEFF;
 using JMXFileEditor.ViewModels.Silkroad.JMXVRES;
 using System;
 using System.Diagnostics;
@@ -153,8 +155,8 @@ namespace JMXFileEditor.ViewModels
                         // Converts to JMX File
                         var jmxFile = LoadJMXFile(FileProperties);
 
-                        // Ask for file path and avoid empty result / canceled operation
-                        var filename = $"{((FileProperties.Name != string.Empty ? FileProperties.Name : jmxFile.Format))}.{jmxFile.Extension}";
+                        // Set temporal filename
+                        var filename = GetCopyFileName(Path.GetFileNameWithoutExtension(FilePath),jmxFile.Extension,Path.GetDirectoryName(FilePath));
                         var folderPath = Window.OpenFolderDialog("Save...", ref filename);
                         // check paths are correct
                         if (folderPath == string.Empty)
@@ -216,6 +218,11 @@ namespace JMXFileEditor.ViewModels
                         case "JMXVENVI1003":
                             file = new JMXVENVI();
                             break;
+                        case "JMXVEFF 0011":
+                        case "JMXVEFF 0012":
+                        case "JMXVEFF 0013":
+                            file = new EFStoredEffect();
+                            break;
                         default:
                             throw new FileFormatException("JMX Header not found! File not supported.");
                     }
@@ -239,8 +246,11 @@ namespace JMXFileEditor.ViewModels
                 return new JMXVCPDVM(jmxvcpd_0101);
             if (JMXFile is JMXVDOF_0101 jmxvdof_0101)
                 return new JMXVDOFVM(jmxvdof_0101);
-            // format not implemented
-            throw new NotImplementedException();
+            if (JMXFile is EFStoredEffect jmxveff)
+                return new JMXVEFFVM(jmxveff);
+
+            // Viewmodel format not implemented
+            throw new NotImplementedException("View format is not implemented");
         }
         /// <summary>
         /// Create JMX file from ViewModel
@@ -255,9 +265,26 @@ namespace JMXFileEditor.ViewModels
                 return (IJMXFile)jmxvcpd.GetClass();
             if (JMXViewModel is JMXVDOFVM jmxvdof)
                 return (IJMXFile)jmxvdof.GetClass();
+            if (JMXViewModel is JMXVEFFVM jmxveff)
+                return (IJMXFile)jmxveff.GetClass();
 
             // format not implemented
             throw new NotImplementedException();
+        }
+        /// <summary>
+        /// Make a copy from filename the same way as Microsoft
+        /// </summary>
+        private string GetCopyFileName(string fileName, string extension, string dirName)
+        {
+            var copyFileName = $"{fileName} - Copy.{extension}";
+            var path = Path.Combine(dirName, copyFileName);
+            var n = 2;
+            while (File.Exists(path))
+            {
+                copyFileName = $"{fileName} - Copy ({n++}).{extension}";
+                path = Path.Combine(dirName, copyFileName);
+            }
+            return copyFileName;
         }
         #endregion
     }
