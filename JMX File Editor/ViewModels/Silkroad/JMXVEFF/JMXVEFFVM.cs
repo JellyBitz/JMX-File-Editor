@@ -10,16 +10,18 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
         #region Constructor
         public JMXVEFFVM(EFStoredEffect JMXFile) : base(JMXFile.Format, true)
         {
-            // Store base class as node
-            Childs.Add(new EFStoredObjectVM("RootObject", JMXFile));
+            // Add base class nodes
+            var _data = new EFStoredObjectVM(string.Empty, JMXFile);
+            foreach (var c in _data.Childs)
+                Childs.Add(c);
         }
         #endregion
 
         #region Public Properties
         public override object GetClassFrom(JMXStructure s, int i)
         {
-            var b = (EFStoredObject)((EFStoredObjectVM)s.Childs[i++]).GetClass();
-            // Copy base class node
+            var b = (EFStoredObject)new EFStoredObjectVM(string.Empty, new EFStoredObject()).GetClassFrom(s, i++);
+            // Copy base class data
             return new EFStoredEffect()
             {
                 Name = b.Name,
