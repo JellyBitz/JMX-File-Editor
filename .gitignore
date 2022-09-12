@@ -1,6 +1,9 @@
 # Visual Studio cache
 .vs/
 
+# Packages can be restored through nuget
+packages/
+
 # Auto generated files
 JMX File Editor/bin/*
 JMX File Editor/obj/*

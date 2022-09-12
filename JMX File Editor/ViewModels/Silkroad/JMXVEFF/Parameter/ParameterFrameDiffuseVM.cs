@@ -11,7 +11,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Parameter
         {
             AddFormatHandler(typeof(Color32), (s, e) =>
             {
-                e.Childs.Add(new Color32VM("[" + e.Childs.Count + "]", e.Obj is Color32 _obj ? _obj : new Color32()));
+                e.Childs.Add(new ColorVM("[" + e.Childs.Count + "]", e.Obj is Color32 _obj ? _obj : new Color32()));
             });
             AddChildArray("List", data.Value.ToArray(), true, true);
         }

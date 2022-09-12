@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+        
         xmlns:local="clr-namespace:JMXFileEditor"
         xmlns:vm="clr-namespace:JMXFileEditor.ViewModels"
         xmlns:vmMaths="clr-namespace:JMXFileEditor.ViewModels.Silkroad.Mathematics"
@@ -184,55 +186,21 @@
 
                     <!-- Viewmodels out of base nodes -->
 
-                    <!-- Binding Color4VM type -->
-                    <HierarchicalDataTemplate DataType="{x:Type vmMaths:Color4VM}"
-                                              ItemsSource="{Binding Childs}">
-                        <StackPanel Orientation="Horizontal"
-                                    MinHeight="20">
+                    <!-- Binding ColorVM type -->
+                    <HierarchicalDataTemplate DataType="{x:Type vmMaths:ColorVM}">
+                        <StackPanel MinHeight="20"
+                                    Orientation="Horizontal">
                             <!-- Name -->
                             <TextBlock VerticalAlignment="Center"
                                        Text="{Binding Name}"/>
                             <!-- Demo -->
-                            <Border Background="{Binding DemoBrush}"
-                                    Width="16"
-                                    Margin="5 2"
-                                    BorderThickness="1"
-                                    BorderBrush="Black"
-                                    ToolTip="{Binding DemoBrush}"/>
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                    <!-- Binding Color3VM type -->
-                    <HierarchicalDataTemplate DataType="{x:Type vmMaths:Color3VM}"
-                                              ItemsSource="{Binding Childs}">
-                        <StackPanel Orientation="Horizontal"
-                                    MinHeight="20">
-                            <!-- Name -->
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="{Binding Name}"/>
-                            <!-- Demo -->
-                            <Border Background="{Binding DemoBrush}"
-                                    Width="16"
-                                    Margin="5 2"
-                                    BorderThickness="1"
-                                    BorderBrush="Black"
-                                    ToolTip="{Binding DemoBrush}"/>
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                    <!-- Binding Color32VM type -->
-                    <HierarchicalDataTemplate DataType="{x:Type vmMaths:Color32VM}"
-                                              ItemsSource="{Binding Childs}">
-                        <StackPanel Orientation="Horizontal"
-                                    MinHeight="20">
-                            <!-- Name -->
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="{Binding Name}"/>
-                            <!-- Demo -->
-                            <Border Background="{Binding DemoBrush}"
-                                    Width="16"
-                                    Margin="5 2"
-                                    BorderThickness="1"
-                                    BorderBrush="Black"
-                                    ToolTip="{Binding DemoBrush}"/>
+                            <colorpicker:PortableColorPicker Width="40" Height="20"
+                                                             Margin="5 2"
+                                                             Name="ColorPicker"
+                                                             ColorState="{Binding Color, Mode=TwoWay, Delay=20}"
+                                                             ShowAlpha="{Binding ShowAlpha}"
+                                                             UseHintColor="True" HintColor="Transparent"
+                                                             ToolTip="{Binding ElementName=ColorPicker,Path=HintColor}"/>
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>

@@ -1,6 +1,7 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVBMT;
 using JMXFileEditor.Silkroad.Mathematics;
 using JMXFileEditor.ViewModels.Silkroad.Mathematics;
+using System.Windows.Media;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVBMT
 {
@@ -9,16 +10,11 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVBMT
         #region Constructor
         public PrimMtrlVM(string Name, PrimMtrl Mtrl) : base(Name, true)
         {
-            // add formats
-            AddFormatHandler(typeof(Color4), (s, e) => {
-                e.Childs.Add(new Color4VM("[" + e.Childs.Count + "]", e.Obj is Color4 _obj ? _obj : new Color4()));
-            });
-            // create nodes
             Childs.Add(new JMXAttribute("Name", Mtrl.Name));
-            Childs.Add(new Color4VM("Diffuse", Mtrl.Diffuse));
-            Childs.Add(new Color4VM("Ambient", Mtrl.Ambient));
-            Childs.Add(new Color4VM("Specular", Mtrl.Specular));
-            Childs.Add(new Color4VM("Emissive", Mtrl.Emissive));
+            Childs.Add(new ColorVM("Diffuse", ColorVM.GetColor32(Mtrl.Diffuse)));
+            Childs.Add(new ColorVM("Ambient", ColorVM.GetColor32(Mtrl.Ambient)));
+            Childs.Add(new ColorVM("Specular", ColorVM.GetColor32(Mtrl.Specular)));
+            Childs.Add(new ColorVM("Emissive", ColorVM.GetColor32(Mtrl.Emissive)));
             Childs.Add(new JMXAttribute("UnkFloat01", Mtrl.UnkFloat01));
             Childs.Add(new JMXAttribute("Flags", Mtrl.Flags));
             Childs.Add(new JMXAttribute("DiffuseMapPath", Mtrl.DiffuseMapPath));
@@ -32,24 +28,24 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVBMT
         #endregion
 
         #region Public Methods
-        public override object GetClassFrom(JMXStructure Structure)
+        public override object GetClassFrom(JMXStructure s, int i)
         {
             return new PrimMtrl()
             {
-                Name = (string)((JMXAttribute)Structure.Childs[0]).Value,
-                Diffuse = (Color4)((Color4VM)Structure.Childs[1]).GetClass(),
-                Ambient = (Color4)((Color4VM)Structure.Childs[2]).GetClass(),
-                Specular = (Color4)((Color4VM)Structure.Childs[3]).GetClass(),
-                Emissive = (Color4)((Color4VM)Structure.Childs[4]).GetClass(),
-                UnkFloat01 = (float)((JMXAttribute)Structure.Childs[5]).Value,
-                Flags = (uint)((JMXAttribute)Structure.Childs[6]).Value,
-                DiffuseMapPath = (string)((JMXAttribute)Structure.Childs[7]).Value,
-                UnkFloat02 = (float)((JMXAttribute)Structure.Childs[8]).Value,
-                UnkByte01 = (byte)((JMXAttribute)Structure.Childs[9]).Value,
-                UnkByte02 = (byte)((JMXAttribute)Structure.Childs[10]).Value,
-                IsAbsolutePath = (bool)((JMXAttribute)Structure.Childs[11]).Value,
-                NormalMapPath = (string)((JMXAttribute)Structure.Childs[12]).Value,
-                UnkUInt01 = (uint)((JMXAttribute)Structure.Childs[13]).Value
+                Name = (string)((JMXAttribute)s.Childs[i++]).Value,
+                Diffuse = ColorVM.GetColor4((Color32)((ColorVM)s.Childs[i++]).GetClass()),
+                Ambient = ColorVM.GetColor4((Color32)((ColorVM)s.Childs[i++]).GetClass()),
+                Specular = ColorVM.GetColor4((Color32)((ColorVM)s.Childs[i++]).GetClass()),
+                Emissive = ColorVM.GetColor4((Color32)((ColorVM)s.Childs[i++]).GetClass()),
+                UnkFloat01 = (float)((JMXAttribute)s.Childs[i++]).Value,
+                Flags = (uint)((JMXAttribute)s.Childs[i++]).Value,
+                DiffuseMapPath = (string)((JMXAttribute)s.Childs[i++]).Value,
+                UnkFloat02 = (float)((JMXAttribute)s.Childs[i++]).Value,
+                UnkByte01 = (byte)((JMXAttribute)s.Childs[i++]).Value,
+                UnkByte02 = (byte)((JMXAttribute)s.Childs[i++]).Value,
+                IsAbsolutePath = (bool)((JMXAttribute)s.Childs[i++]).Value,
+                NormalMapPath = (string)((JMXAttribute)s.Childs[i++]).Value,
+                UnkUInt01 = (uint)((JMXAttribute)s.Childs[i++]).Value
             };
         }
         #endregion

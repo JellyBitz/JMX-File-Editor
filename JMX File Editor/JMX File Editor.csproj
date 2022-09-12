@@ -39,6 +39,12 @@
     <ApplicationIcon>Resources\Images\Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ColorPicker, Version=3.3.1.0, Culture=neutral, PublicKeyToken=1c61eec504ce2276, processorArchitecture=MSIL">
+      <HintPath>..\packages\PixiEditor.ColorPicker.3.3.1\lib\net451\ColorPicker.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -248,9 +254,7 @@
     <Compile Include="ViewModels\Silkroad\JMXVEFF\Parameter\ParameterFrameDiffuseVM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\Parameter\ParameterFrameScaleVM.cs" />
     <Compile Include="ViewModels\Silkroad\Mathematics\BoundingBoxVM.cs" />
-    <Compile Include="ViewModels\Silkroad\Mathematics\Color32VM.cs" />
-    <Compile Include="ViewModels\Silkroad\Mathematics\Color3VM.cs" />
-    <Compile Include="ViewModels\Silkroad\Mathematics\Color4VM.cs" />
+    <Compile Include="ViewModels\Silkroad\Mathematics\ColorVM.cs" />
     <Compile Include="ViewModels\Silkroad\Mathematics\Matrix4x4VM.cs" />
     <Compile Include="ViewModels\Silkroad\JMXVEFF\Parameter\ParameterRotVectorVM.cs" />
     <Compile Include="ViewModels\Silkroad\Mathematics\Vector2VM.cs" />
@@ -316,6 +320,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include=".editorconfig" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
