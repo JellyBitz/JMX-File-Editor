@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
-        
+        xmlns:pkgColorPicker="clr-namespace:ColorPicker"
         xmlns:local="clr-namespace:JMXFileEditor"
         xmlns:vm="clr-namespace:JMXFileEditor.ViewModels"
         xmlns:vmMaths="clr-namespace:JMXFileEditor.ViewModels.Silkroad.Mathematics"
@@ -88,6 +87,7 @@
             <TreeView Grid.Row="1"
                       x:Name="tvwFileStructure"
                       Margin="8 0 8 8"
+                      VirtualizingStackPanel.IsVirtualizing="False"
                       ItemsSource="{Binding FileProperties.Childs}"
                       local:TreeviewSelectedItemEnabledProperty.Value="True"
                       local:TreeviewSelectedItemProperty.Value="{Binding FileSelectedProperty,Mode=TwoWay}"
@@ -188,20 +188,43 @@
 
                     <!-- Binding ColorVM type -->
                     <HierarchicalDataTemplate DataType="{x:Type vmMaths:ColorVM}">
-                        <StackPanel MinHeight="20"
-                                    Orientation="Horizontal">
-                            <!-- Name -->
-                            <TextBlock VerticalAlignment="Center"
+                        <Grid>
+                            <StackPanel MinHeight="20"
+                                        Orientation="Horizontal">
+                                <!-- Name -->
+                                <TextBlock VerticalAlignment="Center"
                                        Text="{Binding Name}"/>
-                            <!-- Demo -->
-                            <colorpicker:PortableColorPicker Width="40" Height="20"
-                                                             Margin="5 2"
-                                                             Name="ColorPicker"
-                                                             ColorState="{Binding Color, Mode=TwoWay, Delay=20}"
-                                                             ShowAlpha="{Binding ShowAlpha}"
-                                                             UseHintColor="True" HintColor="Transparent"
-                                                             ToolTip="{Binding ElementName=ColorPicker,Path=HintColor}"/>
-                        </StackPanel>
+                                <!-- Color Editor -->
+                                <Button x:Name="xColorToggle"
+                                        Style="{StaticResource ButtonCleanStyle}"
+                                        Command="{Binding CommandEditColor}">
+                                    <!-- Demo -->
+                                    <Border Width="40" Height="20"
+                                            Margin="5 2"
+                                            BorderThickness="1"
+                                            BorderBrush="#80000000"
+                                            CornerRadius="1"
+                                            ToolTip="{Binding ElementName=xColorEditor,Path=SelectedColor}"
+                                            Background="{StaticResource ColorPickerTransparentBackground}" >
+                                        <Border Background="{Binding SelectedColor, ElementName=xColorEditor, Converter={StaticResource ColorToBrushConverter}}"/>
+                                    </Border>
+                                </Button>
+                            </StackPanel>
+                            <!-- Window from Color Editor -->
+                            <Popup StaysOpen="False"
+                                   IsOpen="{Binding Path=IsEditing, Mode=TwoWay}"
+                                   PlacementTarget="{Binding ElementName=xColorToggle}">
+                                <Border Background="{StaticResource BackgroundMainBrush}"
+                                        BorderBrush="#808080"
+                                        BorderThickness="1">
+                                    <pkgColorPicker:StandardColorPicker x:Name="xColorEditor"
+                                                                        Width="40" Height="20"
+                                                                        Margin="5 2"
+                                                                        ColorState="{Binding Color, Mode=TwoWay, Delay=10}"
+                                                                        ShowAlpha="{Binding ShowAlpha}"/>
+                                </Border>
+                            </Popup>
+                        </Grid>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>

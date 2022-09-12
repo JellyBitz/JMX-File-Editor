@@ -39,9 +39,6 @@
     <ApplicationIcon>Resources\Images\Logo.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ColorPicker, Version=3.3.1.0, Culture=neutral, PublicKeyToken=1c61eec504ce2276, processorArchitecture=MSIL">
-      <HintPath>..\packages\PixiEditor.ColorPicker.3.3.1\lib\net451\ColorPicker.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.31\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
     </Reference>
@@ -67,6 +64,61 @@
     </ApplicationDefinition>
     <Compile Include="AttachedProperties\BaseAttachedProperty.cs" />
     <Compile Include="AttachedProperties\TreeviewSelectedItemProperty.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\AlphaSlider.xaml.cs">
+      <DependentUpon>AlphaSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\ColorPicker\Behaviors\TextBoxFocusBehavior.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\ColorDisplay.xaml.cs">
+      <DependentUpon>ColorDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\ColorPicker\ColorSliders.xaml.cs">
+      <DependentUpon>ColorSliders.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\ColorPicker\Converters\BoolToInvertedBool.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Converters\ColorToBrushConverter.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Converters\ColorToHexConverter.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Converters\DividedSizeConverter.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Converters\MinConverter.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Converters\PickerTypeToIntConverter.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Converters\ProportialConverter.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Converters\RangeConstrainedDoubleToDoubleConverter.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\DualPickerControlBase.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\HexColorTextBox.xaml.cs">
+      <DependentUpon>HexColorTextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\ColorPicker\Models\ColorRoutedEventArgs.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Models\ColorSpaceHelper.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Models\ColorState.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Models\HintColorDecorator.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Models\IColorStateStorage.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Models\IHintColorStateStorage.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Models\ISecondColorStorage.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Models\MathHelper.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Models\NotifyableColor.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Models\NotifyableObject.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Models\PickerType.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\Models\SecondColorDecorator.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\PickerControlBase.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\PortableColorPicker.xaml.cs">
+      <DependentUpon>PortableColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\ColorPicker\SquarePicker.xaml.cs">
+      <DependentUpon>SquarePicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\ColorPicker\StandardColorPicker.xaml.cs">
+      <DependentUpon>StandardColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\ColorPicker\UIExtensions\HslColorSlider.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\UIExtensions\HsvColorSlider.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\UIExtensions\PreviewColorSlider.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\UIExtensions\RgbColorSlider.cs" />
+    <Compile Include="Resources\Packages\ColorPicker\UserControls\HueSlider.xaml.cs">
+      <DependentUpon>HueSlider.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\ColorPicker\UserControls\SquareSlider.xaml.cs">
+      <DependentUpon>SquareSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Silkroad\Data\Common\ObjectGeneralCategory.cs" />
     <Compile Include="Silkroad\Data\Common\ObjectGeneralInfo.cs" />
     <Compile Include="Silkroad\Data\Common\ObjectGeneralType.cs" />
@@ -284,6 +336,86 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Resources\Packages\ColorPicker\AlphaSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\ColorDisplay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\ColorSliders.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\HexColorTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\PortableColorPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\SquarePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\StandardColorPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\Styles\Images.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\Styles\Colors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\Styles\ColorSliderStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\Styles\ColorToggleButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\Styles\DarkComboBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\Styles\DarkTabControlStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\Styles\DarkTextBoxStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\Styles\DefaultColorPickerStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\Styles\ImageButtonStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\Styles\RoundedColorDisplayStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\UserControls\HueSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\ColorPicker\UserControls\SquareSlider.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\Button.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\Colors.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -333,5 +465,9 @@
     <Resource Include="Resources\Images\Logo.ico" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Packages\ColorPicker\Images\CircularHueGradient.png" />
+    <Resource Include="Resources\Packages\ColorPicker\Images\TransparentBackgroundSmall.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
