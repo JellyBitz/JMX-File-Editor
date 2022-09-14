@@ -7,10 +7,10 @@
              xmlns:main="clr-namespace:JMXFileEditor"
              xmlns:pkgColorPicker="clr-namespace:ColorPicker"
              xmlns:pkgColorPickerConv="clr-namespace:ColorPicker.Converters"
-             MinHeight="22" MinWidth="100"
+             MinHeight="45" MinWidth="100"
              x:Name="uc"
              mc:Ignorable="d"
-             d:DesignHeight="200" d:DesignWidth="400">
+             d:DesignHeight="45" d:DesignWidth="100">
     <UserControl.Resources>
         <Style x:Key="DecreaseButton" TargetType="{x:Type RepeatButton}">
             <Setter Property="OverridesDefaultStyle" Value="true"/>
@@ -76,7 +76,8 @@
                             <Thumb x:Name="Thumb" Focusable="False"
                                    Height="16" Width="6" Margin="0 2 0 2"
                                    OverridesDefaultStyle="True" Template="{StaticResource SliderThumbHorizontalDefault}"
-                                   VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                                   ToolTip="{TemplateBinding Value}"/>
                         </Track.Thumb>
                     </Track>
                 </Grid>
@@ -93,7 +94,7 @@
     <Grid Background="{Binding ElementName=uc,Path=Background}">
         <Grid.RowDefinitions>
             <!-- Gradient Display -->
-            <RowDefinition Height="{Binding ElementName=uc,Path=MinHeight}"/>
+            <RowDefinition Height="Auto"/>
             <!-- Gradients -->
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -103,11 +104,12 @@
         <Border Grid.Row="0"
                 Margin="1"
                 Background="{StaticResource ColorPickerTransparentBackground}">
-            <Border>
+            <Border Height="22">
                 <Border.Background>
                     <LinearGradientBrush x:Name="xGradientDisplay"
-                                     StartPoint="0 0" EndPoint="1 0"
-                                     GradientStops="{Binding ElementName=uc, Path=GradientItems}"/>
+                                         StartPoint="{Binding ElementName=uc, Path=Minimum, Converter={main:NumberToPointConverter}}"
+                                         EndPoint="{Binding ElementName=uc, Path=Maximum, Converter={main:NumberToPointConverter}}"
+                                         GradientStops="{Binding ElementName=uc, Path=GradientItems}"/>
                 </Border.Background>
             </Border>
         </Border>
@@ -143,21 +145,24 @@
                         <Slider Grid.Column="1"
                                 Style="{StaticResource ColorSliderStyle}"
                                 Margin="2 0"
-                                Minimum="0" Maximum="1" Value="{Binding Offset}"
+                                Value="{Binding Offset}"
+                                Minimum="{Binding ElementName=uc, Path=Minimum}"
+                                Maximum="{Binding ElementName=uc, Path=Maximum}"
                                 IsSnapToTickEnabled="False"
                                 VerticalAlignment="Center">
                             <Slider.Foreground>
                                 <SolidColorBrush Color="{Binding Color}"/>
                             </Slider.Foreground>
                         </Slider>
+
                         <!-- Removing Action -->
                         <Button Grid.Column="2"
                                 Style="{StaticResource ButtonCleanStyle}"
-                                Margin="2"
-                                Foreground="{Binding ElementName=uc,Path=Foreground}"
+                                Foreground="{Binding ElementName=uc, Path=Foreground}"
                                 Command="{Binding ElementName=uc, Path=DataContext.CommandRemoveColor}"
                                 CommandParameter="{Binding}">
-                            <TextBlock Text="[x]"/>
+                            <TextBlock Text=" x " Foreground="#FFAAAAAA" Margin="0 0 2 4"
+                                       FontWeight="DemiBold"/>
                         </Button>
                     </Grid>
                 </DataTemplate>
@@ -166,12 +171,15 @@
 
         <!-- Adding Action -->
         <StackPanel Grid.Row="2"
-                    Margin="0 2"
+                    Margin="0 0 0 2"
                     HorizontalAlignment="Center">
             <Button Style="{StaticResource ButtonCleanStyle}"
                     Foreground="{Binding ElementName=uc,Path=Foreground}"
-                    Content="[+]"
-                    Command="{Binding ElementName=uc, Path=DataContext.CommandAddColor}"/>
+                    Command="{Binding ElementName=uc, Path=DataContext.CommandAddColor}">
+                <TextBlock Text="+"
+                           Foreground="#FFAAAAAA"
+                           FontWeight="Bold"/>
+            </Button>
         </StackPanel>
         
     </Grid>

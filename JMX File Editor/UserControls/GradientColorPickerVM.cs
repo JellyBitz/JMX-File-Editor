@@ -5,13 +5,36 @@ namespace JMXFileEditor.UserControls
 {
     public class GradientColorPickerVM : BaseViewModel
     {
+        #region Private Members
+        private double m_Minimum = 0;
+        private double m_Maximum = 1;
+        #endregion
 
         #region Public Properties
         public ItemChangeObservableCollection<GradientColorData> GradientItemsSource { get; } = new ItemChangeObservableCollection<GradientColorData>()
         {
+        	// Black ~ White by default
                new GradientColorData(){ Color = new Color(){ A = 255}, Offset = 0 },
                new GradientColorData(){ Color = new Color(){ A = 255, R = 255, G = 255, B = 255 }, Offset = 1 },
         };
+        public double Minimum
+        {
+            get => m_Minimum;
+            set
+            {
+                m_Minimum = value;
+                OnPropertyChanged(nameof(Minimum));
+            }
+        }
+        public double Maximum
+        {
+            get => m_Maximum;
+            set
+            {
+                m_Maximum = value;
+                OnPropertyChanged(nameof(Maximum));
+            }
+        }
         #endregion
 
         #region Commands
@@ -28,7 +51,7 @@ namespace JMXFileEditor.UserControls
                 GradientItemsSource.Add(new GradientColorData()
                 {
                     Color = new Color() { A = 255 },
-                    Offset = 1
+                    Offset = Maximum
                 });
             });
             CommandRemoveColor = new RelayParameterizedCommand((selectedItem) =>

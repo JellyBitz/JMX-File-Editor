@@ -27,14 +27,33 @@ namespace JMXFileEditor.UserControls
         public static DependencyProperty GradientItemsProperty =
            DependencyProperty.Register("GradientItems", typeof(GradientStopCollection), typeof(GradientColorPicker));
         /// <summary>
-        /// Gradient items
+        ///  Exposes minimum value from Gradient display
+        /// </summary>
+        public double Minimum
+        {
+            get => (double)GetValue(MinimumProperty);
+            set => SetValue(MinimumProperty, value);
+        }
+        public static DependencyProperty MinimumProperty =
+           DependencyProperty.Register("Minimum", typeof(double), typeof(GradientColorPicker), new PropertyMetadata(0d,OnMinimumPropertyChanged));
+        /// <summary>
+        /// Exposes maximum value from Gradient display
+        /// </summary>
+        public double Maximum
+        {
+            get => (double)GetValue(MaximumProperty);
+            set => SetValue(MaximumProperty, value);
+        }
+        public static DependencyProperty MaximumProperty =
+           DependencyProperty.Register("Maximum", typeof(double), typeof(GradientColorPicker), new PropertyMetadata(0d, OnMaximumPropertyChanged));
+        /// <summary>
+        /// Gradient items being handled
         /// </summary>
         public IEnumerable<GradientColorPickerVM.GradientColorData> GradientItemsSource
         {
             get => (IEnumerable<GradientColorPickerVM.GradientColorData>)GetValue(GradientItemsSourceProperty);
             set => SetValue(GradientItemsSourceProperty, value);
         }
-
         public static readonly DependencyProperty GradientItemsSourceProperty =
             DependencyProperty.Register("GradientItemsSource", typeof(IEnumerable<GradientColorPickerVM.GradientColorData>), typeof(GradientColorPicker),
             new PropertyMetadata(null, new PropertyChangedCallback(OnItemsSourceChanged)));
@@ -43,14 +62,39 @@ namespace JMXFileEditor.UserControls
         #region Constructor
         public GradientColorPicker()
         {
-            var vm = new GradientColorPickerVM();
-            DataContext = vm;
-            GradientItemsSource = vm.GradientItemsSource;
+            DataContext = new GradientColorPickerVM();
+            InitializeValues();
             InitializeComponent();
         }
         #endregion
 
         #region Private Helpers
+        private void InitializeValues()
+        {
+            if (!(DataContext is GradientColorPickerVM vm))
+                return;
+
+            GradientItemsSource = vm.GradientItemsSource;
+            Minimum = vm.Minimum;
+            Maximum = vm.Maximum;
+        }
+        private static void OnMinimumPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var _this = d as GradientColorPicker;
+
+            if (!(_this.DataContext is GradientColorPickerVM vm))
+                return;
+            vm.Minimum = (double)e.NewValue;
+        }
+        private static void OnMaximumPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var _this = d as GradientColorPicker;
+
+            if (!(_this.DataContext is GradientColorPickerVM vm))
+                return;
+            vm.Maximum = (double)e.NewValue;
+        }
+
         /// <summary>
         /// Updates GradientItems everytime GradientItemsSource updates
         /// </summary>

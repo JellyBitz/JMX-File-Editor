@@ -252,6 +252,7 @@
     <Compile Include="Utility\ExpressionHelpers.cs" />
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
     <Compile Include="ValueConverters\ObjectToTypeConverter.cs" />
+    <Compile Include="ValueConverters\NumberToPointConverter.cs" />
     <Compile Include="ValueConverters\ValueToVisibilityConverter.cs" />
     <Compile Include="ViewModels\Application\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\Application\IWindow.cs" />

@@ -208,14 +208,6 @@
                 </TreeView.Resources>
             </TreeView>
         </Grid>
-
-        <!-- Test -->
-        <Grid Grid.Row="1"
-              VerticalAlignment="Center">
-            <uc:GradientColorPicker Width="200"
-                                    Margin="0 50"
-                                    Background="White"/>
-        </Grid>
         
     </Grid>
 </Window>
