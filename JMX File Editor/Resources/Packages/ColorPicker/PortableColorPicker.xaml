@@ -19,15 +19,17 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <Border BorderThickness="1" BorderBrush="Black" Panel.ZIndex="0"
-                CornerRadius="2.5"
-                Padding="0" Margin="0" RenderOptions.BitmapScalingMode="NearestNeighbor"
-                Background="{StaticResource ColorPickerTransparentBackground}">
-            <ToggleButton Style="{StaticResource ColorToggleButtonStyle}" Padding="0" Margin="0"
-                          IsEnabled="{Binding Path=IsOpen, ElementName=popup, Converter={StaticResource BoolToInvertedBoolConverter}}"
-                          x:Name="toggleButton" BorderThickness="0" Panel.ZIndex="1"
-                          Background="{Binding Path=SelectedColor, ElementName=uc, Converter={StaticResource ColorToBrushConverter}}">
-            </ToggleButton>
+        <Border BorderThickness="1" BorderBrush="Black" CornerRadius="2">
+            <Border BorderThickness="1" BorderBrush="White" CornerRadius="1"
+                    Panel.ZIndex="0"
+                    Padding="0" Margin="0" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                    Background="{StaticResource ColorPickerTransparentBackground}">
+                <ToggleButton Style="{StaticResource ColorToggleButtonStyle}" Padding="0" Margin="0"
+                              IsEnabled="{Binding Path=IsOpen, ElementName=popup, Converter={StaticResource BoolToInvertedBoolConverter}}"
+                              x:Name="toggleButton" BorderThickness="0" Panel.ZIndex="1"
+                              Background="{Binding Path=SelectedColor, ElementName=uc, Converter={StaticResource ColorToBrushConverter}}">
+                </ToggleButton>
+            </Border>
         </Border>
         <Popup Name="popup" StaysOpen="False" IsOpen="{Binding Path=IsChecked, ElementName=toggleButton, Mode=TwoWay}">
             <Border BorderThickness="1" BorderBrush="Black" Background="White">

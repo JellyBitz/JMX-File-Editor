@@ -244,6 +244,10 @@
     <Compile Include="Silkroad\IO\BSReader.cs" />
     <Compile Include="Silkroad\IO\BSWriter.cs" />
     <Compile Include="Silkroad\Mathematics\Vector4.cs" />
+    <Compile Include="UserControls\GradientColorPicker.xaml.cs">
+      <DependentUpon>GradientColorPicker.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GradientColorPickerVM.cs" />
     <Compile Include="Utility\ByteArrayHelpers.cs" />
     <Compile Include="Utility\ExpressionHelpers.cs" />
     <Compile Include="ValueConverters\BaseValueConverter.cs" />
@@ -252,6 +256,7 @@
     <Compile Include="ViewModels\Application\ApplicationViewModel.cs" />
     <Compile Include="ViewModels\Application\IWindow.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
+    <Compile Include="ViewModels\Base\ItemChangeObservableCollection.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="ViewModels\Base\RelayParameterizedCommand.cs" />
     <Compile Include="ViewModels\Nodes\JMXAbstract.cs" />
@@ -420,6 +425,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\ListBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\Menu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -429,6 +438,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GradientColorPicker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

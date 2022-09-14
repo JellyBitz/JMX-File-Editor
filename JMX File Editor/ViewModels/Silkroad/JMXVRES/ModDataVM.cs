@@ -197,18 +197,18 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
                 {
                     // Add format
                     AddFormatHandler(typeof(Color4), (s, e) => {
-                        e.Childs.Add(new ColorVM("[" + e.Childs.Count + "]", e.Obj is Color4 _obj ? ColorVM.GetColor32(_obj) : new Color32()));
+                        e.Childs.Add(new ColorVM("[" + e.Childs.Count + "]", e.Obj is Color4 _obj ? ColorVM.GetColor(_obj) : new System.Windows.Media.Color() { A = 255 }));
                     });
                     // Create VM
                     Childs.Add(new JMXAttribute("Time", Key.Time));
-                    Childs.Add(new ColorVM("Value", ColorVM.GetColor32(Key.Value)));
+                    Childs.Add(new ColorVM("Value", ColorVM.GetColor(Key.Value)));
                 }
                 public override object GetClassFrom(JMXStructure Structure)
                 {
                     ModDataMtrl.GradientKey obj = new ModDataMtrl.GradientKey()
                     {
                         Time = (int)((JMXAttribute)Structure.Childs[0]).Value,
-                        Value = ColorVM.GetColor4((Color32)((ColorVM)Structure.Childs[1]).GetClass())
+                        Value = ((ColorVM)Structure.Childs[1]).GetColor4(),
                     };
                     return obj;
                 }

@@ -12,9 +12,9 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVDOF
             Childs.Add(new JMXAttribute("Name", BlockLight.Name));
 
             Childs.Add(new Vector3VM("Position", BlockLight.Position));
-            Childs.Add(new ColorVM("Color01", ColorVM.GetColor32(BlockLight.Color01), false));
-            Childs.Add(new ColorVM("Color02", ColorVM.GetColor32(BlockLight.Color02), false));
-            Childs.Add(new ColorVM("Color03", ColorVM.GetColor32(BlockLight.Color03), false));
+            Childs.Add(new ColorVM("Color01", ColorVM.GetColor(BlockLight.Color01), false));
+            Childs.Add(new ColorVM("Color02", ColorVM.GetColor(BlockLight.Color02), false));
+            Childs.Add(new ColorVM("Color03", ColorVM.GetColor(BlockLight.Color03), false));
 
             Childs.Add(new JMXAttribute("UnkFloat01", BlockLight.UnkFloat01));
             Childs.Add(new JMXAttribute("UnkFloat02", BlockLight.UnkFloat02));
@@ -30,9 +30,9 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVDOF
                 Name = (string)((JMXAttribute)s.Childs[i++]).Value,
 
                 Position = (Vector3)((Vector3VM)s.Childs[i++]).GetClass(),
-                Color01 = ColorVM.GetColor3((Color32)((ColorVM)s.Childs[i++]).GetClass()),
-                Color02 = ColorVM.GetColor3((Color32)((ColorVM)s.Childs[i++]).GetClass()),
-                Color03 = ColorVM.GetColor3((Color32)((ColorVM)s.Childs[i++]).GetClass()),
+                Color01 = ((ColorVM)s.Childs[i++]).GetColor3(),
+                Color02 = ((ColorVM)s.Childs[i++]).GetColor3(),
+                Color03 = ((ColorVM)s.Childs[i++]).GetColor3(),
 
                 UnkFloat01 = (float)((JMXAttribute)s.Childs[i++]).Value,
                 UnkFloat02 = (float)((JMXAttribute)s.Childs[i++]).Value,

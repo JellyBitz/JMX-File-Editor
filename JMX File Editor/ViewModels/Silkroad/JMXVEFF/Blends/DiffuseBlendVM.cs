@@ -10,7 +10,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends
         public DiffuseBlendVM(string Name, DiffuseBlend data) : base(Name, true)
         {
             Childs.Add(new JMXAttribute("Time", data.Time));
-            Childs.Add(new ColorVM("Value", data.Value));
+            Childs.Add(new ColorVM("Value", ColorVM.GetColor(data.Value)));
         }
         #endregion
 
@@ -20,7 +20,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends
             return new DiffuseBlend()
             {
                 Time = (float)((JMXAttribute)s.Childs[i++]).Value,
-                Value = (Color32)((ColorVM)s.Childs[i++]).GetClass(),
+                Value = ((ColorVM)s.Childs[i++]).GetColor32(),
             };
         }
         #endregion

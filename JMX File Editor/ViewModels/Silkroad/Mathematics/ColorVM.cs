@@ -3,21 +3,22 @@ using ColorPicker.Models;
 
 using System;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
 {
     public class ColorVM : JMXStructure
     {
         #region Private Properties
-        private ColorState m_Color;
-        private bool m_IsEditing;
+        private Color m_Color;
         #endregion
 
         #region Public Properties
         /// <summary>
         /// Contains the current color
         /// </summary>
-        public ColorState Color {
+        public Color Color
+        {
             get => m_Color;
             set
             {
@@ -26,105 +27,79 @@ namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
             }
         }
         /// <summary>
-        /// Check if color is on editing mode
-        /// </summary>
-        public bool IsEditing
-        {
-            get => m_IsEditing;
-            set
-            {
-                m_IsEditing = value;
-                OnPropertyChanged(nameof(IsEditing));
-            }
-        }
-        /// <summary>
         /// Check if the alpha channel can be edited
         /// </summary>
         public bool ShowAlpha { get; }
         #endregion
 
-        #region Commands
-        /// <summary>
-        /// Start/stop editing the color
-        /// </summary>
-        public ICommand CommandEditColor { get; }
-        #endregion
-
         #region Constructor
-        public ColorVM(string Name, Color32 color, bool showAlpha = true) : base(Name, true)
+        public ColorVM(string Name, Color color, bool showAlpha = true) : base(Name, true)
         {
-            this.Color = new ColorState()
-            {
-                RGB_R = color.Red / 255f,
-                RGB_G = color.Green / 255f,
-                RGB_B = color.Blue / 255f,
-                A = color.Alpha / 255f,
-            };
-            this.ShowAlpha = showAlpha;
-
-            // Set commands
-            CommandEditColor = new RelayCommand(() =>
-            {
-                IsEditing = !IsEditing;
-            });
+            Color = color;
+            ShowAlpha = showAlpha;
         }
         #endregion
 
         #region Public Methods
-        public override object GetClassFrom(JMXStructure s, int i)
-        {
-            return new Color32()
-            {
-                Red = (byte)((JMXAttribute)s.Childs[i++]).Value,
-                Green = (byte)((JMXAttribute)s.Childs[i++]).Value,
-                Blue = (byte)((JMXAttribute)s.Childs[i++]).Value,
-                Alpha = (byte)((JMXAttribute)s.Childs[i++]).Value,
-            };
-        }
-        public static Color32 GetColor32(Color4 color)
-        {
-            var result = new Color32();
-            // Check limits
-            if (color.Red > 0)
-                result.Red = color.Red > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(color.Red * 255);
-            if (color.Green > 0)
-                result.Green = color.Green > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(color.Green * 255);
-            if (color.Blue > 0)
-                result.Blue = color.Blue > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(color.Blue * 255);
-            if (color.Alpha > 0)
-                result.Alpha = color.Alpha > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(color.Alpha * 255);
-            return result;
-        }
-        public static Color32 GetColor32(Color3 color)
-        {
-            var result = new Color32();
-            // Check limits
-            if (color.Red > 0)
-                result.Red = color.Red > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(color.Red * 255);
-            if (color.Green > 0)
-                result.Green = color.Green > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(color.Green * 255);
-            if (color.Blue > 0)
-                result.Blue = color.Blue > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(color.Blue * 255);
-            return result;
-        }
-        public static Color4 GetColor4(Color32 color)
+        public override object GetClassFrom(JMXStructure s) => ((ColorVM)s).Color;
+        public Color4 GetColor4()
         {
             return new Color4()
             {
-                Red = color.Red / 255f,
-                Green = color.Green / 255f,
-                Blue = color.Blue / 255f,
-                Alpha = color.Alpha / 255f,
+                Red = Color.R / 255f,
+                Green = Color.G / 255f,
+                Blue = Color.B / 255f,
+                Alpha = Color.A / 255f,
             };
         }
-        public static Color3 GetColor3(Color32 color)
+        public Color3 GetColor3()
         {
             return new Color3()
             {
-                Red = color.Red / 255f,
-                Green = color.Green / 255f,
-                Blue = color.Blue / 255f,
+                Red = Color.R / 255f,
+                Green = Color.G / 255f,
+                Blue = Color.B / 255f,
             };
+        }
+        public Color32 GetColor32() => new Color32(Color.R, Color.G, Color.B, Color.A);
+        #endregion
+
+        #region Public Static Helpers
+        public static Color GetColor(Color32 c)
+        {
+            return new Color()
+            {
+                R = c.Red,
+                G = c.Green,
+                B = c.Blue,
+                A = c.Alpha,
+            };
+        }
+        public static Color GetColor(Color4 c)
+        {
+            var result = new Color();
+            // Check limits
+            if (c.Red > 0)
+                result.R = c.Red > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Red * 255);
+            if (c.Green > 0)
+                result.G = c.Green > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Green * 255);
+            if (c.Blue > 0)
+                result.B = c.Blue > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Blue * 255);
+            if (c.Alpha > 0)
+                result.A = c.Alpha > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Alpha * 255);
+            return result;
+        }
+        public static Color GetColor(Color3 c)
+        {
+            var result = new Color() { A = 255 };
+            // Check limits
+            if (c.Red > 0)
+                result.R = c.Red > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Red * 255);
+            if (c.Green > 0)
+                result.G = c.Green > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Green * 255);
+            if (c.Blue > 0)
+                result.B = c.Blue > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Blue * 255);
+            return result;
         }
         #endregion
     }

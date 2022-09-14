@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:pkgColorPicker="clr-namespace:ColorPicker"
         xmlns:local="clr-namespace:JMXFileEditor"
+        xmlns:uc="clr-namespace:JMXFileEditor.UserControls"
         xmlns:vm="clr-namespace:JMXFileEditor.ViewModels"
         xmlns:vmMaths="clr-namespace:JMXFileEditor.ViewModels.Silkroad.Mathematics"
         WindowStartupLocation="CenterScreen"
@@ -193,41 +194,28 @@
                                         Orientation="Horizontal">
                                 <!-- Name -->
                                 <TextBlock VerticalAlignment="Center"
-                                       Text="{Binding Name}"/>
+                                           Text="{Binding Name}"/>
                                 <!-- Color Editor -->
-                                <Button x:Name="xColorToggle"
-                                        Style="{StaticResource ButtonCleanStyle}"
-                                        Command="{Binding CommandEditColor}">
-                                    <!-- Demo -->
-                                    <Border Width="40" Height="20"
-                                            Margin="5 2"
-                                            BorderThickness="1"
-                                            BorderBrush="#80000000"
-                                            CornerRadius="1"
-                                            ToolTip="{Binding ElementName=xColorEditor,Path=SelectedColor}"
-                                            Background="{StaticResource ColorPickerTransparentBackground}" >
-                                        <Border Background="{Binding SelectedColor, ElementName=xColorEditor, Converter={StaticResource ColorToBrushConverter}}"/>
-                                    </Border>
-                                </Button>
+                                <pkgColorPicker:PortableColorPicker x:Name="xColorEditor"
+                                                                    Width="40" Height="20"
+                                                                    Margin="5 2"
+                                                                    SelectedColor="{Binding Color, Mode=TwoWay, Delay=20}"
+                                                                    ToolTip="{Binding ElementName=xColorEditor,Path=SelectedColor}"
+                                                                    ShowAlpha="{Binding ShowAlpha}"/>
                             </StackPanel>
-                            <!-- Window from Color Editor -->
-                            <Popup StaysOpen="False"
-                                   IsOpen="{Binding Path=IsEditing, Mode=TwoWay}"
-                                   PlacementTarget="{Binding ElementName=xColorToggle}">
-                                <Border Background="{StaticResource BackgroundMainBrush}"
-                                        BorderBrush="#808080"
-                                        BorderThickness="1">
-                                    <pkgColorPicker:StandardColorPicker x:Name="xColorEditor"
-                                                                        Width="40" Height="20"
-                                                                        Margin="5 2"
-                                                                        ColorState="{Binding Color, Mode=TwoWay, Delay=10}"
-                                                                        ShowAlpha="{Binding ShowAlpha}"/>
-                                </Border>
-                            </Popup>
                         </Grid>
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>
         </Grid>
+
+        <!-- Test -->
+        <Grid Grid.Row="1"
+              VerticalAlignment="Center">
+            <uc:GradientColorPicker Width="200"
+                                    Margin="0 50"
+                                    Background="White"/>
+        </Grid>
+        
     </Grid>
 </Window>

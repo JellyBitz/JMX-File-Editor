@@ -13,9 +13,9 @@
                 <ResourceDictionary Source="Styles/Menu.xaml"/>
                 <ResourceDictionary Source="Styles/TreeView.xaml"/>
                 <ResourceDictionary Source="Styles/Button.xaml"/>
+                <ResourceDictionary Source="Styles/ListBox.xaml"/>
                 <ResourceDictionary Source="Resources/Packages/ColorPicker/Styles/Images.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <pkgColorPickerConv:ColorToBrushConverter x:Key="ColorToBrushConverter" />
         </ResourceDictionary> 
     </Application.Resources>
 </Application>
