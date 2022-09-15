@@ -1,12 +1,13 @@
-﻿using System;
+﻿using JMXFileEditor.UserControls.Models;
+
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Linq;
 
 namespace JMXFileEditor.UserControls
 {
@@ -17,17 +18,7 @@ namespace JMXFileEditor.UserControls
     {
         #region Dependecy Properties
         /// <summary>
-        /// Gradient item collection being displayed
-        /// </summary>
-        public GradientStopCollection GradientItems
-        {
-            get => (GradientStopCollection)GetValue(GradientItemsProperty);
-            set => SetValue(GradientItemsProperty, value);
-        }
-        public static DependencyProperty GradientItemsProperty =
-           DependencyProperty.Register("GradientItems", typeof(GradientStopCollection), typeof(GradientColorPicker));
-        /// <summary>
-        ///  Exposes minimum value from Gradient display
+        /// Exposes minimum value from Gradient display
         /// </summary>
         public double Minimum
         {
@@ -35,7 +26,7 @@ namespace JMXFileEditor.UserControls
             set => SetValue(MinimumProperty, value);
         }
         public static DependencyProperty MinimumProperty =
-           DependencyProperty.Register("Minimum", typeof(double), typeof(GradientColorPicker), new PropertyMetadata(0d,OnMinimumPropertyChanged));
+           DependencyProperty.Register("Minimum", typeof(double), typeof(GradientColorPicker), new PropertyMetadata(0d));
         /// <summary>
         /// Exposes maximum value from Gradient display
         /// </summary>
@@ -45,79 +36,87 @@ namespace JMXFileEditor.UserControls
             set => SetValue(MaximumProperty, value);
         }
         public static DependencyProperty MaximumProperty =
-           DependencyProperty.Register("Maximum", typeof(double), typeof(GradientColorPicker), new PropertyMetadata(0d, OnMaximumPropertyChanged));
+           DependencyProperty.Register("Maximum", typeof(double), typeof(GradientColorPicker), new PropertyMetadata(1d));
         /// <summary>
         /// Gradient items being handled
         /// </summary>
-        public IEnumerable<GradientColorPickerVM.GradientColorData> GradientItemsSource
+        public IEnumerable<IGradientColorPickerItem> ItemsSource
         {
-            get => (IEnumerable<GradientColorPickerVM.GradientColorData>)GetValue(GradientItemsSourceProperty);
-            set => SetValue(GradientItemsSourceProperty, value);
+            get => (IEnumerable<IGradientColorPickerItem>)GetValue(ItemsSourceProperty);
+            set => SetValue(ItemsSourceProperty, value);
         }
-        public static readonly DependencyProperty GradientItemsSourceProperty =
-            DependencyProperty.Register("GradientItemsSource", typeof(IEnumerable<GradientColorPickerVM.GradientColorData>), typeof(GradientColorPicker),
-            new PropertyMetadata(null, new PropertyChangedCallback(OnItemsSourceChanged)));
+        public static readonly DependencyProperty ItemsSourceProperty =
+            DependencyProperty.Register("ItemsSource", typeof(IEnumerable<IGradientColorPickerItem>), typeof(GradientColorPicker),
+            new PropertyMetadata(new PropertyChangedCallback(OnItemsSourcePropertyChanged)));
+        /// <summary>
+        /// Command executed on adding action
+        /// </summary>
+        public ICommand CommandAddItem
+        {
+            get => (ICommand)GetValue(CommandAddItemProperty);
+            set => SetValue(CommandAddItemProperty, value);
+        }
+        public static DependencyProperty CommandAddItemProperty =
+            DependencyProperty.Register("CommandAddItem", typeof(ICommand), typeof(GradientColorPicker));
+        /// <summary>
+        /// Command executed on removing action
+        /// </summary>
+        public ICommand CommandRemoveItem
+        {
+            get => (ICommand)GetValue(CommandRemoveItemProperty);
+            set => SetValue(CommandRemoveItemProperty, value);
+        }
+        public static DependencyProperty CommandRemoveItemProperty =
+           DependencyProperty.Register("CommandRemoveItem", typeof(ICommand), typeof(GradientColorPicker));
         #endregion
 
         #region Constructor
         public GradientColorPicker()
         {
-            DataContext = new GradientColorPickerVM();
-            InitializeValues();
             InitializeComponent();
+            Minimum = 0;
+            Maximum = 1;
         }
         #endregion
 
         #region Private Helpers
-        private void InitializeValues()
-        {
-            if (!(DataContext is GradientColorPickerVM vm))
-                return;
-
-            GradientItemsSource = vm.GradientItemsSource;
-            Minimum = vm.Minimum;
-            Maximum = vm.Maximum;
-        }
-        private static void OnMinimumPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var _this = d as GradientColorPicker;
-
-            if (!(_this.DataContext is GradientColorPickerVM vm))
-                return;
-            vm.Minimum = (double)e.NewValue;
-        }
-        private static void OnMaximumPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var _this = d as GradientColorPicker;
-
-            if (!(_this.DataContext is GradientColorPickerVM vm))
-                return;
-            vm.Maximum = (double)e.NewValue;
-        }
-
-        /// <summary>
-        /// Updates GradientItems everytime GradientItemsSource updates
-        /// </summary>
-        private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnItemsSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.OldValue == e.NewValue)
                 return;
             var _this = d as GradientColorPicker;
-            if (e.OldValue is ObservableCollection<GradientColorPickerVM.GradientColorData>)
-            {
-                var c = e.OldValue as ObservableCollection<GradientColorPickerVM.GradientColorData>;
-                c.CollectionChanged -= _this.GradientItemsSourceCollectionChanged;
-            }
-            if (e.NewValue is ObservableCollection<GradientColorPickerVM.GradientColorData>)
-            {
-                var c = e.NewValue as ObservableCollection<GradientColorPickerVM.GradientColorData>;
-                c.CollectionChanged += _this.GradientItemsSourceCollectionChanged;
-            }
-            _this.UpdateItems();
+            _this?.OnItemsSourceChanged((IEnumerable<IGradientColorPickerItem>)e.OldValue, (IEnumerable<IGradientColorPickerItem>)e.NewValue);
         }
-        private void GradientItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateItems();
-        private void GradientItemsSourcePropertyChanged(object sender, PropertyChangedEventArgs e) => UpdateItems();
-        private void UpdateItems() => GradientItems = new GradientStopCollection(GradientItemsSource.Select(x => new GradientStop(x.Color, x.Offset)));
+        private void OnItemsSourceChanged(IEnumerable<IGradientColorPickerItem> oldValue, IEnumerable<IGradientColorPickerItem> newValue)
+        {
+            if (oldValue is INotifyCollectionChanged oldINotifyCollectionChanged)
+            {
+                oldINotifyCollectionChanged.CollectionChanged -= OnItemsSourceCollectionChanged;
+                foreach (var item in oldValue)
+                {
+                    if (item is INotifyPropertyChanged itemINotifyPropertyChanged)
+                        itemINotifyPropertyChanged.PropertyChanged -= OnItemsSourceValuePropertyChanged;
+                }
+            }
+            if (newValue is INotifyCollectionChanged newINotifyCollectionChanged)
+            {
+                newINotifyCollectionChanged.CollectionChanged += OnItemsSourceCollectionChanged;
+                foreach (var item in newValue)
+                {
+                    if (item is INotifyPropertyChanged itemINotifyPropertyChanged)
+                        itemINotifyPropertyChanged.PropertyChanged += OnItemsSourceValuePropertyChanged;
+                }
+            }
+            UpdateGradientStopCollection();
+        }
+        private void OnItemsSourceValuePropertyChanged(object sender, PropertyChangedEventArgs e) => UpdateGradientStopCollection();
+        private void OnItemsSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => UpdateGradientStopCollection();
+        private void UpdateGradientStopCollection()
+        {
+            xGradientDisplay.GradientStops?.Clear();
+            if (ItemsSource != null)
+                xGradientDisplay.GradientStops = new GradientStopCollection(ItemsSource.Select(x => new GradientStop(x.Color, x.Offset)));
+        }
         #endregion
     }
 }

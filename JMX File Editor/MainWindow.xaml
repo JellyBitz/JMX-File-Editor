@@ -205,6 +205,23 @@
                             </StackPanel>
                         </Grid>
                     </HierarchicalDataTemplate>
+                    <!-- Binding GradientColorPickerVM type -->
+                    <HierarchicalDataTemplate DataType="{x:Type vm:GradientColorPickerVM}">
+                        <Grid>
+                            <StackPanel Orientation="Vertical">
+                                <!-- Name -->
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="{Binding Name}"/>
+                                <!-- Gradient Editor -->
+                                <uc:GradientColorPicker Width="200"
+                                                        Minimum="{Binding Begin}"
+                                                        Maximum="{Binding End}"
+                                                        ItemsSource="{Binding GradientValues}"
+                                                        CommandAddItem="{Binding CommandAddColor}"
+                                                        CommandRemoveItem="{Binding CommandRemoveColor}"/>
+                            </StackPanel>
+                        </Grid>
+                    </HierarchicalDataTemplate>
                 </TreeView.Resources>
             </TreeView>
         </Grid>

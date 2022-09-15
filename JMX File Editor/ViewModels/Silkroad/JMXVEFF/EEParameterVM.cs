@@ -1,12 +1,12 @@
-﻿using System;
-
-using JMXFileEditor.Silkroad.Data.JMXVEFF;
+﻿using JMXFileEditor.Silkroad.Data.JMXVEFF;
 using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
 using JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter;
 using JMXFileEditor.Silkroad.Mathematics;
 using JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends;
 using JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Parameter;
 using JMXFileEditor.ViewModels.Silkroad.Mathematics;
+
+using System;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
 {
@@ -78,7 +78,8 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
             });
             AddFormatHandler(typeof(ParameterBlendDiffuseGraph), (s, e) =>
             {
-                AddChildNodes(new EEDiffuseBlendVM("Value", e.Obj is ParameterBlendDiffuseGraph _obj ? _obj.Value : new EEBlend<Color32, DiffuseBlend>()));
+                var obj = e.Obj is ParameterBlendDiffuseGraph _obj ? _obj.Value : new EEBlend<Color32, DiffuseBlend>();
+                Childs.Add(new GradientColorPickerVM("DiffuseBlend", obj.Begin, obj.End, obj));
             });
             AddFormatHandler(typeof(ParameterBSAnimation), (s, e) =>
             {
@@ -173,9 +174,17 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
             }
             else if (CurrentType == typeof(ParameterBlendDiffuseGraph))
             {
+                var gradientColor = (GradientColorPickerVM)s.Childs[i++];
+                // Copy data
+                var diffuseBlend = new EEBlend<Color32, DiffuseBlend>();
+                diffuseBlend.Begin = gradientColor.Begin;
+                diffuseBlend.End = gradientColor.End;
+                foreach (var v in gradientColor.GradientValues)
+                    diffuseBlend.Points.Add(new DiffuseBlend() { Value = new Color32(v.Color.R, v.Color.G, v.Color.B, v.Color.A), Time = (float)v.Offset });
+                // build data
                 data = new ParameterBlendDiffuseGraph()
                 {
-                    Value = (EEBlend<Color32, DiffuseBlend>)new EEDiffuseBlendVM(string.Empty, new EEBlend<Color32, DiffuseBlend>()).GetClassFrom(s, i++)
+                    Value = diffuseBlend
                 };
             }
             else if (CurrentType == typeof(ParameterBSAnimation))

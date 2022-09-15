@@ -44,10 +44,13 @@
         </Style>
         <ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Path x:Name="grip" Data="M 0,0 C0,0 11,0 11,0 11,0 11,18 11,18 11,18 0,18 0,18 0,18 0,0 0,0 z"
-                      Fill="{TemplateBinding Foreground}" Stretch="Fill" SnapsToDevicePixels="True"
-                      Stroke="#FF222222" StrokeThickness="1"
-                      VerticalAlignment="Center"/>
+                <Viewbox>
+                    <Path x:Name="grip" Data="M 0,0 C0,0 6,0 6,0 6,0 6,12 6,12 6,12 0,12 0,12 0,12 0,0 0,0 z"
+                          Fill="{TemplateBinding Foreground}" Stretch="Fill" SnapsToDevicePixels="True"
+                          Stroke="#FF222222" StrokeThickness="1"
+                          VerticalAlignment="Center">
+                    </Path>
+                </Viewbox>
             </Grid>
         </ControlTemplate>
         <ControlTemplate x:Key="SliderHorizontal" TargetType="{x:Type Slider}">
@@ -74,7 +77,7 @@
                         </Track.IncreaseRepeatButton>
                         <Track.Thumb>
                             <Thumb x:Name="Thumb" Focusable="False"
-                                   Height="16" Width="6" Margin="0 2 0 2"
+                                   Height="16" Margin="0 2 0 2"
                                    OverridesDefaultStyle="True" Template="{StaticResource SliderThumbHorizontalDefault}"
                                    VerticalAlignment="Center" HorizontalAlignment="Right"
                                    ToolTip="{TemplateBinding Value}"/>
@@ -103,24 +106,27 @@
         <!-- Gradient Display -->
         <Border Grid.Row="0"
                 Margin="1"
-                Background="{StaticResource ColorPickerTransparentBackground}">
-            <Border Height="22">
-                <Border.Background>
-                    <LinearGradientBrush x:Name="xGradientDisplay"
-                                         StartPoint="{Binding ElementName=uc, Path=Minimum, Converter={main:NumberToPointConverter}}"
-                                         EndPoint="{Binding ElementName=uc, Path=Maximum, Converter={main:NumberToPointConverter}}"
-                                         GradientStops="{Binding ElementName=uc, Path=GradientItems}"/>
-                </Border.Background>
+                Height="22"
+                BorderThickness="1" BorderBrush="Black" CornerRadius="2">
+            <Border BorderThickness="1" BorderBrush="White" CornerRadius="1"
+                    Padding="0" Margin="0" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                    Background="{StaticResource ColorPickerTransparentBackground}">
+                <Border>
+                    <Border.Background>
+                        <LinearGradientBrush x:Name="xGradientDisplay"
+                                             StartPoint="{Binding ElementName=uc, Path=Minimum, Converter={main:NumberToPointConverter}}"
+                                             EndPoint="{Binding ElementName=uc, Path=Maximum, Converter={main:NumberToPointConverter}}"/>
+                    </Border.Background>
+                </Border>
             </Border>
         </Border>
-
         <!-- Gradient Stops -->
         <ListBox Grid.Row="1"
                  Background="{Binding ElementName=uc,Path=Background}"
                  Style="{StaticResource NewListBoxStyle}"
                  HorizontalContentAlignment="Stretch"
                  x:Name="xGradientStops"
-                 ItemsSource="{Binding ElementName=uc, Path=DataContext.GradientItemsSource}">
+                 ItemsSource="{Binding ElementName=uc, Path=ItemsSource}">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Focusable" Value="false"/>
@@ -145,9 +151,9 @@
                         <Slider Grid.Column="1"
                                 Style="{StaticResource ColorSliderStyle}"
                                 Margin="2 0"
-                                Value="{Binding Offset}"
                                 Minimum="{Binding ElementName=uc, Path=Minimum}"
                                 Maximum="{Binding ElementName=uc, Path=Maximum}"
+                                Value="{Binding Offset, Mode=TwoWay}"
                                 IsSnapToTickEnabled="False"
                                 VerticalAlignment="Center">
                             <Slider.Foreground>
@@ -159,7 +165,7 @@
                         <Button Grid.Column="2"
                                 Style="{StaticResource ButtonCleanStyle}"
                                 Foreground="{Binding ElementName=uc, Path=Foreground}"
-                                Command="{Binding ElementName=uc, Path=DataContext.CommandRemoveColor}"
+                                Command="{Binding ElementName=uc, Path=CommandRemoveItem}"
                                 CommandParameter="{Binding}">
                             <TextBlock Text=" x " Foreground="#FFAAAAAA" Margin="0 0 2 4"
                                        FontWeight="DemiBold"/>
@@ -171,11 +177,11 @@
 
         <!-- Adding Action -->
         <StackPanel Grid.Row="2"
-                    Margin="0 0 0 2"
+                    Margin="0 -6 0 6"
                     HorizontalAlignment="Center">
             <Button Style="{StaticResource ButtonCleanStyle}"
                     Foreground="{Binding ElementName=uc,Path=Foreground}"
-                    Command="{Binding ElementName=uc, Path=DataContext.CommandAddColor}">
+                    Command="{Binding ElementName=uc, Path=CommandAddItem}">
                 <TextBlock Text="+"
                            Foreground="#FFAAAAAA"
                            FontWeight="Bold"/>

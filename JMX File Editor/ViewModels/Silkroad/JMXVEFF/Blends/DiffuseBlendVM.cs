@@ -1,5 +1,4 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
-using JMXFileEditor.Silkroad.Mathematics;
 using JMXFileEditor.ViewModels.Silkroad.Mathematics;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends

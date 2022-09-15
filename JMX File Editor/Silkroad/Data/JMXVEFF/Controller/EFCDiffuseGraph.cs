@@ -12,6 +12,12 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Controller
         public EEBlend<byte, ByteBlend> ByteBlend { get; set; } = new EEBlend<byte, ByteBlend>();
         public EEBlend<Color32, DiffuseBlend> DiffuseBlend { get; set; } = new EEBlend<Color32, DiffuseBlend>();
 
+        public EFCDiffuseGraph()
+        {
+            ByteBlend.End = 1f;
+            DiffuseBlend.End = 1f;
+        }
+
         public override void Deserialize(BSReader reader)
         {
             ByteBlend.Deserialize(reader);
