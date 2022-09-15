@@ -3,7 +3,6 @@ using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
 using JMXFileEditor.Silkroad.Mathematics;
 using JMXFileEditor.UserControls.Models;
 using JMXFileEditor.ViewModels.Silkroad.Mathematics;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -17,7 +16,7 @@ namespace JMXFileEditor.ViewModels
         #endregion
 
         #region Public Properties
-        public ObservableCollection<GradientValue> GradientValues { get; } = new ObservableCollection<GradientValue>();
+        public ItemChangeObservableCollection<GradientValue> GradientValues { get; } = new ItemChangeObservableCollection<GradientValue>();
         public float Begin
         {
             get => m_Begin;
