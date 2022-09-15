@@ -1,0 +1,192 @@
+﻿<UserControl x:Class="JMXFileEditor.UserControls.GradientColorPicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:JMXFileEditor.UserControls"
+             xmlns:main="clr-namespace:JMXFileEditor"
+             xmlns:pkgColorPicker="clr-namespace:ColorPicker"
+             xmlns:pkgColorPickerConv="clr-namespace:ColorPicker.Converters"
+             MinHeight="45" MinWidth="100"
+             x:Name="uc"
+             mc:Ignorable="d"
+             d:DesignHeight="45" d:DesignWidth="100">
+    <UserControl.Resources>
+        <Style x:Key="DecreaseButton" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Focusable" Value="false"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Background="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
+                            <Rectangle Fill="#FF333333" Height="4.0" Width="{TemplateBinding Width}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="IncreaseButton" TargetType="{x:Type RepeatButton}">
+            <Setter Property="OverridesDefaultStyle" Value="true"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Focusable" Value="false"/>
+            <Setter Property="IsTabStop" Value="false"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                        <Border Background="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}">
+                            <Rectangle Fill="#FFDDDDDD" Height="4.0" Width="{TemplateBinding Width}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="SliderThumbHorizontalDefault" TargetType="{x:Type Thumb}">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Viewbox>
+                    <Path x:Name="grip" Data="M 0,0 C0,0 6,0 6,0 6,0 6,12 6,12 6,12 0,12 0,12 0,12 0,0 0,0 z"
+                          Fill="{TemplateBinding Foreground}" Stretch="Fill" SnapsToDevicePixels="True"
+                          Stroke="#FF222222" StrokeThickness="1"
+                          VerticalAlignment="Center">
+                    </Path>
+                </Viewbox>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="SliderHorizontal" TargetType="{x:Type Slider}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TickBar x:Name="TopTick" Fill="{TemplateBinding Foreground}" Height="4" Margin="0,0,0,2" Placement="Top" Grid.Row="0" Visibility="Collapsed"/>
+                    <TickBar x:Name="BottomTick" Fill="{TemplateBinding Foreground}" Height="4" Margin="0,2,0,0" Placement="Bottom" Grid.Row="2" Visibility="Collapsed"/>
+                    <Border x:Name="TrackBackground" BorderThickness="1" Height="4.0" Margin="5,0" Grid.Row="1" VerticalAlignment="center">
+                        <Canvas Margin="-6,-1">
+                            <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Height="4.0" Visibility="Hidden"/>
+                        </Canvas>
+                    </Border>
+                    <Track x:Name="PART_Track" Grid.Row="1">
+                        <Track.DecreaseRepeatButton>
+                            <RepeatButton Command="{x:Static Slider.DecreaseLarge}" Style="{StaticResource DecreaseButton}" Margin="0,0,-0.333,0"/>
+                        </Track.DecreaseRepeatButton>
+                        <Track.IncreaseRepeatButton>
+                            <RepeatButton Command="{x:Static Slider.IncreaseLarge}" Style="{StaticResource IncreaseButton}"/>
+                        </Track.IncreaseRepeatButton>
+                        <Track.Thumb>
+                            <Thumb x:Name="Thumb" Focusable="False"
+                                   Height="16" Margin="0 2 0 2"
+                                   OverridesDefaultStyle="True" Template="{StaticResource SliderThumbHorizontalDefault}"
+                                   VerticalAlignment="Center" HorizontalAlignment="Right"
+                                   ToolTip="{TemplateBinding Value}"/>
+                        </Track.Thumb>
+                    </Track>
+                </Grid>
+            </Border>
+        </ControlTemplate>
+        <Style x:Key="ColorSliderStyle" TargetType="{x:Type Slider}">
+            <Setter Property="Stylus.IsPressAndHoldEnabled" Value="false"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template" Value="{StaticResource SliderHorizontal}"/>
+        </Style>
+    </UserControl.Resources>
+    <!-- Main Layout -->
+    <Grid Background="{Binding ElementName=uc,Path=Background}">
+        <Grid.RowDefinitions>
+            <!-- Gradient Display -->
+            <RowDefinition Height="Auto"/>
+            <!-- Gradients -->
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Gradient Display -->
+        <Border Grid.Row="0"
+                Margin="1"
+                Height="22"
+                BorderThickness="1" BorderBrush="Black" CornerRadius="2">
+            <Border BorderThickness="1" BorderBrush="White" CornerRadius="1"
+                    Padding="0" Margin="0" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                    Background="{StaticResource ColorPickerTransparentBackground}">
+                <Border>
+                    <Border.Background>
+                        <LinearGradientBrush x:Name="xGradientDisplay"
+                                             StartPoint="{Binding ElementName=uc, Path=Minimum, Converter={main:NumberToPointConverter}}"
+                                             EndPoint="{Binding ElementName=uc, Path=Maximum, Converter={main:NumberToPointConverter}}"/>
+                    </Border.Background>
+                </Border>
+            </Border>
+        </Border>
+        <!-- Gradient Stops -->
+        <ListBox Grid.Row="1"
+                 Background="{Binding ElementName=uc,Path=Background}"
+                 Style="{StaticResource NewListBoxStyle}"
+                 HorizontalContentAlignment="Stretch"
+                 x:Name="xGradientStops"
+                 ItemsSource="{Binding ElementName=uc, Path=ItemsSource}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Focusable" Value="false"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="1 2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- Color Editor -->
+                        <pkgColorPicker:PortableColorPicker x:Name="xColorEditor"
+                                                            Width="20"
+                                                            Margin="2"
+                                                            SelectedColor="{Binding Color, Mode=TwoWay, Delay=20}"
+                                                            ShowAlpha="True"
+                                                            ToolTip="{Binding ElementName=xColorEditor,Path=SelectedColor}"/>
+                        <!-- Offset -->
+                        <Slider Grid.Column="1"
+                                Style="{StaticResource ColorSliderStyle}"
+                                Margin="2 0"
+                                Minimum="{Binding ElementName=uc, Path=Minimum}"
+                                Maximum="{Binding ElementName=uc, Path=Maximum}"
+                                Value="{Binding Offset, Mode=TwoWay}"
+                                IsSnapToTickEnabled="False"
+                                VerticalAlignment="Center">
+                            <Slider.Foreground>
+                                <SolidColorBrush Color="{Binding Color}"/>
+                            </Slider.Foreground>
+                        </Slider>
+
+                        <!-- Removing Action -->
+                        <Button Grid.Column="2"
+                                Style="{StaticResource ButtonCleanStyle}"
+                                Foreground="{Binding ElementName=uc, Path=Foreground}"
+                                Command="{Binding ElementName=uc, Path=CommandRemoveItem}"
+                                CommandParameter="{Binding}">
+                            <TextBlock Text=" x " Foreground="#FFAAAAAA" Margin="0 0 2 4"
+                                       FontWeight="DemiBold"/>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- Adding Action -->
+        <StackPanel Grid.Row="2"
+                    Margin="0 -6 0 6"
+                    HorizontalAlignment="Center">
+            <Button Style="{StaticResource ButtonCleanStyle}"
+                    Foreground="{Binding ElementName=uc,Path=Foreground}"
+                    Command="{Binding ElementName=uc, Path=CommandAddItem}">
+                <TextBlock Text="+"
+                           Foreground="#FFAAAAAA"
+                           FontWeight="Bold"/>
+            </Button>
+        </StackPanel>
+        
+    </Grid>
+</UserControl>
