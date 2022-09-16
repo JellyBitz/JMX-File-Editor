@@ -38,5 +38,14 @@ namespace ColorPicker
         {
             InitializeComponent();
         }
+
+        private void FixPopup_PreviewLostKeyboardFocus(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+        {
+            if (e.NewFocus is System.Windows.Controls.TreeViewItem)
+            {
+                if (popup.IsOpen)
+                    e.Handled = true;
+            }
+        }
     }
 }

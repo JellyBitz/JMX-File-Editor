@@ -31,9 +31,10 @@
                 </ToggleButton>
             </Border>
         </Border>
-        <Popup Name="popup" StaysOpen="False" IsOpen="{Binding Path=IsChecked, ElementName=toggleButton, Mode=TwoWay}">
+        <Popup Name="popup" StaysOpen="False" IsOpen="{Binding Path=IsChecked, ElementName=toggleButton, Mode=TwoWay}"
+               PreviewLostKeyboardFocus="FixPopup_PreviewLostKeyboardFocus">
             <Border BorderThickness="1" BorderBrush="Black" Background="White">
-                <local:StandardColorPicker ColorState="{Binding ElementName=uc, Path=ColorState, Mode=TwoWay}" x:Name="test"
+                <local:StandardColorPicker ColorState="{Binding ElementName=uc, Path=ColorState, Mode=TwoWay}"
                                            UseHintColor="{Binding ElementName=uc, Path=UseHintColor, Mode=TwoWay}"
                                            HintColorState="{Binding ElementName=uc, Path=HintColorState, Mode=TwoWay}"
                                            SecondColorState="{Binding ElementName=uc, Path=SecondColorState, Mode=TwoWay}" 
