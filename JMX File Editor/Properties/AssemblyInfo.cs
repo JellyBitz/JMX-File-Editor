@@ -7,7 +7,7 @@ using System.Windows;
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada con un ensamblado.
 [assembly: AssemblyTitle("JMX File Editor")]
-[assembly: AssemblyDescription("Simple editor for joymax files")]
+[assembly: AssemblyDescription("JMX File Editor")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("JMX File Editor")]
@@ -50,6 +50,6 @@ using System.Windows;
 // Puede especificar todos los valores o utilizar los números de compilación y de revisión predeterminados
 // mediante el carácter '*', como se muestra a continuación:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.5.1.0")]
-[assembly: AssemblyFileVersion("1.5.1.0")]
+[assembly: AssemblyVersion("1.5.1.1")]
+[assembly: AssemblyFileVersion("1.5.1.1")]
 [assembly: NeutralResourcesLanguage("en-US")]
