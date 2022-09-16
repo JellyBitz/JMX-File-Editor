@@ -91,6 +91,10 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Controller
             {
                 data = (EFCLinkMode)new EFCLinkModeVM(string.Empty, new EFCLinkMode()).GetClassFrom(s, i++);
             }
+            else if (CurrentType == typeof(EFCBAN))
+            {
+                data = (EFCBAN)new EFCBANVM(string.Empty, new EFCBAN()).GetClassFrom(s, i++);
+            }
             else if (CurrentType == typeof(EFCViewMode))
             {
                 data = (EFCViewMode)new EFCViewModeVM(string.Empty, new EFCViewMode()).GetClassFrom(s, i++);
