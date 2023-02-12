@@ -7,7 +7,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Controller
         #region Constructor
         public EEResourceVM(string Name, EEResource data) : base(Name, true)
         {
-            Childs.Add(new JMXAttribute("BackFace", data.BackFace));
+            Childs.Add(new JMXAttribute("BackFaceType", data.BackFaceType));
 
             Childs.Add(new JMXOption("SrcBlend", data.SrcBlend, JMXOption.GetValues<object>(typeof(D3DBLEND))));
             Childs.Add(new JMXOption("DstBlend", data.DstBlend, JMXOption.GetValues<object>(typeof(D3DBLEND))));
@@ -30,7 +30,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Controller
         {
             return new EEResource()
             {
-                BackFace = (bool)((JMXAttribute)s.Childs[i++]).Value,
+                BackFaceType = (uint)((JMXAttribute)s.Childs[i++]).Value,
 
                 SrcBlend = (D3DBLEND)((JMXOption)s.Childs[i++]).Value,
                 DstBlend = (D3DBLEND)((JMXOption)s.Childs[i++]).Value,
