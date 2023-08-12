@@ -1,8 +1,10 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVEFF;
 using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
+using JMXFileEditor.Silkroad.Data.JMXVENVI;
 using JMXFileEditor.Silkroad.Mathematics;
 using JMXFileEditor.UserControls.Models;
 using JMXFileEditor.ViewModels.Silkroad.Mathematics;
+
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -35,30 +37,37 @@ namespace JMXFileEditor.ViewModels
                 OnPropertyChanged(nameof(End));
             }
         }
+        public bool ShowAlpha { get; private set; }
         #endregion
 
         #region Commands
-        public ICommand CommandAddColor { get; }
-        public ICommand CommandRemoveColor { get; }
+        public ICommand CommandAddColor { get; private set; }
+        public ICommand CommandRemoveColor { get; private set; }
         #endregion
 
         #region Constructor
-        public GradientColorPickerVM(string name, float begin, float end, EEBlend<Color32, DiffuseBlend> values) : base(name, true)
+        public GradientColorPickerVM(string name, float begin, float end, EEBlend<Color32, DiffuseBlend> values, bool ShowAlpha = true) : base(name, true)
         {
-            // Make sure values are right
-            if (begin > end)
-            {
-                var temp = end;
-                end = begin;
-                begin = end;
-            }
-            Begin = FloatClamp(begin, 0f, 1f);
-            End = FloatClamp(end, 0f, 1f);
             foreach (var v in values)
                 GradientValues.Add(new GradientValue() { Color = ColorVM.GetColor(v.Value), Offset = v.Time });
+            Initialize(begin, end, ShowAlpha);
+        }
+        public GradientColorPickerVM(string name, float begin, float end, EnvironmentCurve<Color3, EnvironmentColorBlend> values) : base(name, true)
+        {
+            foreach (var v in values.Blends)
+                GradientValues.Add(new GradientValue() { Color = ColorVM.GetColor(v.Value), Offset = v.Time });
+            Initialize(begin, end, ShowAlpha);
+        }
+        #endregion
 
+        #region Private Helpers
+        private void Initialize(float begin, float end, bool showAlpha)
+        {
+            ShowAlpha = showAlpha;
+            Begin = FloatClamp(begin < end ? begin : end, 0f, 1f);
+            End = FloatClamp(begin < end ? end : begin, 0f, 1f);
             // Make default gradient
-            if (values.Points.Count == 0)
+            if (GradientValues.Count == 0)
             {
                 GradientValues.Add(new GradientValue() { Color = new Color() { A = 255 }, Offset = 0 });
                 GradientValues.Add(new GradientValue() { Color = new Color() { A = 255, R = 255, G = 255, B = 255 }, Offset = 1 });
@@ -82,9 +91,7 @@ namespace JMXFileEditor.ViewModels
             });
             #endregion
         }
-        #endregion
 
-        #region Private Helpers
         private float FloatClamp(float value, float min, float max) => value < min ? min : value > max ? max : value;
         #endregion
 

@@ -248,6 +248,10 @@
       <DependentUpon>GradientColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Models\IGradientColorPickerItem.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVENVI\EnvironmentNodeVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVENVI\EnvironmentFloatBlendVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVENVI\EnvironmentProfileVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVENVI\JMXVENVIVM.cs" />
     <Compile Include="ViewModels\UserControls\GradientColorPickerVM.cs" />
     <Compile Include="Utility\ByteArrayHelpers.cs" />
     <Compile Include="Utility\ExpressionHelpers.cs" />

@@ -84,6 +84,7 @@
                            VerticalAlignment="Center"
                            Text="{Binding FilePath}" />
             </Grid>
+
             <!-- Structure -->
             <TreeView Grid.Row="1"
                       x:Name="tvwFileStructure"
@@ -216,6 +217,7 @@
                                 <uc:GradientColorPicker Width="200"
                                                         Minimum="{Binding Begin}"
                                                         Maximum="{Binding End}"
+                                                        ShowAlpha="{Binding ShowAlpha}"
                                                         ItemsSource="{Binding GradientValues}"
                                                         CommandAddItem="{Binding CommandAddColor}"
                                                         CommandRemoveItem="{Binding CommandRemoveColor}"/>
@@ -225,6 +227,5 @@
                 </TreeView.Resources>
             </TreeView>
         </Grid>
-        
     </Grid>
 </Window>

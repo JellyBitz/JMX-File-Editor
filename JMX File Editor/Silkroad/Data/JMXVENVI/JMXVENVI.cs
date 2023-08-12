@@ -12,11 +12,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVENVI
     /// Represents the color grading / post processing effects over the course of the day.
     /// <para>https://github.com/DummkopfOfHachtenduden/SilkroadDoc/wiki/JMXVENVI</para>
     /// </summary>
-    class JMXVENVI : IJMXFile
+    public class JMXVENVI : IJMXFile
     {
         #region Public Properties
-        public string Name { get; set; }
-        public List<EnvironmentProfile> Profiles { get; } = new List<EnvironmentProfile>();
+        public string Name { get; set; } = string.Empty;
+        public List<EnvironmentProfile> Profiles { get; set; } = new List<EnvironmentProfile>();
         public EnvironmentNode RootNode { get; set; } = new EnvironmentNode();
         #endregion
 
@@ -45,9 +45,9 @@ namespace JMXFileEditor.Silkroad.Data.JMXVENVI
             using (var stream = new FileStream(path, FileMode.Create, FileAccess.Write))
             using (var writer = new BSWriter(stream, Encoding.GetEncoding(949)))
             {
-                writer.Write("JMXVENVI1003");
+                writer.Write("JMXVENVI1003".ToCharArray());
 
-                writer.Write(Profiles.Count);
+                writer.Write((short)Profiles.Count);
                 writer.Write(Name);
 
                 foreach (var profile in Profiles)

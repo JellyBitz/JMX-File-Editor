@@ -145,7 +145,7 @@
                                                             Width="20"
                                                             Margin="2"
                                                             SelectedColor="{Binding Color, Mode=TwoWay, Delay=20}"
-                                                            ShowAlpha="True"
+                                                            ShowAlpha="{Binding ElementName=uc, Path=ShowAlpha}"
                                                             ToolTip="{Binding ElementName=xColorEditor,Path=SelectedColor}"/>
                         <!-- Offset -->
                         <Slider Grid.Column="1"

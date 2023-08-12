@@ -2,7 +2,7 @@
 
 namespace JMXFileEditor.Silkroad.Data.JMXVENVI
 {
-    class EnvironmentFloatBlend : EnvironmentDefaultBlend<float>
+    public class EnvironmentFloatBlend : EnvironmentDefaultBlend<float>
     {
         #region Abstract Implementation
         public override void Deserialize(BSReader reader)
