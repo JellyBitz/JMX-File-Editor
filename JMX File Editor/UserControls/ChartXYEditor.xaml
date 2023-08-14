@@ -42,17 +42,21 @@
         </Grid.RowDefinitions>
 
         <!-- Display Graph -->
-        <Grid Grid.Row="0">
+        <Border Grid.Row="0"
+                Margin="1">
             <lvc:CartesianChart DataTooltip="{x:Null}"
-                                Series="{Binding Series}">
+                                Series="{Binding Series}"
+                                Height="100">
                 <!-- Values -->
                 <lvc:CartesianChart.AxisY>
                     <lvc:Axis ShowLabels="True"
+                              Position="RightTop"
                               LabelFormatter="{Binding Formatter}"/>
                 </lvc:CartesianChart.AxisY>
                 <!-- Time -->
                 <lvc:CartesianChart.AxisX>
                     <lvc:Axis ShowLabels="True"
+                              Position="RightTop"
                               MinValue="{Binding MinValue}"
                               MaxValue="{Binding MaxValue}">
                         <lvc:Axis.Separator>
@@ -61,7 +65,7 @@
                     </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
             </lvc:CartesianChart>
-        </Grid>
+        </Border>
 
         <!-- Y Values -->
         <ListBox Grid.Row="1"
