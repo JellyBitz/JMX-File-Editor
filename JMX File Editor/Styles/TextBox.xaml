@@ -15,5 +15,20 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
+    <!-- TextBox with text as trimming style -->
+    <Style x:Key="TrimmingTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsKeyboardFocused, RelativeSource={RelativeSource Self}}" Value="false">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <TextBlock Text="{TemplateBinding Text}"  TextTrimming="CharacterEllipsis"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

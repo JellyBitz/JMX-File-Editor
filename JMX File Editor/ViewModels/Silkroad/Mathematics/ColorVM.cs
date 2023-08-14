@@ -1,8 +1,6 @@
 ﻿using JMXFileEditor.Silkroad.Mathematics;
-using ColorPicker.Models;
 
 using System;
-using System.Windows.Input;
 using System.Windows.Media;
 
 namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
@@ -52,15 +50,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
                 Alpha = Color.A / 255f,
             };
         }
-        public Color3 GetColor3()
-        {
-            return new Color3()
-            {
-                Red = Color.R / 255f,
-                Green = Color.G / 255f,
-                Blue = Color.B / 255f,
-            };
-        }
+        public Color3 GetColor3() => GetColor3(Color);
         public Color32 GetColor32() => new Color32(Color.R, Color.G, Color.B, Color.A);
         #endregion
 
@@ -80,13 +70,13 @@ namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
             var result = new Color();
             // Check limits
             if (c.Red > 0)
-                result.R = c.Red > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Red * 255);
+                result.R = c.Red > 1 ? byte.MaxValue : (byte)Math.Round(c.Red * 255);
             if (c.Green > 0)
-                result.G = c.Green > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Green * 255);
+                result.G = c.Green > 1 ? byte.MaxValue : (byte)Math.Round(c.Green * 255);
             if (c.Blue > 0)
-                result.B = c.Blue > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Blue * 255);
+                result.B = c.Blue > 1 ? byte.MaxValue : (byte)Math.Round(c.Blue * 255);
             if (c.Alpha > 0)
-                result.A = c.Alpha > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Alpha * 255);
+                result.A = c.Alpha > 1 ? byte.MaxValue : (byte)Math.Round(c.Alpha * 255);
             return result;
         }
         public static Color GetColor(Color3 c)
@@ -94,12 +84,21 @@ namespace JMXFileEditor.ViewModels.Silkroad.Mathematics
             var result = new Color() { A = 255 };
             // Check limits
             if (c.Red > 0)
-                result.R = c.Red > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Red * 255);
+                result.R = c.Red > 1 ? byte.MaxValue : (byte)Math.Round(c.Red * 255);
             if (c.Green > 0)
-                result.G = c.Green > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Green * 255);
+                result.G = c.Green > 1 ? byte.MaxValue : (byte)Math.Round(c.Green * 255);
             if (c.Blue > 0)
-                result.B = c.Blue > byte.MaxValue ? byte.MaxValue : (byte)Math.Round(c.Blue * 255);
+                result.B = c.Blue > 1 ? byte.MaxValue : (byte)Math.Round(c.Blue * 255);
             return result;
+        }
+        public static Color3 GetColor3(Color c)
+        {
+            return new Color3()
+            {
+                Red = c.R / 255f,
+                Green = c.G / 255f,
+                Blue = c.B / 255f,
+            };
         }
         #endregion
     }

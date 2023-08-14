@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVENVI
 {
-    class EnvironmentNode : ISerializableBS
+    public class EnvironmentNode : ISerializableBS
     {
         #region Public Properties
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public short ProfileId { get; set; }
-        public short Short0 { get; private set; }
+        public short Short0 { get; set; }
         public int Int0 { get; set; }
         public int Int1 { get; set; }
         public List<EnvironmentNode> Children { get; set; } = new List<EnvironmentNode>();

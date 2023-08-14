@@ -174,17 +174,9 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
             }
             else if (CurrentType == typeof(ParameterBlendDiffuseGraph))
             {
-                var gradientColor = (GradientColorPickerVM)s.Childs[i++];
-                // Copy data
-                var diffuseBlend = new EEBlend<Color32, DiffuseBlend>();
-                diffuseBlend.Begin = gradientColor.Begin;
-                diffuseBlend.End = gradientColor.End;
-                foreach (var v in gradientColor.GradientValues)
-                    diffuseBlend.Points.Add(new DiffuseBlend() { Value = new Color32(v.Color.R, v.Color.G, v.Color.B, v.Color.A), Time = (float)v.Offset });
-                // build data
                 data = new ParameterBlendDiffuseGraph()
                 {
-                    Value = diffuseBlend
+                    Value = ((GradientColorPickerVM)s.Childs[i++]).GetDiffuseBlend(),
                 };
             }
             else if (CurrentType == typeof(ParameterBSAnimation))

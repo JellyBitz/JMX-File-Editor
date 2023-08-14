@@ -38,6 +38,16 @@ namespace JMXFileEditor.UserControls
         public static DependencyProperty MaximumProperty =
            DependencyProperty.Register("Maximum", typeof(double), typeof(GradientColorPicker), new PropertyMetadata(1d));
         /// <summary>
+        /// Exposes the alpha value modification from items
+        /// </summary>
+        public bool ShowAlpha
+        {
+            get => (bool)GetValue(ShowAlphaProperty);
+            set => SetValue(ShowAlphaProperty, value);
+        }
+        public static DependencyProperty ShowAlphaProperty =
+           DependencyProperty.Register("ShowAlpha", typeof(bool), typeof(GradientColorPicker), new PropertyMetadata(true));
+        /// <summary>
         /// Gradient items being handled
         /// </summary>
         public IEnumerable<IGradientColorPickerItem> ItemsSource

@@ -3,6 +3,7 @@ using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
 using JMXFileEditor.Silkroad.Data.JMXVEFF.Controller;
 using JMXFileEditor.Silkroad.Mathematics;
 using JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends;
+using System.Security.Cryptography;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Controller
 {
@@ -19,18 +20,10 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Controller
         #region Public Methods
         public override object GetClassFrom(JMXStructure s, int i)
         {
-            var gradientColor = (GradientColorPickerVM)s.Childs[i + 1];
-            // Copy data
-            var diffuseBlend = new EEBlend<Color32, DiffuseBlend>();
-            diffuseBlend.Begin = gradientColor.Begin;
-            diffuseBlend.End = gradientColor.End;
-            foreach (var v in gradientColor.GradientValues)
-                diffuseBlend.Points.Add(new DiffuseBlend() { Value = new Color32(v.Color.R, v.Color.G, v.Color.B, v.Color.A), Time = (float)v.Offset });
-            // build result
             return new EFCDiffuseGraph()
             {
-                ByteBlend = (EEBlend<byte, ByteBlend>)((EEByteBlendVM)s.Childs[i]).GetClass(),
-                DiffuseBlend = diffuseBlend,
+                ByteBlend = (EEBlend<byte, ByteBlend>)((EEByteBlendVM)s.Childs[i++]).GetClass(),
+                DiffuseBlend = ((GradientColorPickerVM)s.Childs[i++]).GetDiffuseBlend(),
             };
         }
         #endregion

@@ -15,6 +15,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -44,6 +46,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -119,6 +123,207 @@
     <Compile Include="Resources\Packages\ColorPicker\UserControls\SquareSlider.xaml.cs">
       <DependentUpon>SquareSlider.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Resources\Packages\LiveCharts\Core40\AxisCore.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\AxisOrientation.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\AxisPosition.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\AxisSectionCore.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\AxisWindow.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\AxisWindows.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\BarLabelPosition.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\ChartFunctions.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Charting.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\ChartPoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Charts\CartesianChartCore.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Charts\ChartCore.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Charts\PieChartCore.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\ChartUpdater.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\ChartValues.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Configurations\CartesianMapper.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Configurations\FinancialMapper.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Configurations\GanttMapper.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Configurations\IPointEvaluator.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Configurations\Mappers.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Configurations\PieMapper.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Configurations\PolarMapper.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Configurations\WeightedMapper.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\DataLabelViewModel.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\DateAxisCore.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\DateAxisWindow.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\DateAxisWindows.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\DateSeparatorElementCore.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Defaults\AxisLimits.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Defaults\DateTimePoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Defaults\GanttPoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Defaults\HeatPoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Defaults\ObservablePoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Defaults\ObservableValue.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Defaults\OHLCPoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Defaults\PolarPoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Defaults\ScatterPoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\IAxisSectionView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\IAxisView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\IAxisWindow.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\ICartesianChart.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\ICartesianVisualElement.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\IChartView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\IDateAxisView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\ILogarithmicAxisView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\IPieChart.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\ISeparatorElementView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\ISeparatorView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Charts\IWindowAxisView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Points\IBezierPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Points\IChartPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Points\IHeatPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Points\IOhlcPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Points\IPieSlicePointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Points\IRectanglePointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Points\IScatterPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Points\IStepPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IAreaPoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\ICartesianSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IColumnSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IFinancialSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IGroupedStackedSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IHeatSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\ILineSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IPieSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IPieSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IRowSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IScatterSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\ISeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IStackedAreaSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IStackedColumnSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IStackedRowSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IStackModelableSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Definitions\Series\IVerticalStackedAreaSeriesView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Delegates.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Dtos\BezierData.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Dtos\CoreColor.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Dtos\CoreGradientStop.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Dtos\CoreLimit.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Dtos\CoreMargin.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Dtos\CorePoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Dtos\CoreRectangle.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Dtos\CoreSize.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Dtos\LabelEvaluation.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Dtos\StackedSum.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Dtos\TooltipDataViewModel.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Events\Delegates.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Events\PreviewRangeChangedEventArgs.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Events\RangeChangedEventArgs.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Helpers\Extentions.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Helpers\LiveChartsException.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Helpers\NoisyCollection.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\IChartValues.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\IObservableChartPoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\LegendLocation.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\LogarithmicAxisCore.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Maps\MapData.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\PanningOptions.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\PeriodUnits.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\PieLabelPosition.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\PointTracker.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\ScrollMode.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeparationState.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeparatorConfigurationCore.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeparatorElementCore.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\Seriesalgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\CandleAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\ColumnAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\HeatAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\LineAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\OhlcAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\PieAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\RowAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\ScatterAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\StackedAreaAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\StackedColumnAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\StackedRowAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\StepLineAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\VerticalLineAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesAlgorithms\VerticalStackedAreaAlgorithm.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesCollection.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\SeriesOrientation.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\StackMode.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\TooltipSelectionMode.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\UpdaterState.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\VisualElementsCollection.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\WindowAxisCore.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\Core40\ZoomingOptions.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\AngularGauge.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\AngularSection.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\AxesCollection.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Axis.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\AxisSection.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\AxisWindowCollection.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\CandleSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\CartesianChart.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Charts\Base\Chart.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\ColorsCollection.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\ColumnSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Components\AxisSeparatorElement.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Components\ChartUpdater.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Components\Converters.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Components\DefaultXamlReader.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Components\IFondeable.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Components\ThreadAccess.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Components\TooltipDto.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Converters\TypeConverters.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\DateAxis.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\DefaultAxes.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\DefaultGeoMapTooltip.xaml.cs">
+      <DependentUpon>DefaultGeoMapTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\DefaultGeometry.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\DefaultLegend.xaml.cs">
+      <DependentUpon>DefaultLegend.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\DefaultTooltip.xaml.cs">
+      <DependentUpon>DefaultTooltip.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Extentions.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\FinancialColoringRule.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Gauge.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\GeoMap.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\HeatColorRange.xaml.cs">
+      <DependentUpon>HeatColorRange.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\HeatSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\IChartLegend.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\IChartTooltip.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\LineSegmentSplitter.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\LineSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\LogarithmicAxis.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Maps\MapResolver.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\OhlcSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\PieChart.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\PieSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\CandlePointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\ColumnPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\HeatPoint.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\HorizontalBezierPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\OhlcPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\PiePointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\PieSlice.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\PointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\RowPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\ScatterPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\StepLinePointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Points\VerticalBezierPointView.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\RowSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\ScatterSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\SectionsCollection.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Separator.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\Series.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\StackedAreaSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\StackedColumnSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\StackedRowSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\StepLineSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\VerticalLineSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\VerticalStackedAreaSeries.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\VisualElement.cs" />
+    <Compile Include="Resources\Packages\LiveCharts\WpfView\WindowAxis.cs" />
     <Compile Include="Silkroad\Data\Common\ObjectGeneralCategory.cs" />
     <Compile Include="Silkroad\Data\Common\ObjectGeneralInfo.cs" />
     <Compile Include="Silkroad\Data\Common\ObjectGeneralType.cs" />
@@ -244,10 +449,18 @@
     <Compile Include="Silkroad\IO\BSReader.cs" />
     <Compile Include="Silkroad\IO\BSWriter.cs" />
     <Compile Include="Silkroad\Mathematics\Vector4.cs" />
+    <Compile Include="UserControls\ChartXYEditor.xaml.cs">
+      <DependentUpon>ChartXYEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\GradientColorPicker.xaml.cs">
       <DependentUpon>GradientColorPicker.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Models\IGradientColorPickerItem.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVENVI\EnvironmentNodeVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVENVI\EnvironmentFloatBlendVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVENVI\EnvironmentProfileVM.cs" />
+    <Compile Include="ViewModels\Silkroad\JMXVENVI\JMXVENVIVM.cs" />
+    <Compile Include="ViewModels\UserControls\ChartXYEditorVM.cs" />
     <Compile Include="ViewModels\UserControls\GradientColorPickerVM.cs" />
     <Compile Include="Utility\ByteArrayHelpers.cs" />
     <Compile Include="Utility\ExpressionHelpers.cs" />
@@ -419,6 +632,70 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\DefaultGeoMapTooltip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\DefaultLegend.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\DefaultTooltip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\HeatColorRange.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\base.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\Colors\black.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\Colors\blue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\Colors\material.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\Colors\metro.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\Colors\white.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\Size\l.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\Size\m.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\Size\s.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\Weight\bold.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\Weight\light.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Packages\LiveCharts\WpfView\Themes\Weight\normal.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Styles\Button.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -440,6 +717,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ChartXYEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -466,7 +747,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include=".editorconfig" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -479,7 +759,6 @@
   <ItemGroup>
     <Resource Include="Resources\Images\Logo.ico" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Packages\ColorPicker\Images\CircularHueGradient.png" />
     <Resource Include="Resources\Packages\ColorPicker\Images\TransparentBackgroundSmall.png" />

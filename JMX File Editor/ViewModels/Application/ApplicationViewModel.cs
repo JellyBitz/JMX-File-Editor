@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows.Input;
+using JMXFileEditor.ViewModels.Silkroad.JMXVENVI;
 
 namespace JMXFileEditor.ViewModels
 {
@@ -247,6 +248,8 @@ namespace JMXFileEditor.ViewModels
                 return new JMXVCPDVM(jmxvcpd_0101);
             if (JMXFile is JMXVDOF_0101 jmxvdof_0101)
                 return new JMXVDOFVM(jmxvdof_0101);
+            if (JMXFile is JMXVENVI jmxvenvi)
+                return new JMXVENVIVM(jmxvenvi);
             if (JMXFile is EFStoredEffect jmxveff)
                 return new JMXVEFFVM(jmxveff);
 
@@ -266,6 +269,8 @@ namespace JMXFileEditor.ViewModels
                 return (IJMXFile)jmxvcpd.GetClass();
             if (JMXViewModel is JMXVDOFVM jmxvdof)
                 return (IJMXFile)jmxvdof.GetClass();
+            if (JMXViewModel is JMXVENVIVM jmxvenvi)
+                return (IJMXFile)jmxvenvi.GetClass();
             if (JMXViewModel is JMXVEFFVM jmxveff)
                 return (IJMXFile)jmxveff.GetClass();
 

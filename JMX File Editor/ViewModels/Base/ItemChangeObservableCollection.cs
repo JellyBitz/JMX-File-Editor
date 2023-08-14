@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace JMXFileEditor
 {
     public class ItemChangeObservableCollection<T> : ObservableCollection<T> 
-        where T : BaseViewModel
+        where T : INotifyPropertyChanged
     {
         #region Private Helpers
         private void RegisterPropertyChanged(IList items)

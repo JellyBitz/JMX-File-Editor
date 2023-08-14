@@ -2,7 +2,7 @@
 
 namespace JMXFileEditor.Silkroad.Data.JMXVENVI
 {
-    abstract class EnvironmentDefaultBlend<TValue> : ISerializableBS
+    public abstract class EnvironmentDefaultBlend<TValue> : ISerializableBS
         where TValue : new()
     {
         #region Public Properties

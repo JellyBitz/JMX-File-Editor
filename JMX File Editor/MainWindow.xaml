@@ -84,6 +84,7 @@
                            VerticalAlignment="Center"
                            Text="{Binding FilePath}" />
             </Grid>
+
             <!-- Structure -->
             <TreeView Grid.Row="1"
                       x:Name="tvwFileStructure"
@@ -188,7 +189,7 @@
                     <!-- Viewmodels out of base nodes -->
 
                     <!-- Binding ColorVM type -->
-                    <HierarchicalDataTemplate DataType="{x:Type vmMaths:ColorVM}">
+                    <DataTemplate DataType="{x:Type vmMaths:ColorVM}">
                         <Grid>
                             <StackPanel MinHeight="20"
                                         Orientation="Horizontal">
@@ -204,27 +205,40 @@
                                                                     ShowAlpha="{Binding ShowAlpha}"/>
                             </StackPanel>
                         </Grid>
-                    </HierarchicalDataTemplate>
+                    </DataTemplate>
                     <!-- Binding GradientColorPickerVM type -->
-                    <HierarchicalDataTemplate DataType="{x:Type vm:GradientColorPickerVM}">
+                    <DataTemplate DataType="{x:Type vm:GradientColorPickerVM}">
                         <Grid>
-                            <StackPanel Orientation="Vertical">
+                            <StackPanel>
                                 <!-- Name -->
                                 <TextBlock VerticalAlignment="Center"
                                            Text="{Binding Name}"/>
                                 <!-- Gradient Editor -->
-                                <uc:GradientColorPicker Width="200"
+                                <uc:GradientColorPicker Width="300"
                                                         Minimum="{Binding Begin}"
                                                         Maximum="{Binding End}"
+                                                        ShowAlpha="{Binding ShowAlpha}"
                                                         ItemsSource="{Binding GradientValues}"
                                                         CommandAddItem="{Binding CommandAddColor}"
                                                         CommandRemoveItem="{Binding CommandRemoveColor}"/>
                             </StackPanel>
                         </Grid>
-                    </HierarchicalDataTemplate>
+                    </DataTemplate>
+                    <!-- Binding ChartXYEditor type -->
+                    <DataTemplate DataType="{x:Type vm:ChartXYEditorVM}">
+                        <Grid>
+                            <StackPanel Orientation="Vertical">
+                                <!-- Name -->
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="{Binding Name}"/>
+                                <!-- Graph Editor -->
+                                <uc:ChartXYEditor/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                    
                 </TreeView.Resources>
             </TreeView>
         </Grid>
-        
     </Grid>
 </Window>
