@@ -50,18 +50,46 @@ namespace JMXFileEditor.ViewModels
         {
             foreach (var v in values)
                 GradientValues.Add(new GradientValue() { Color = ColorVM.GetColor(v.Value), Offset = v.Time });
-            Initialize(begin, end, ShowAlpha);
+            InitializeValues(begin, end, ShowAlpha);
         }
         public GradientColorPickerVM(string name, float begin, float end, EnvironmentCurve<Color3, EnvironmentColorBlend> values) : base(name, true)
         {
             foreach (var v in values.Blends)
                 GradientValues.Add(new GradientValue() { Color = ColorVM.GetColor(v.Value), Offset = v.Time });
-            Initialize(begin, end, ShowAlpha);
+            InitializeValues(begin, end, ShowAlpha);
+        }
+        #endregion
+
+        #region Public Methods
+        public EEBlend<Color32, DiffuseBlend> GetDiffuseBlend()
+        {
+            var result = new EEBlend<Color32, DiffuseBlend>()
+            {
+                Begin = Begin,
+                End = End,
+            };
+            foreach (var v in GradientValues)
+                result.Points.Add(new DiffuseBlend() { 
+                    Value = new Color32(v.Color.R, v.Color.G, v.Color.B, v.Color.A),
+                    Time = (float)v.Offset 
+                });
+            return result;
+        }
+        public EnvironmentCurve<Color3, EnvironmentColorBlend> GetEnvironmentColorBlend()
+        {
+            var result = new EnvironmentCurve<Color3, EnvironmentColorBlend>();
+            foreach (var v in GradientValues)
+                result.Blends.Add(new EnvironmentColorBlend()
+                {
+                    Value = ColorVM.GetColor3(v.Color),
+                    Time = (float)v.Offset
+                });
+            return result;
         }
         #endregion
 
         #region Private Helpers
-        private void Initialize(float begin, float end, bool showAlpha)
+        private void InitializeValues(float begin, float end, bool showAlpha)
         {
             ShowAlpha = showAlpha;
             Begin = FloatClamp(begin < end ? begin : end, 0f, 1f);
@@ -91,7 +119,6 @@ namespace JMXFileEditor.ViewModels
             });
             #endregion
         }
-
         private float FloatClamp(float value, float min, float max) => value < min ? min : value > max ? max : value;
         #endregion
 
