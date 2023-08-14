@@ -6,7 +6,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVDOF
     public class BlockLight : ISerializableBS
     {
         #region Public Properties
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public Vector3 Position { get; set; } = new Vector3();
         public Color3 Color01 { get; set; } = new Color3();
         public Color3 Color02 { get; set; } = new Color3();

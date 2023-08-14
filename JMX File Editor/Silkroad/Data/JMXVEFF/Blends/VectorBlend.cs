@@ -5,6 +5,11 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Blends
 {
     public class VectorBlend : DefaultBlend<Vector3>
     {
+        public VectorBlend()
+        {
+            Value = new Vector3();
+        }
+
         public override void Read(BSReader reader)
         {
             base.Read(reader);

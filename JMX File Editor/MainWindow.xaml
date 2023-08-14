@@ -3,7 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:pkgColorPicker="clr-namespace:ColorPicker"
         xmlns:local="clr-namespace:JMXFileEditor"
+        xmlns:uc="clr-namespace:JMXFileEditor.UserControls"
         xmlns:vm="clr-namespace:JMXFileEditor.ViewModels"
         xmlns:vmMaths="clr-namespace:JMXFileEditor.ViewModels.Silkroad.Mathematics"
         WindowStartupLocation="CenterScreen"
@@ -82,10 +84,12 @@
                            VerticalAlignment="Center"
                            Text="{Binding FilePath}" />
             </Grid>
+
             <!-- Structure -->
             <TreeView Grid.Row="1"
                       x:Name="tvwFileStructure"
                       Margin="8 0 8 8"
+                      VirtualizingStackPanel.IsVirtualizing="False"
                       ItemsSource="{Binding FileProperties.Childs}"
                       local:TreeviewSelectedItemEnabledProperty.Value="True"
                       local:TreeviewSelectedItemProperty.Value="{Binding FileSelectedProperty,Mode=TwoWay}"
@@ -184,57 +188,55 @@
 
                     <!-- Viewmodels out of base nodes -->
 
-                    <!-- Binding Color4VM type -->
-                    <HierarchicalDataTemplate DataType="{x:Type vmMaths:Color4VM}"
-                                              ItemsSource="{Binding Childs}">
-                        <StackPanel Orientation="Horizontal"
-                                    MinHeight="20">
-                            <!-- Name -->
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="{Binding Name}"/>
-                            <!-- Demo -->
-                            <Border Background="{Binding DemoBrush}"
-                                    Width="16"
-                                    Margin="5 2"
-                                    BorderThickness="1"
-                                    BorderBrush="Black"
-                                    ToolTip="{Binding DemoBrush}"/>
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                    <!-- Binding Color3VM type -->
-                    <HierarchicalDataTemplate DataType="{x:Type vmMaths:Color3VM}"
-                                              ItemsSource="{Binding Childs}">
-                        <StackPanel Orientation="Horizontal"
-                                    MinHeight="20">
-                            <!-- Name -->
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="{Binding Name}"/>
-                            <!-- Demo -->
-                            <Border Background="{Binding DemoBrush}"
-                                    Width="16"
-                                    Margin="5 2"
-                                    BorderThickness="1"
-                                    BorderBrush="Black"
-                                    ToolTip="{Binding DemoBrush}"/>
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                    <!-- Binding Color32VM type -->
-                    <HierarchicalDataTemplate DataType="{x:Type vmMaths:Color32VM}"
-                                              ItemsSource="{Binding Childs}">
-                        <StackPanel Orientation="Horizontal"
-                                    MinHeight="20">
-                            <!-- Name -->
-                            <TextBlock VerticalAlignment="Center"
-                                       Text="{Binding Name}"/>
-                            <!-- Demo -->
-                            <Border Background="{Binding DemoBrush}"
-                                    Width="16"
-                                    Margin="5 2"
-                                    BorderThickness="1"
-                                    BorderBrush="Black"
-                                    ToolTip="{Binding DemoBrush}"/>
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
+                    <!-- Binding ColorVM type -->
+                    <DataTemplate DataType="{x:Type vmMaths:ColorVM}">
+                        <Grid>
+                            <StackPanel MinHeight="20"
+                                        Orientation="Horizontal">
+                                <!-- Name -->
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="{Binding Name}"/>
+                                <!-- Color Editor -->
+                                <pkgColorPicker:PortableColorPicker x:Name="xColorEditor"
+                                                                    Width="40" Height="20"
+                                                                    Margin="5 2"
+                                                                    SelectedColor="{Binding Color, Mode=TwoWay, Delay=20}"
+                                                                    ToolTip="{Binding ElementName=xColorEditor,Path=SelectedColor}"
+                                                                    ShowAlpha="{Binding ShowAlpha}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                    <!-- Binding GradientColorPickerVM type -->
+                    <DataTemplate DataType="{x:Type vm:GradientColorPickerVM}">
+                        <Grid>
+                            <StackPanel>
+                                <!-- Name -->
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="{Binding Name}"/>
+                                <!-- Gradient Editor -->
+                                <uc:GradientColorPicker Width="300"
+                                                        Minimum="{Binding Begin}"
+                                                        Maximum="{Binding End}"
+                                                        ShowAlpha="{Binding ShowAlpha}"
+                                                        ItemsSource="{Binding GradientValues}"
+                                                        CommandAddItem="{Binding CommandAddColor}"
+                                                        CommandRemoveItem="{Binding CommandRemoveColor}"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                    <!-- Binding ChartXYEditor type -->
+                    <DataTemplate DataType="{x:Type vm:ChartXYEditorVM}">
+                        <Grid>
+                            <StackPanel Orientation="Vertical">
+                                <!-- Name -->
+                                <TextBlock VerticalAlignment="Center"
+                                           Text="{Binding Name}"/>
+                                <!-- Graph Editor -->
+                                <uc:ChartXYEditor/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                    
                 </TreeView.Resources>
             </TreeView>
         </Grid>

@@ -7,7 +7,7 @@ Open, edit and save JMX files!
 - JMXVBMT 0102 (.bmt)
 - JMXVCPD 0101 (.cpd)
 - JMXVDOF 0101 (.dof)
-- JMXVEFF 0011, JMXVEFF 0012, JMXVEFF 0013 (.efp)
+- JMXVEFF 0010~0013 (.efp)
 
 ---
 > ### Do you like this project ? 

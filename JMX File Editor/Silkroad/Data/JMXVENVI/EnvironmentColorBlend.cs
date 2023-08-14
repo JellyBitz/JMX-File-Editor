@@ -3,7 +3,7 @@ using JMXFileEditor.Silkroad.Mathematics;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVENVI
 {
-    class EnvironmentColorBlend : EnvironmentDefaultBlend<Color3>
+    public class EnvironmentColorBlend : EnvironmentDefaultBlend<Color3>
     {
         #region Abstract Implementation
         public override void Deserialize(BSReader reader)

@@ -3,13 +3,13 @@ using JMXFileEditor.Silkroad.Mathematics;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVENVI
 {
-    class EnvironmentProfile : ISerializableParameterizedBS
+    public class EnvironmentProfile : ISerializableParameterizedBS
     {
         #region Public Properties
         public short Id { get; set; }
-        public string Name { get; set; }
-        public string String0 { get; set; }
-        public string String1 { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string String0 { get; set; } = string.Empty;
+        public string String1 { get; set; } = string.Empty;
         public EnvironmentCurve<Color3, EnvironmentColorBlend> SunColor { get; set; } = new EnvironmentCurve<Color3, EnvironmentColorBlend>();
         public EnvironmentCurve<Color3, EnvironmentColorBlend> SkyTopColor { get; set; } = new EnvironmentCurve<Color3, EnvironmentColorBlend>();
         public EnvironmentCurve<Color3, EnvironmentColorBlend> DiffuseColor { get; set; } = new EnvironmentCurve<Color3, EnvironmentColorBlend>();

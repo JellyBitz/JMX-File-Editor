@@ -1,6 +1,7 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVEFF;
 using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
 using JMXFileEditor.Silkroad.Mathematics;
+
 using System.Linq;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends

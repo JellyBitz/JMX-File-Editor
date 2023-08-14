@@ -1,5 +1,4 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
-using JMXFileEditor.Silkroad.Mathematics;
 using JMXFileEditor.ViewModels.Silkroad.Mathematics;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends
@@ -10,7 +9,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends
         public DiffuseBlendVM(string Name, DiffuseBlend data) : base(Name, true)
         {
             Childs.Add(new JMXAttribute("Time", data.Time));
-            Childs.Add(new Color32VM("Value", data.Value));
+            Childs.Add(new ColorVM("Value", ColorVM.GetColor(data.Value)));
         }
         #endregion
 
@@ -20,7 +19,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends
             return new DiffuseBlend()
             {
                 Time = (float)((JMXAttribute)s.Childs[i++]).Value,
-                Value = (Color32)((Color32VM)s.Childs[i++]).GetClass(),
+                Value = ((ColorVM)s.Childs[i++]).GetColor32(),
             };
         }
         #endregion

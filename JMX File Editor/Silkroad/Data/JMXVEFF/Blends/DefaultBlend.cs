@@ -1,7 +1,5 @@
 ﻿using JMXFileEditor.Silkroad.IO;
 
-using System;
-
 namespace JMXFileEditor.Silkroad.Data.JMXVEFF.Blends
 {
     public abstract class DefaultBlend<TValue>

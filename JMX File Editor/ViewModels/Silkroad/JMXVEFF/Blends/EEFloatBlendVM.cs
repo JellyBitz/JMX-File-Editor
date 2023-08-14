@@ -1,5 +1,6 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVEFF;
 using JMXFileEditor.Silkroad.Data.JMXVEFF.Blends;
+
 using System.Linq;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends
@@ -7,7 +8,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends
     public class EEFloatBlendVM : JMXStructure
     {
         #region Constructor
-        public EEFloatBlendVM(string Name, EEBlend<float,FloatBlend> data) : base(Name, true)
+        public EEFloatBlendVM(string Name, EEBlend<float, FloatBlend> data) : base(Name, true)
         {
             Childs.Add(new JMXAttribute("Begin", data.Begin));
             Childs.Add(new JMXAttribute("End", data.End));
@@ -22,7 +23,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Blends
         #region Public Methods
         public override object GetClassFrom(JMXStructure s, int i)
         {
-            return new EEBlend<float, FloatBlend>(((JMXStructure)s.Childs[i+2]).GetChildList<FloatBlend>())
+            return new EEBlend<float, FloatBlend>(((JMXStructure)s.Childs[i + 2]).GetChildList<FloatBlend>())
             {
                 Begin = (float)((JMXAttribute)s.Childs[i++]).Value,
                 End = (float)((JMXAttribute)s.Childs[i++]).Value

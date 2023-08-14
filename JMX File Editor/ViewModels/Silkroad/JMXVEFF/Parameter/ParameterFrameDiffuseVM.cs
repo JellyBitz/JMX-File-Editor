@@ -1,6 +1,9 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVEFF.Parameter;
 using JMXFileEditor.Silkroad.Mathematics;
 using JMXFileEditor.ViewModels.Silkroad.Mathematics;
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Media;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Parameter
 {
@@ -11,7 +14,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Parameter
         {
             AddFormatHandler(typeof(Color32), (s, e) =>
             {
-                e.Childs.Add(new Color32VM("[" + e.Childs.Count + "]", e.Obj is Color32 _obj ? _obj : new Color32()));
+                e.Childs.Add(new ColorVM("[" + e.Childs.Count + "]", e.Obj is Color32 _obj ? ColorVM.GetColor(_obj) : new Color() { A = 255 }));
             });
             AddChildArray("List", data.Value.ToArray(), true, true);
         }
@@ -20,9 +23,10 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Parameter
         #region Public Methods
         public override object GetClassFrom(JMXStructure s, int i)
         {
+            var colorList = ((JMXStructure)s.Childs[i++]).GetChildList<Color>();
             return new ParameterFrameDiffuse()
             {
-                Value = ((JMXStructure)s.Childs[i++]).GetChildList<Color32>()
+                Value = new List<Color32>(colorList.Select(x => new Color32(x.R, x.G, x.B, x.A)))
             };
         }
         #endregion

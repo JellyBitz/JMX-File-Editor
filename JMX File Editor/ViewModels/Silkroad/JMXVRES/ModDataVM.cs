@@ -83,7 +83,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             Childs.Add(new JMXAttribute("UnkFloat01", obj.UnkFloat01));
             Childs.Add(new JMXAttribute("UnkUInt01", obj.UnkUInt01));
             Childs.Add(new JMXAttribute("UnkUInt02", obj.UnkUInt02));
-            Childs.Add(new JMXAttribute("MeshIndex", obj.MeshIndex));
+            Childs.Add(new JMXAttribute("BMT_MtrlIndex", obj.BMT_MtrlIndex));
             Childs.Add(new JMXAttribute("UnkUInt04", obj.UnkUInt04));
             Childs.Add(new JMXAttribute("UnkUInt05", obj.UnkUInt05));
             Childs.Add(new JMXAttribute("UnkByte01", obj.UnkByte01));
@@ -123,7 +123,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             data.UnkFloat01 = (float)((JMXAttribute)s.Childs[i++]).Value;
             data.UnkUInt01 = (uint)((JMXAttribute)s.Childs[i++]).Value;
             data.UnkUInt02 = (uint)((JMXAttribute)s.Childs[i++]).Value;
-            data.MeshIndex = (int)((JMXAttribute)s.Childs[i++]).Value;
+            data.BMT_MtrlIndex = (int)((JMXAttribute)s.Childs[i++]).Value;
             data.UnkUInt04 = (uint)((JMXAttribute)s.Childs[i++]).Value;
             data.UnkUInt05 = (uint)((JMXAttribute)s.Childs[i++]).Value;
             data.UnkByte01 = (byte)((JMXAttribute)s.Childs[i++]).Value;
@@ -197,18 +197,18 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
                 {
                     // Add format
                     AddFormatHandler(typeof(Color4), (s, e) => {
-                        e.Childs.Add(new Color4VM("[" + e.Childs.Count + "]", e.Obj is Color4 _obj ? _obj : new Color4()));
+                        e.Childs.Add(new ColorVM("[" + e.Childs.Count + "]", e.Obj is Color4 _obj ? ColorVM.GetColor(_obj) : new System.Windows.Media.Color() { A = 255 }));
                     });
                     // Create VM
                     Childs.Add(new JMXAttribute("Time", Key.Time));
-                    Childs.Add(new Color4VM("Value", Key.Value));
+                    Childs.Add(new ColorVM("Value", ColorVM.GetColor(Key.Value)));
                 }
                 public override object GetClassFrom(JMXStructure Structure)
                 {
                     ModDataMtrl.GradientKey obj = new ModDataMtrl.GradientKey()
                     {
                         Time = (int)((JMXAttribute)Structure.Childs[0]).Value,
-                        Value = (Color4)((Color4VM)Structure.Childs[1]).GetClass()
+                        Value = ((ColorVM)Structure.Childs[1]).GetColor4(),
                     };
                     return obj;
                 }
@@ -225,7 +225,7 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
                     ModDataMtrl.CurveKey obj = new ModDataMtrl.CurveKey()
                     {
                         Time = (int)((JMXAttribute)Structure.Childs[0]).Value,
-                        Value = (float)((JMXAttribute)Structure.Childs[0]).Value
+                        Value = (float)((JMXAttribute)Structure.Childs[1]).Value
                     };
                     return obj;
                 }

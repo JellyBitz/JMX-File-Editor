@@ -1,6 +1,5 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVRES;
-using JMXFileEditor.Silkroad.Mathematics;
-using JMXFileEditor.ViewModels.Silkroad.Mathematics;
+
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
 {
     public class PrimAniGroupVM : JMXStructure
@@ -36,32 +35,27 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVRES
             #region Constructor
             public Entry(string Name, PrimAniTypeData Entry) : base(Name, true)
             {
-                // Add new format
+                Childs.Add(new JMXOption("Type", Entry.Type, JMXOption.GetValues<object>(typeof(PrimAnimationType))));
+                Childs.Add(new JMXAttribute("AnimationSetIndex", Entry.PrimAnimationIndex));
                 m_SupportedFormats.Add(typeof(PrimAnimationEvent), (s, e) => {
                     e.Childs.Add(new Event("[" + e.Childs.Count + "]", e.Obj is PrimAnimationEvent _obj ? _obj : new PrimAnimationEvent()));
                 });
-                m_SupportedFormats.Add(typeof(Vector2), (s, e) => {
-                    e.Childs.Add(new Vector2VM("[" + e.Childs.Count + "]", e.Obj is Vector2 _obj ? _obj : new Vector2()));
-                });
-                // Create viewmodel node
-                Childs.Add(new JMXOption("Type", Entry.Type, JMXOption.GetValues<object>(typeof(PrimAnimationType))));
-                Childs.Add(new JMXAttribute("AnimationSetIndex", Entry.PrimAnimationIndex));
                 AddChildArray("Events", Entry.Events.ToArray(), true, true);
                 Childs.Add(new JMXAttribute("WalkLength", Entry.WalkLength));
-                AddChildArray("WalkGraph", Entry.WalkGraph.ToArray(), true, true);
+                Childs.Add(new ChartXYEditorVM("WalkGraph", Entry.WalkGraph));
             }
             #endregion
 
             #region Public Methods
-            public override object GetClassFrom(JMXStructure Structure)
+            public override object GetClassFrom(JMXStructure s, int i)
             {
                 PrimAniTypeData obj = new PrimAniTypeData()
                 {
-                    Type = (PrimAnimationType)((JMXOption)Structure.Childs[0]).Value,
-                    PrimAnimationIndex = (int)((JMXAttribute)Structure.Childs[1]).Value,
-                    Events = ((JMXStructure)Structure.Childs[2]).GetChildList<PrimAnimationEvent>(),
-                    WalkLength = (float)((JMXAttribute)Structure.Childs[3]).Value,
-                    WalkGraph = ((JMXStructure)Structure.Childs[4]).GetChildList<Vector2>()
+                    Type = (PrimAnimationType)((JMXOption)s.Childs[i++]).Value,
+                    PrimAnimationIndex = (int)((JMXAttribute)s.Childs[i++]).Value,
+                    Events = ((JMXStructure)s.Childs[i++]).GetChildList<PrimAnimationEvent>(),
+                    WalkLength = (float)((JMXAttribute)s.Childs[i++]).Value,
+                    WalkGraph = ((ChartXYEditorVM)s.Childs[i++]).GetVector2(),
                 };
                 return obj;
             }

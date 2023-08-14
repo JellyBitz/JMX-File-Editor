@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace JMXFileEditor.Silkroad.Data.JMXVENVI
 {
-    class EnvironmentCurve<TValue, TBlend> : ISerializableBS
+    public class EnvironmentCurve<TValue, TBlend> : ISerializableBS
         where TBlend : EnvironmentDefaultBlend<TValue>, new()
         where TValue : new()
     {

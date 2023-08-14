@@ -73,7 +73,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
     [Serializable]
     public class EEResource : ISerializableBS
     {
-        public bool BackFace { get; set; }
+        public uint BackFaceType { get; set; }
         public D3DBLEND SrcBlend { get; set; }
         public D3DBLEND DstBlend { get; set; }
         public D3DTEXTUREARG SrcTextureArg1 { get; set; }
@@ -87,8 +87,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 
         public void Deserialize(BSReader reader)
         {
-            BackFace = reader.ReadInt32() != 0;
-
+            BackFaceType = reader.ReadUInt32();
             SrcBlend = (D3DBLEND)reader.ReadInt32();
             DstBlend = (D3DBLEND)reader.ReadInt32();
             SrcTextureArg1 = (D3DTEXTUREARG)reader.ReadInt32();
@@ -105,7 +104,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
 
         public void Serialize(BSWriter writer)
         {
-            writer.Write(BackFace ? 1 : 0);
+            writer.Write(BackFaceType);
 
             writer.Write((int)SrcBlend);
             writer.Write((int)DstBlend);

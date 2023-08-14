@@ -53,6 +53,7 @@ namespace JMXFileEditor.ViewModels
         {
             m_Value = Value;
             this.Options = Options;
+            this.Options.Sort((a,b) => a.ToString().CompareTo(b.ToString()));
         }
         #endregion
 

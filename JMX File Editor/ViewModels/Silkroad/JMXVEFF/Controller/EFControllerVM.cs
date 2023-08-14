@@ -60,11 +60,10 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Controller
         #region Abstract Implementation
         protected override void AddBaseNodes(object Obj)
         {
-            // Set default case
-            if (Obj == null)
+            // Set default object
+            if (CurrentType == null)
             {
-                Obj = new EFCNormalTimeLife();
-                SetCurrentType(Obj.GetType(), Obj);
+                SetCurrentType(new EFCNormalTimeLife().GetType());
                 return;
             }
         }
@@ -91,6 +90,10 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Controller
             else if (CurrentType == typeof(EFCLinkMode))
             {
                 data = (EFCLinkMode)new EFCLinkModeVM(string.Empty, new EFCLinkMode()).GetClassFrom(s, i++);
+            }
+            else if (CurrentType == typeof(EFCBAN))
+            {
+                data = (EFCBAN)new EFCBANVM(string.Empty, new EFCBAN()).GetClassFrom(s, i++);
             }
             else if (CurrentType == typeof(EFCViewMode))
             {
