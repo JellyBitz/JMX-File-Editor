@@ -13,7 +13,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
     public class EFStoredEffect : EFStoredObject, IJMXFile
     {
         #region Public Properties
-        public float Version12Value { get; set; } = 1.0f;
+        public float Scale { get; set; } = 1f;
         public int Version13Value0 { get; set; } = 0;
         public int Version13Value1 { get; set; } = 0;
         public int Version13Value2 { get; set; } = 0;
@@ -41,7 +41,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
                
                 // Read stuff based on file version
                 if(ver >= 12 && ver <= 13)
-                    Version12Value = reader.ReadFloat();
+                    Scale = reader.ReadFloat();
                 if (ver == 13)
                 {
                     Version13Value0 = reader.ReadInt32();
@@ -60,7 +60,7 @@ namespace JMXFileEditor.Silkroad.Data.JMXVEFF
                 // Auto-upgrade everything saved to JMXVEFF 0013
                 writer.Write("JMXVEFF 0013".ToCharArray());
 
-                writer.Write(Version12Value);
+                writer.Write(Scale);
 
                 writer.Write(Version13Value0);
                 writer.Write(Version13Value1);

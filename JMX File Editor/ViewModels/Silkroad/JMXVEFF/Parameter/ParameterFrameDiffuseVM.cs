@@ -12,21 +12,16 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF.Parameter
         #region Constructor
         public ParameterFrameDiffuseVM(string Name, ParameterFrameDiffuse data) : base(Name, true)
         {
-            AddFormatHandler(typeof(Color32), (s, e) =>
-            {
-                e.Childs.Add(new ColorVM("[" + e.Childs.Count + "]", e.Obj is Color32 _obj ? ColorVM.GetColor(_obj) : new Color() { A = 255 }));
-            });
-            AddChildArray("List", data.Value.ToArray(), true, true);
+            Childs.Add(new GradientColorPickerVM(data.Name, 0, 1, data.Value, false));
         }
         #endregion
 
         #region Public Methods
         public override object GetClassFrom(JMXStructure s, int i)
         {
-            var colorList = ((JMXStructure)s.Childs[i++]).GetChildList<Color>();
             return new ParameterFrameDiffuse()
             {
-                Value = new List<Color32>(colorList.Select(x => new Color32(x.R, x.G, x.B, x.A)))
+                Value = ((GradientColorPickerVM)s.Childs[i++]).GetColor32(),
             };
         }
         #endregion
