@@ -3,6 +3,7 @@
 using System;
 using System.IO;
 using System.Text;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace JMXFileEditor.Silkroad.IO
 {
@@ -37,10 +38,20 @@ namespace JMXFileEditor.Silkroad.IO
         {
             // Apply encoding and write it
             var chars = value.ToCharArray();
-            var bytes = Encoding.GetEncoding(Encoding.CodePage).GetBytes(chars, 0, chars.Length);
-            this.Write(bytes.Length);
-            this.Write(bytes);
+            var bytes = Encoding.GetBytes(chars, 0, chars.Length);
+            Write(bytes.Length);
+            Write(bytes);
         }
+
+        public void Write(string value, int length)
+        {
+            // Apply encoding and write it
+            var chars = value.ToCharArray();
+            var bytes = Encoding.GetBytes(chars, 0, length);
+            Array.Resize(ref bytes, length);
+            Write(bytes);
+        }
+
         public void Write(string[] values)
         {
             foreach (string value in values)
@@ -140,6 +151,14 @@ namespace JMXFileEditor.Silkroad.IO
         where T : ISerializableParameterizedBS
         {
             value.Serialize(this, parameters);
+        }
+
+        public void Write(Rectangle rectangle)
+        {
+            Write(rectangle.X);
+            Write(rectangle.Y);
+            Write(rectangle.Width);
+            Write(rectangle.Height);
         }
         #endregion
     }

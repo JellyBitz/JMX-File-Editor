@@ -4,6 +4,9 @@ using System;
 using System.IO;
 using System.Text;
 
+using Rectangle = System.Drawing.Rectangle;
+using RectangleF = JMXFileEditor.Silkroad.Mathematics.RectangleF;
+
 namespace JMXFileEditor.Silkroad.IO
 {
     /// <summary>
@@ -85,8 +88,12 @@ namespace JMXFileEditor.Silkroad.IO
                 this.ReadFloat(), this.ReadFloat(), this.ReadFloat(), this.ReadFloat(),
                 this.ReadFloat(), this.ReadFloat(), this.ReadFloat(), this.ReadFloat()
             );
-        public RectangleF ReadRectangleF() => new RectangleF(this.ReadVector2(), this.ReadVector2());
-        public BoundingBoxF ReadBoundingBoxF() => new BoundingBoxF(this.ReadVector3(), this.ReadVector3());
+
+        public RectangleF ReadRectangleF() => new RectangleF(ReadVector2(), ReadVector2());
+
+        public Rectangle ReadRectangle() => new Rectangle(ReadInt32(), ReadInt32(), ReadInt32(), ReadInt32());
+
+        public BoundingBoxF ReadBoundingBoxF() => new BoundingBoxF(ReadVector3(), ReadVector3());
         /// <summary>
         /// Format32bppArgb
         /// </summary>
