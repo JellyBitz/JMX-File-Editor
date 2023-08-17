@@ -1,5 +1,4 @@
 ﻿using JMXFileEditor.Silkroad.Mathematics;
-
 using System;
 using System.IO;
 using System.Text;
@@ -55,92 +54,92 @@ namespace JMXFileEditor.Silkroad.IO
         public void Write(string[] values)
         {
             foreach (string value in values)
-                this.Write(value);
+                Write(value);
         }
         public void Write(Vector2 value)
         {
-            this.Write(value.X);
-            this.Write(value.Y);
+            Write(value.X);
+            Write(value.Y);
         }
         public void Write(Vector3 value)
         {
-            this.Write(value.X);
-            this.Write(value.Y);
-            this.Write(value.Z);
+            Write(value.X);
+            Write(value.Y);
+            Write(value.Z);
         }
         public void Write(Vector4 value)
         {
-            this.Write(value.X);
-            this.Write(value.Y);
-            this.Write(value.Z);
-            this.Write(value.W);
+            Write(value.X);
+            Write(value.Y);
+            Write(value.Z);
+            Write(value.W);
         }
         public void Write(Quaternion value)
         {
-            this.Write(value.X);
-            this.Write(value.Y);
-            this.Write(value.Z);
-            this.Write(value.W);
+            Write(value.X);
+            Write(value.Y);
+            Write(value.Z);
+            Write(value.W);
         }
         public void Write(Matrix4x4 value)
         {
-            this.Write(value.M11);
-            this.Write(value.M12);
-            this.Write(value.M13);
-            this.Write(value.M14);
+            Write(value.M11);
+            Write(value.M12);
+            Write(value.M13);
+            Write(value.M14);
 
-            this.Write(value.M21);
-            this.Write(value.M22);
-            this.Write(value.M23);
-            this.Write(value.M24);
+            Write(value.M21);
+            Write(value.M22);
+            Write(value.M23);
+            Write(value.M24);
 
-            this.Write(value.M31);
-            this.Write(value.M32);
-            this.Write(value.M33);
-            this.Write(value.M34);
+            Write(value.M31);
+            Write(value.M32);
+            Write(value.M33);
+            Write(value.M34);
 
-            this.Write(value.M41);
-            this.Write(value.M42);
-            this.Write(value.M43);
-            this.Write(value.M44);
+            Write(value.M41);
+            Write(value.M42);
+            Write(value.M43);
+            Write(value.M44);
         }
         public void Write(RectangleF value)
         {
-            this.Write(value.Min);
-            this.Write(value.Max);
+            Write(value.Min);
+            Write(value.Max);
         }
         public void Write(BoundingBoxF value)
         {
-            this.Write(value.Min);
-            this.Write(value.Max);
+            Write(value.Min);
+            Write(value.Max);
         }
         /// <summary>
         /// Format32bppArgb
         /// </summary>
         public void Write(Color32 value)
         {
-            this.Write(value.Blue);
-            this.Write(value.Green);
-            this.Write(value.Red);
-            this.Write(value.Alpha);
+            Write(value.Blue);
+            Write(value.Green);
+            Write(value.Red);
+            Write(value.Alpha);
         }
         public void Write(Color3 value)
         {
-            this.Write(value.Red);
-            this.Write(value.Green);
-            this.Write(value.Blue);
+            Write(value.Red);
+            Write(value.Green);
+            Write(value.Blue);
         }
         public void Write(Color4 value)
         {
-            this.Write(value.Red);
-            this.Write(value.Green);
-            this.Write(value.Blue);
-            this.Write(value.Alpha);
+            Write(value.Red);
+            Write(value.Green);
+            Write(value.Blue);
+            Write(value.Alpha);
         }
         public void Write(uint[] values)
         {
             foreach (uint value in values)
-                this.Write(value);
+                Write(value);
         }
         public void Serialize<T>(T value)
         where T : ISerializableBS

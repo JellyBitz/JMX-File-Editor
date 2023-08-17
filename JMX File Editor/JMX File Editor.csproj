@@ -420,6 +420,10 @@
     <Compile Include="Silkroad\Data\JMXVRES\ModData\ModDataTexAni.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\PrimAnimationEvent.cs" />
     <Compile Include="Silkroad\Data\JMXVRES\PrimAniTypeData.cs" />
+    <Compile Include="Silkroad\Data\NIF\NIFFile.cs" />
+    <Compile Include="Silkroad\Data\NIF\NIFNode.cs" />
+    <Compile Include="Silkroad\Data\NIF\NIFStyle.cs" />
+    <Compile Include="Silkroad\Data\NIF\NIFType.cs" />
     <Compile Include="Silkroad\ISerializableBS.cs" />
     <Compile Include="Silkroad\ISerializableParameterizedBS.cs" />
     <Compile Include="Silkroad\Mathematics\BoundingBoxF.cs" />
