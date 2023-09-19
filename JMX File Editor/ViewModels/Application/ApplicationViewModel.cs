@@ -107,21 +107,7 @@ namespace JMXFileEditor.ViewModels
                 var path = Window.OpenFileDialog("Open...", "All Files (*.*)|*.*");
                 if (path == string.Empty)
                     return;
-                // Try to load the file
-                try
-                {
-                    // Load file format
-                    var jmxFile = LoadJMXFile(path);
-                    // Create file UI
-                    FileProperties = CreateJMXViewModel(jmxFile);
-                    // Set current file path used
-                    FilePath = path;
-                }
-                catch (Exception ex)
-                {
-                    // Show details to user
-                    Window.ShowMessage("File Error", ex.Message);
-                }
+                TryLoadPath(path, Window);
             });
             CommandSaveFile = new RelayCommand(() =>
             {
@@ -178,10 +164,36 @@ namespace JMXFileEditor.ViewModels
                 }
             });
             #endregion
+
+            // Initialize file from command line
+            var args = Environment.GetCommandLineArgs();
+            if (args.Length > 1 && File.Exists(args[1]))
+                TryLoadPath(args[1], Window);
         }
         #endregion
 
         #region Private Helpers
+        /// <summary>
+        /// Tries to load the file path
+        /// </summary>
+        private void TryLoadPath(string FilePath, IWindow Window)
+        {
+            // Try to load the file
+            try
+            {
+                // Load file format
+                var jmxFile = LoadJMXFile(FilePath);
+                // Create file UI
+                FileProperties = CreateJMXViewModel(jmxFile);
+                // Set current file path used
+                this.FilePath = FilePath;
+            }
+            catch (Exception ex)
+            {
+                // Show details to user
+                Window.ShowMessage("File Error", ex.Message);
+            }
+        }
         /// <summary>
         /// Creates and loads the JMX file
         /// </summary>
