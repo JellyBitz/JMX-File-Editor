@@ -218,6 +218,8 @@
                                                         Minimum="{Binding Begin}"
                                                         Maximum="{Binding End}"
                                                         ShowAlpha="{Binding ShowAlpha}"
+                                                        IsEditable="{Binding IsEditable}"
+                                                        IsSizeable="{Binding IsSizeable}"
                                                         ItemsSource="{Binding GradientValues}"
                                                         CommandAddItem="{Binding CommandAddColor}"
                                                         CommandRemoveItem="{Binding CommandRemoveColor}"/>

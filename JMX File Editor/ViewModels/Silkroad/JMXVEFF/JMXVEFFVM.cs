@@ -1,4 +1,5 @@
 ﻿using JMXFileEditor.Silkroad.Data.JMXVEFF;
+using System.Windows.Markup;
 
 namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
 {
@@ -10,47 +11,60 @@ namespace JMXFileEditor.ViewModels.Silkroad.JMXVEFF
         #region Constructor
         public JMXVEFFVM(EFStoredEffect JMXFile) : base(JMXFile.Format, true)
         {
-            // Add base class nodes
-            var _data = new EFStoredObjectVM(string.Empty, JMXFile);
-            foreach (var c in _data.Childs)
-                Childs.Add(c);
+            Childs.Add(new JMXAttribute("Scale", JMXFile.Scale));
+            // Global Position Probably?
+            Childs.Add(new JMXAttribute("UnkInt01", JMXFile.Version13Value0));
+            Childs.Add(new JMXAttribute("UnkInt02", JMXFile.Version13Value1));
+            Childs.Add(new JMXAttribute("UnkInt03", JMXFile.Version13Value2));
+            Childs.Add(new EFStoredObjectVM("Root", JMXFile));
         }
         #endregion
 
         #region Public Properties
         public override object GetClassFrom(JMXStructure s, int i)
         {
-            var b = (EFStoredObject)new EFStoredObjectVM(string.Empty, new EFStoredObject()).GetClassFrom(s, i++);
+            var scale = (float)((JMXAttribute)s.Childs[i++]).Value;
+            var unk01 = (int)((JMXAttribute)s.Childs[i++]).Value;
+            var unk02 = (int)((JMXAttribute)s.Childs[i++]).Value;
+            var unk03 = (int)((JMXAttribute)s.Childs[i++]).Value;
+
+            var root = (EFStoredObject)((EFStoredObjectVM)s.Childs[i++]).GetClass();
             // Copy base class data
             return new EFStoredEffect()
             {
-                Name = b.Name,
-                Controllers = b.Controllers,
+                Scale = scale,
 
-                EEGlobalData = b.EEGlobalData,
-                EmptyCommands0 = b.EmptyCommands0,
-                EmitterCommands = b.EmitterCommands,
-                EmptyCommands1 = b.EmptyCommands1,
-                LifeTimeCommand = b.LifeTimeCommand,
-                ProgramCommands = b.ProgramCommands,
+                Version13Value0 = unk01,
+                Version13Value1 = unk02,
+                Version13Value2 = unk03,
 
-                Byte0 = b.Byte0,
-                Byte1 = b.Byte1,
-                Int0 = b.Int0,
-                Int1 = b.Int1,
-                Int2 = b.Int2,
-                Byte2 = b.Byte2,
-                Int3 = b.Int3,
-                Byte3 = b.Byte3,
+                Name = root.Name,
+                Controllers = root.Controllers,
 
-                ViewModeCommand = b.ViewModeCommand,
-                Resource = b.Resource,
-                RenderModeCommand = b.RenderModeCommand,
+                EEGlobalData = root.EEGlobalData,
+                EmptyCommands0 = root.EmptyCommands0,
+                EmitterCommands = root.EmitterCommands,
+                EmptyCommands1 = root.EmptyCommands1,
+                LifeTimeCommand = root.LifeTimeCommand,
+                ProgramCommands = root.ProgramCommands,
 
-                EmptyProgram0 = b.EmptyProgram0,
-                RenderCommands = b.RenderCommands,
+                Byte0 = root.Byte0,
+                Byte1 = root.Byte1,
+                Int0 = root.Int0,
+                Int1 = root.Int1,
+                Int2 = root.Int2,
+                Byte2 = root.Byte2,
+                Int3 = root.Int3,
+                Byte3 = root.Byte3,
 
-                Children = b.Children,
+                ViewModeCommand = root.ViewModeCommand,
+                Resource = root.Resource,
+                RenderModeCommand = root.RenderModeCommand,
+
+                EmptyProgram0 = root.EmptyProgram0,
+                RenderCommands = root.RenderCommands,
+
+                Children = root.Children,
             };
         }
         #endregion

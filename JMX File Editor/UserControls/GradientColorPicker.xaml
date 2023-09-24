@@ -7,7 +7,7 @@
              xmlns:main="clr-namespace:JMXFileEditor"
              xmlns:pkgColorPicker="clr-namespace:ColorPicker"
              xmlns:pkgColorPickerConv="clr-namespace:ColorPicker.Converters"
-             MinHeight="45" MinWidth="100"
+             MinWidth="100"
              x:Name="uc"
              mc:Ignorable="d"
              d:DesignHeight="45" d:DesignWidth="100">
@@ -122,6 +122,7 @@
         </Border>
         <!-- Gradient Stops -->
         <ListBox Grid.Row="1"
+                 Visibility="{Binding ElementName=uc,Path=IsEnabled,Converter={main:ValueToVisibilityConverter}}"
                  Background="{Binding ElementName=uc,Path=Background}"
                  Style="{StaticResource NewListBoxStyle}"
                  HorizontalContentAlignment="Stretch"
@@ -155,7 +156,8 @@
                                 Maximum="{Binding ElementName=uc, Path=Maximum}"
                                 Value="{Binding Offset, Mode=TwoWay}"
                                 IsSnapToTickEnabled="False"
-                                VerticalAlignment="Center">
+                                VerticalAlignment="Center"
+                                IsEnabled="{Binding ElementName=uc, Path=IsEditable}">
                             <Slider.Foreground>
                                 <SolidColorBrush Color="{Binding Color}"/>
                             </Slider.Foreground>
@@ -163,10 +165,12 @@
 
                         <!-- Removing Action -->
                         <Button Grid.Column="2"
+                                Visibility="{Binding ElementName=uc,Path=IsSizeable,Converter={main:ValueToVisibilityConverter}}"
                                 Style="{StaticResource ButtonCleanStyle}"
                                 Foreground="{Binding ElementName=uc, Path=Foreground}"
                                 Command="{Binding ElementName=uc, Path=CommandRemoveItem}"
-                                CommandParameter="{Binding}">
+                                CommandParameter="{Binding}"
+                                IsEnabled="{Binding ElementName=uc,Path=IsSizeable}">
                             <TextBlock Text=" x " Foreground="#FFAAAAAA" Margin="0 0 2 4"
                                        FontWeight="DemiBold"/>
                         </Button>
@@ -176,17 +180,20 @@
         </ListBox>
 
         <!-- Adding Action -->
-        <StackPanel Grid.Row="2"
+        <StackPanel Visibility="{Binding ElementName=uc,Path=IsEnabled,Converter={main:ValueToVisibilityConverter}}"
+                    Grid.Row="2"
                     Margin="0 -6 0 6"
                     HorizontalAlignment="Center">
-            <Button Style="{StaticResource ButtonCleanStyle}"
+            <StackPanel Visibility="{Binding ElementName=uc,Path=IsSizeable,Converter={main:ValueToVisibilityConverter}}">
+                <Button Style="{StaticResource ButtonCleanStyle}"
+                    IsEnabled="{Binding ElementName=uc,Path=IsSizeable}"
                     Foreground="{Binding ElementName=uc,Path=Foreground}"
                     Command="{Binding ElementName=uc, Path=CommandAddItem}">
-                <TextBlock Text="+"
+                    <TextBlock Text="+"
                            Foreground="#FFAAAAAA"
                            FontWeight="Bold"/>
-            </Button>
+                </Button>
+            </StackPanel>
         </StackPanel>
-        
     </Grid>
 </UserControl>

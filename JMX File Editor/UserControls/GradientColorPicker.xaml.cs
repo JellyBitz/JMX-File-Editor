@@ -48,6 +48,26 @@ namespace JMXFileEditor.UserControls
         public static DependencyProperty ShowAlphaProperty =
            DependencyProperty.Register("ShowAlpha", typeof(bool), typeof(GradientColorPicker), new PropertyMetadata(true));
         /// <summary>
+        /// Exposes the flag indicating if the items count can be modified
+        /// </summary>
+        public bool IsEditable
+        {
+            get => (bool)GetValue(IsEditableProperty);
+            set => SetValue(IsEditableProperty, value);
+        }
+        public static DependencyProperty IsEditableProperty =
+           DependencyProperty.Register("IsEditable", typeof(bool), typeof(GradientColorPicker), new PropertyMetadata(true));
+        /// <summary>
+        /// Exposes the flag indicating if the items count can be modified
+        /// </summary>
+        public bool IsSizeable
+        {
+            get => (bool)GetValue(IsSizeableProperty);
+            set => SetValue(IsSizeableProperty, value);
+        }
+        public static DependencyProperty IsSizeableProperty =
+           DependencyProperty.Register("IsSizeable", typeof(bool), typeof(GradientColorPicker), new PropertyMetadata(true));
+        /// <summary>
         /// Gradient items being handled
         /// </summary>
         public IEnumerable<IGradientColorPickerItem> ItemsSource
