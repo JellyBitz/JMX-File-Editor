@@ -104,7 +104,7 @@ namespace JMXFileEditor.ViewModels
             CommandOpenFile = new RelayCommand(() =>
             {
                 // Ask for file path and avoid empty result / canceled operation
-                var path = Window.OpenFileDialog("Open...", "All Files (*.*)|*.*");
+                var path = Window.OpenFileDialog("Open...", "All Files (*.*)|*.*", FilePath);
                 if (path == string.Empty)
                     return;
                 TryLoadPath(path, Window);
@@ -144,7 +144,7 @@ namespace JMXFileEditor.ViewModels
 
                         // Set temporal filename
                         var filename = GetCopyFileName(Path.GetFileNameWithoutExtension(FilePath),jmxFile.Extension,Path.GetDirectoryName(FilePath));
-                        var folderPath = Window.OpenFolderDialog("Save...", ref filename);
+                        var folderPath = Window.OpenFolderDialog("Save...", ref filename, FilePath);
                         // check paths are correct
                         if (folderPath == string.Empty)
                             return;

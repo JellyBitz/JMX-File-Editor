@@ -22,12 +22,13 @@ namespace JMXFileEditor
         #endregion
 
         #region Interface implementation
-        public string OpenFileDialog(string Title, string Filter)
+        public string OpenFileDialog(string Title, string Filter, string InitialDirectory = "")
         {
             // Build dialog to search the file path
             var fileBrowserDialog = new Microsoft.Win32.OpenFileDialog();
             fileBrowserDialog.Title = Title;
             fileBrowserDialog.Filter = Filter;
+            fileBrowserDialog.InitialDirectory = InitialDirectory;
             if (fileBrowserDialog.ShowDialog(this) == true)
             {
                 return fileBrowserDialog.FileName;
@@ -35,11 +36,12 @@ namespace JMXFileEditor
             return string.Empty;
         }
 
-        public string OpenFolderDialog(string Title, ref string DefaultFilename)
+        public string OpenFolderDialog(string Title, ref string DefaultFilename, string InitialDirectory = "")
         {
             // Build dialog to search folder path
             var folderBrowserDialog = new Microsoft.Win32.OpenFileDialog();
             folderBrowserDialog.Title = Title;
+            folderBrowserDialog.InitialDirectory = InitialDirectory;
             // setup to fake a folder browser
             folderBrowserDialog.ValidateNames = !string.IsNullOrEmpty(DefaultFilename);
             folderBrowserDialog.CheckFileExists = false;
