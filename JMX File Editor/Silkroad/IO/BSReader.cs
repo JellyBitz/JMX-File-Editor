@@ -4,6 +4,9 @@ using System;
 using System.IO;
 using System.Text;
 
+using Rectangle = System.Drawing.Rectangle;
+using RectangleF = JMXFileEditor.Silkroad.Mathematics.RectangleF;
+
 namespace JMXFileEditor.Silkroad.IO
 {
     /// <summary>
@@ -42,7 +45,7 @@ namespace JMXFileEditor.Silkroad.IO
         /// </summary>
         public override string ReadString()
         {
-            var length = this.ReadInt32();
+            var length = ReadInt32();
             return ReadString(length);
 
         }
@@ -66,7 +69,7 @@ namespace JMXFileEditor.Silkroad.IO
             var bytes = base.ReadBytes(length);
             return Encoding.GetEncoding(Encoding.CodePage).GetString(bytes);
         }
-        public float ReadFloat() => this.ReadSingle();
+        public float ReadFloat() => ReadSingle();
         public uint[] ReadUIntArray(int count)
         {
             uint[] array = new uint[count];
@@ -74,32 +77,36 @@ namespace JMXFileEditor.Silkroad.IO
                 array[i] = ReadUInt32();
             return array;
         }
-        public Vector2 ReadVector2() => new Vector2(this.ReadFloat(), this.ReadFloat());
-        public Vector3 ReadVector3() => new Vector3(this.ReadFloat(), this.ReadFloat(), this.ReadFloat());
-        public Vector4 ReadVector4() => new Vector4(this.ReadFloat(), this.ReadFloat(), this.ReadFloat(), this.ReadFloat());
-        public Quaternion ReadQuaternion() => new Quaternion(this.ReadFloat(), this.ReadFloat(), this.ReadFloat(), this.ReadFloat());
+        public Vector2 ReadVector2() => new Vector2(ReadFloat(), ReadFloat());
+        public Vector3 ReadVector3() => new Vector3(ReadFloat(), ReadFloat(), ReadFloat());
+        public Vector4 ReadVector4() => new Vector4(ReadFloat(), ReadFloat(), ReadFloat(), ReadFloat());
+        public Quaternion ReadQuaternion() => new Quaternion(ReadFloat(), ReadFloat(), ReadFloat(), ReadFloat());
         public Matrix4x4 ReadMatrix4x4() => new Matrix4x4
             (
-                this.ReadFloat(), this.ReadFloat(), this.ReadFloat(), this.ReadFloat(),
-                this.ReadFloat(), this.ReadFloat(), this.ReadFloat(), this.ReadFloat(),
-                this.ReadFloat(), this.ReadFloat(), this.ReadFloat(), this.ReadFloat(),
-                this.ReadFloat(), this.ReadFloat(), this.ReadFloat(), this.ReadFloat()
+                ReadFloat(), ReadFloat(), ReadFloat(), ReadFloat(),
+                ReadFloat(), ReadFloat(), ReadFloat(), ReadFloat(),
+                ReadFloat(), ReadFloat(), ReadFloat(), ReadFloat(),
+                ReadFloat(), ReadFloat(), ReadFloat(), ReadFloat()
             );
-        public RectangleF ReadRectangleF() => new RectangleF(this.ReadVector2(), this.ReadVector2());
-        public BoundingBoxF ReadBoundingBoxF() => new BoundingBoxF(this.ReadVector3(), this.ReadVector3());
+
+        public RectangleF ReadRectangleF() => new RectangleF(ReadVector2(), ReadVector2());
+
+        public Rectangle ReadRectangle() => new Rectangle(ReadInt32(), ReadInt32(), ReadInt32(), ReadInt32());
+
+        public BoundingBoxF ReadBoundingBoxF() => new BoundingBoxF(ReadVector3(), ReadVector3());
         /// <summary>
         /// Format32bppArgb
         /// </summary>
         public Color32 ReadColor32()
         {
-            var b = this.ReadByte();
-            var g = this.ReadByte();
-            var r = this.ReadByte();
-            var a = this.ReadByte();
+            var b = ReadByte();
+            var g = ReadByte();
+            var r = ReadByte();
+            var a = ReadByte();
             return new Color32(r, g, b, a);
         }
-        public Color3 ReadColor3() => new Color3(this.ReadFloat(), this.ReadFloat(), this.ReadFloat());
-        public Color4 ReadColor4() => new Color4(this.ReadFloat(), this.ReadFloat(), this.ReadFloat(), this.ReadFloat());
+        public Color3 ReadColor3() => new Color3(ReadFloat(), ReadFloat(), ReadFloat());
+        public Color4 ReadColor4() => new Color4(ReadFloat(), ReadFloat(), ReadFloat(), ReadFloat());
         public T Deserialize<T>()
             where T : ISerializableBS, new()
         {
